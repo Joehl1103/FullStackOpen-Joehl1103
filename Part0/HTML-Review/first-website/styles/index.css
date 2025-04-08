@@ -1,0 +1,39 @@
+html {
+    /*Font*/
+    font-size:10px;
+    font-family: "Bungee Tint", sans-serif;
+
+    background-color: lightblue;
+
+}
+
+body {
+    width:600px;
+    margin:0 auto;
+    background-color: rgb(255, 204, 109);
+    padding: 0 20px 20px 20px;
+    border: 5px solid black;
+}
+
+h1 {
+    font-size: 60px;
+    text-align:center;
+
+    margin:0;
+    padding: 20px 0;
+    text-shadow:3px 3px 1px rgb(75, 31, 0);
+}
+
+p,li {
+    font-size: 16px;
+    line-height: 2;
+    letter-spacing: 1px;
+}
+
+img {
+    display:block;
+    margin: 0 auto;
+    max-width: 100%;
+    border: 1px solid black;
+    box-shadow: 3px 3px 1px rgb(75, 31, 0);
+}
