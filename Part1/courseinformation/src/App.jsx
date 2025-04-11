@@ -1,28 +1,29 @@
 // GLOBAL VARIABLES
 
-const course = "Half-Stack Application Development"
-const parts = [
-  {
-    name: "Fundamentals of React",
-    exercises: 10,
-  },
-  {
-    name: "Using props to pass data",
-    exercises: 7,
-  },
-  {
-    name: "State of a component",
-    exercises: 14,
-  }
-]
+const course = {
+  name: "Half-Stack Application Development",
+  parts: [
+    {
+      name: "Fundamentals of React",
+      exercises: 10,
+    },
+    {
+      name: "Using props to pass data",
+      exercises: 7,
+    },
+    {
+      name: "State of a component",
+      exercises: 14,
+    }
+  ],
+}
 
 // COMPONENTS
 
-const CourseHeader = (props) => {
-  console.log(props)
+const CourseHeader = () => {
   return (
     <>
-      <h1>{props.courseName}</h1>
+      <h1>{course.name}</h1>
     </>
   )
   
@@ -66,9 +67,9 @@ const Content = () => {
   
   return (
     <>
-      <Part1 part1={parts[0].name} exercises1={parts[0].exercises}/>
-      <Part2 part2={parts[1].name} exercises2={parts[1].exercises}/>
-      <Part3 part3={parts[2].name} exercises3={parts[2].exercises}/>
+      <Part1 part1={course.parts[0].name} exercises1={course.parts[0].exercises}/>
+      <Part2 part2={course.parts[1].name} exercises2={course.parts[1].exercises}/>
+      <Part3 part3={course.parts[2].name} exercises3={course.parts[2].exercises}/>
     </>
 
   )
@@ -76,7 +77,7 @@ const Content = () => {
 
 const Total = () => {
   return (
-    <p>Total number of exercises: {parts[0].exercises + parts[1].exercises + parts[2].exercises} </p>
+    <p>Total number of exercises: {course.parts[0].exercises + course.parts[1].exercises + course.parts[2].exercises} </p>
   )
 }
 
@@ -84,10 +85,10 @@ const App = ()=>{
   
   return (
     <>
-      <CourseHeader courseName={course}/>
-      <Content parts={parts}/>
+      <CourseHeader/>
+      <Content parts={course}/>
       <hr/>
-      <Total total={parts}/>
+      <Total total={course}/>
     </>
   )
 }
