@@ -1,16 +1,34 @@
+
+
+import {useState} from 'react'
+
+
+const Button = (props) => (
+  <button onClick={props.onClick}>
+    {props.text}
+  </button>
+)
+
 // defines a component called App
 const App = () => {
-  const friends = [
-    {name: 'Peter',age: 4},
-    {name: 'Maya',age: 10}
-  ]
-  return (
-    <>
-      <p>{friends[0].name} {friends[0].age}</p>
-      <p>{friends[1].name} {friends[1].age}</p>
-    </>
-  )
-}
+  const [value,setValue] = useState(10)
 
-// never remove this line of code
+  const setToValue = (newValue) => () => { 
+      console.log('value new',newValue)
+      setValue(newValue) 
+  }
+  
+ 
+  return (
+      <div>
+      {value} 
+      <br/>
+      <Button onClick={() => setToValue(1000)} text="thousand"/>
+      <Button onClick={() => setToValue(0)} text="reset"/>
+      <Button onClick={() => setToValue(value+1)} text="increment"/>
+             
+    </div>
+    )  
+} // never remove this line of code export default App
+
 export default App

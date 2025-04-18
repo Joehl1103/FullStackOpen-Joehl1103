@@ -1,16 +1,40 @@
-import {useState} from 'react'
+function Item({name, isPacked}){
+  let itemContent = name
 
-export default function Counter(){
-  const [number,setNumber] = useState(0)
+  if (isPacked){
+    itemContent = (
+      <del>
+        {name + " ✅"}
+      </del>
+    )
+  }
 
+  return (
+    <li className="item">
+      {itemContent}
+   </li>
+  )
+}
+
+
+export default function PackingList(){
   return(
-    <div>
-      <h1>{number}</h1>
-      <button onClick={() => {
-        setNumber(number+1);
-        setNumber(number+1);      
-        setNumber(number+1);
-        }}>+3</button>
-    </div>
+    <section>
+      <h1>Sally's Ride Packing List</h1>
+      <ul>
+        <Item
+          isPacked={true}
+          name="Space Suit"
+        />
+        <Item
+        isPacked={true}
+        name="Helmet with a golden leaf"
+        />
+        <Item
+        isPacked={false}
+        name="Photo of Tam"
+        />
+      </ul>
+    </section>
   )
 }
