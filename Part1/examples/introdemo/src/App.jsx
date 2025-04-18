@@ -8,20 +8,24 @@ const Button = (props) => (
     {props.text}
   </button>
 )
-
+const Display = props => <div>{props.value}</div>
 // defines a component called App
 const App = () => {
   const [value,setValue] = useState(10)
 
-  const setToValue = (newValue) => () => { 
+  const setToValue = (newValue) => { 
       console.log('value new',newValue)
       setValue(newValue) 
+  }
+
+  const tempFun = () => {
+    console.log("temp func ok")
   }
   
  
   return (
       <div>
-      {value} 
+      <Display value={value}/>  
       <br/>
       <Button onClick={() => setToValue(1000)} text="thousand"/>
       <Button onClick={() => setToValue(0)} text="reset"/>
