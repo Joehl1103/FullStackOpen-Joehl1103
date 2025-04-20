@@ -33,8 +33,9 @@ function useAverager(all){
     return averageInts/all
   }
 
-  const average = averageCalc(averageInts,all)
-  const averageRounded = parseFloat(average.toFixed(2))
+  const average =  averageCalc(averageInts,all)
+  console.log("Average Ints with parseFloat: " + parseFloat(averageInts))
+  const averageRounded = isNaN(averageInts) || averageInts === 0 ? '0' : parseFloat(average.toFixed(2))
   return {
     averageInts,setAverageInts,averageCalc,averageRounded
   }
@@ -43,11 +44,13 @@ function useAverager(all){
 function usePositiveCalc(good,all){
 
   const positiveFeedbackCalc = (good,all) => {
-    return `${(good/all)*100}%`
+    let calc = {good}/{all}
+    let calcToFixed = calc.toFixed(2)
+    return `${calcToFixed}*100}%`
   }
 
-  const positiveFeedbackPercent = positiveFeedbackCalc(good,all)
-
+  const positiveFeedbackPercent =  positiveFeedbackCalc(good,all)
+  const postiveFeedBackPercentParsed = good === 0 ? '0%' : parseFloat(positiveFeedbackPercent.toFixed(2))
   return {positiveFeedbackCalc,positiveFeedbackPercent}
 }
 
