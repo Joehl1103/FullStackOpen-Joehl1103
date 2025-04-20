@@ -34,7 +34,6 @@ function useAverager(all){
   }
 
   const average =  averageCalc(averageInts,all)
-  console.log("Average Ints with parseFloat: " + parseFloat(averageInts))
   const averageRounded = isNaN(averageInts) || averageInts === 0 ? '0' : parseFloat(average.toFixed(2))
   return {
     averageInts,setAverageInts,averageCalc,averageRounded
@@ -44,14 +43,28 @@ function useAverager(all){
 function usePositiveCalc(good,all){
 
   const positiveFeedbackCalc = (good,all) => {
-    let calc = {good}/{all}
+    console.log(`Good: ${good} | All: ${all}`)
+    let calc = 0
+    if(good === 0 || all == 0){
+      calc = 0
+      console.log("good or all = 0; calc: " + calc)
+    } else {
+      console.log(`Good or all != 0 => good: ${good} | all: ${all}`)
+      console.log(`Type of good: ${typeof good} | type of all: ${typeof all}`)
+      calc = {good}/{all}
+    }
+    console.log("Calc :"+calc)
     let calcToFixed = calc.toFixed(2)
-    return `${calcToFixed}*100}%`
+    console.log("calcToFixed: " + calcToFixed)
+    let percent = calcToFixed * 100
+    return percent
   }
 
   const positiveFeedbackPercent =  positiveFeedbackCalc(good,all)
-  const postiveFeedBackPercentParsed = good === 0 ? '0%' : parseFloat(positiveFeedbackPercent.toFixed(2))
-  return {positiveFeedbackCalc,positiveFeedbackPercent}
+  console.log("Positive feedback percent: " + positiveFeedbackPercent)
+  const positiveFeedbackPercentParsed = good === 0 || isNaN(good) ? '0%' : positiveFeedbackPercent
+  console.log("PositiveFeedbackPercentParsed: " + positiveFeedbackPercentParsed)
+  return {positiveFeedbackCalc,positiveFeedbackPercentParsed}
 }
 
 const App = () => {
@@ -63,7 +76,7 @@ const App = () => {
   
   const {averageInts,setAverageInts,averageRounded,averageCalc} = useAverager(all)
   
-  const {positiveFeedbackCalc,positiveFeedbackPercent} = usePositiveCalc(good,all)
+  const {positiveFeedbackCalc,positiveFeedbackPercentParsed} = usePositiveCalc(good,all)
 
   const onClick = (value) =>{
     if(value === "good"){
@@ -96,7 +109,7 @@ return (
       <StatDisplay name="Bad" type={bad}/>
       <StatDisplay name="All" type={all}/>
       <StatDisplay name="Average" type={averageRounded}/>
-      <PositiveFeedbackDisplay feedback={positiveFeedbackPercent}/>
+      <PositiveFeedbackDisplay feedback={positiveFeedbackPercentParsed}/>
       <hr/>
       <Button onClick={()=>onClick("reset")} text="reset"/>
 
