@@ -18,10 +18,36 @@ const StatDisplay = (props) => {
   )
 }
 
+const StatsDisplayAll = (props) => {
+  if(props.good === 0 
+    && props.neutral === 0 
+    && props.bad ===0 
+    && props.averageRounded === 0 
+    && props.positiveFeedbackPercent === 0){
+   return( 
+   <div>
+      <p>No feedback to display</p>
+   </div>
+   )
+  } else {
+
+  return (
+  <>
+    <StatDisplay name="Good" type={props.good}/>
+    <StatDisplay name="Neutral" type={props.neutral}/>
+    <StatDisplay name="Bad" type={props.bad}/>
+    <StatDisplay name="All" type={props.all}/>
+    <StatDisplay name="Average" type={props.averageRounded}/>
+    <PositiveFeedbackDisplay feedback={props.positiveFeedbackPercent}/>
+    </>
+  )
+}
+}
+
 const PositiveFeedbackDisplay= ({name = "Positive",feedback = "0%"})=>{
   return (
     <>
-      <p>{name}: {feedback}</p>
+      <p>{name}: {feedback}%</p>
     </>
   )
 }
@@ -30,42 +56,38 @@ function useAverager(all){
   const [averageInts,setAverageInts] = useState(0)
 
   const averageCalc= (averageInts,all)=>{
-    return averageInts/all
+    let average = averageInts/all
+    let averageRounded = parseFloat(average.toFixed(2))
+
+    return averageRounded
   }
 
-  const average =  averageCalc(averageInts,all)
-  const averageRounded = isNaN(averageInts) || averageInts === 0 ? '0' : parseFloat(average.toFixed(2))
+  const averageRounded = isNaN(averageInts) || averageInts === 0 ? 0 :averageCalc(averageInts,all) 
   return {
-    averageInts,setAverageInts,averageCalc,averageRounded
+    averageRounded,setAverageInts,averageInts
   }
 }
 
 function usePositiveCalc(good,all){
 
   const positiveFeedbackCalc = (good,all) => {
-    console.log(`Good: ${good} | All: ${all}`)
     let calc = 0
     if(good === 0 || all == 0){
       calc = 0
-      console.log("good or all = 0; calc: " + calc)
     } else {
-      console.log(`Good or all != 0 => good: ${good} | all: ${all}`)
-      console.log(`Type of good: ${typeof good} | type of all: ${typeof all}`)
-      calc = {good}/{all}
+      calc = good/all
     }
-    console.log("Calc :"+calc)
-    let calcToFixed = calc.toFixed(2)
-    console.log("calcToFixed: " + calcToFixed)
-    let percent = calcToFixed * 100
+    let decimals = 2
+    const factor = 10 ** decimals
+    let calcToFixed = (Math.round(calc * factor)/factor).toFixed(2)
+    let percent = (calcToFixed * 100).toFixed(2)
     return percent
   }
 
-  const positiveFeedbackPercent =  positiveFeedbackCalc(good,all)
-  console.log("Positive feedback percent: " + positiveFeedbackPercent)
-  const positiveFeedbackPercentParsed = good === 0 || isNaN(good) ? '0%' : positiveFeedbackPercent
-  console.log("PositiveFeedbackPercentParsed: " + positiveFeedbackPercentParsed)
-  return {positiveFeedbackCalc,positiveFeedbackPercentParsed}
+  const positiveFeedbackPercent =  good === 0 || isNaN(good) ? 0 : positiveFeedbackCalc(good,all)
+  return {positiveFeedbackCalc,positiveFeedbackPercent}
 }
+
 
 const App = () => {
   const [good,setGood] = useState(0)
@@ -74,9 +96,9 @@ const App = () => {
 
   const all = good+neutral+bad
   
-  const {averageInts,setAverageInts,averageRounded,averageCalc} = useAverager(all)
+  const {averageInts,setAverageInts,averageRounded} = useAverager(all)
   
-  const {positiveFeedbackCalc,positiveFeedbackPercentParsed} = usePositiveCalc(good,all)
+  const {positiveFeedbackPercent} = usePositiveCalc(good,all)
 
   const onClick = (value) =>{
     if(value === "good"){
@@ -88,13 +110,10 @@ const App = () => {
       setAverageInts(averageInts-1)
       setBad(bad+1)
     } else {
-      console.log("resetting")
       setGood(0)
       setNeutral(0)
       setBad(0)
     }
-    averageCalc(averageInts,all)
-    positiveFeedbackCalc(good/all)
   }
 
 return (
@@ -104,12 +123,13 @@ return (
       <Button onClick={() => onClick("neutral")} text="neutral"/>
       <Button onClick={() => onClick("bad")} text="bad"/>
       <h1>Statistics</h1>
-      <StatDisplay name="Good" type={good}/>
-      <StatDisplay name="Neutral" type={neutral}/>
-      <StatDisplay name="Bad" type={bad}/>
-      <StatDisplay name="All" type={all}/>
-      <StatDisplay name="Average" type={averageRounded}/>
-      <PositiveFeedbackDisplay feedback={positiveFeedbackPercentParsed}/>
+      <StatsDisplayAll
+        good={good}
+        neutral={neutral}
+        bad={bad}
+        averageRounded={averageRounded}
+        positiveFeedbackPercent={positiveFeedbackPercent}
+        /> 
       <hr/>
       <Button onClick={()=>onClick("reset")} text="reset"/>
 
