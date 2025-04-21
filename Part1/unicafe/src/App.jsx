@@ -11,10 +11,10 @@ const Button = (props) => {
 
 const StatDisplay = (props) => {
   return (
-    <div>  
-      <p>{props.name}: {props.type}</p>
-    </div>
-
+      <tr>
+           <td style={{border: "1px solid black", padding: "8px"}}>{props.name}  </td>
+           <td style={{border: "1px solid black", padding: "8px"}}>{props.type} {props.name === "Positive" && "%"}</td>
+      </tr>
   )
 }
 
@@ -32,24 +32,20 @@ const StatsDisplayAll = (props) => {
   } else {
 
   return (
-  <>
-    <StatDisplay name="Good" type={props.good}/>
-    <StatDisplay name="Neutral" type={props.neutral}/>
-    <StatDisplay name="Bad" type={props.bad}/>
-    <StatDisplay name="All" type={props.all}/>
-    <StatDisplay name="Average" type={props.averageRounded}/>
-    <PositiveFeedbackDisplay feedback={props.positiveFeedbackPercent}/>
-    </>
-  )
-}
-}
-
-const PositiveFeedbackDisplay= ({name = "Positive",feedback = "0%"})=>{
-  return (
     <>
-      <p>{name}: {feedback}%</p>
+    <table style={{borderCollapse: "collapse", width: "25%"}}>
+      <tbody>
+        <StatDisplay name="Good" type={props.good}/>
+        <StatDisplay name="Neutral" type={props.neutral}/>
+        <StatDisplay name="Bad" type={props.bad}/>
+        <StatDisplay name="All" type={props.all}/>
+        <StatDisplay name="Average" type={props.averageRounded}/>
+        <StatDisplay name="Positive" type={props.positiveFeedbackPercent}/>
+      </tbody>
+    </table> 
     </>
   )
+}
 }
 
 function useAverager(all){
@@ -127,6 +123,7 @@ return (
         good={good}
         neutral={neutral}
         bad={bad}
+        all={all}
         averageRounded={averageRounded}
         positiveFeedbackPercent={positiveFeedbackPercent}
         /> 
