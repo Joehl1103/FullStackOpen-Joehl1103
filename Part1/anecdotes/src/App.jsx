@@ -1,10 +1,17 @@
 import { useState } from 'react'
 
 const BigVote = (props) => {
+  
+  const printVotes = (votes)=>{
+    console.log("printing votes:",Object.entries(votes).map(([key,value])=>{
+      console.log(key + ": " + value)
+    }))
+ }
 
-  function bigVoteSearch(votes){
+  const votesSize = Object.entries(props.votes).length
+
+  function bigVoteSearch(votes,votesSize){
     let biggestVoteIndex = null;
-    let votesSize = Object.entries(votes).length
     let voteCounter = votes[0]
     for (let i = 1; i<votesSize;i++){
       if(votes[i]>voteCounter){
@@ -15,15 +22,22 @@ const BigVote = (props) => {
       }
   
     }
-    return biggestVoteIndex
+    return [biggestVoteIndex,voteCounter]
   }
   
-  function checkMultipleLargeIndices(){
-    
+  function checkMultipleLargeIndices(votes,votesSize){
+    let multipleBigs = false
+    const [bigVote,voteCount] = bigVoteSearch(props.votes)
+    for (let i = 0;i<votesSize;i++){
+      if(votes[i] === voteCount && i != bigVote && votes[i] != 0){
+        multipleBigs = true
+        return multipleBigs
+      }
+    }
+    return multipleBigs
   }
 
-  function sumVotes(votes){
-    let votesSize = Object.entries(votes).length
+  function sumVotes(votes,votesSize){
     let sum = 0
     for (let i = 0;i<votesSize;i++){
       sum += votes[i]
@@ -32,10 +46,11 @@ const BigVote = (props) => {
     return sum
   }
 
-  
-  const bigIndex = bigVoteSearch(props.votes)
-  
-    if (sumVotes(props.votes) === 0){
+    const [bigIndex,voteCount] = bigVoteSearch(props.votes,votesSize)
+ 
+    if (sumVotes(props.votes,votesSize) === 0){
+      printVotes(props.votes,votesSize)
+      console.log("No votes; sum of votes: " + sumVotes(props.votes,votesSize))
       return (
         <>
           <h1>Anecdote with most votes</h1>
@@ -43,7 +58,20 @@ const BigVote = (props) => {
         </>
  
       )
+    } else if(checkMultipleLargeIndices(props.votes,votesSize) === true){
+      printVotes(props.votes,votesSize)
+      console.log("Multiple anecdotes with the same number of votes: " + checkMultipleLargeIndices(props.votes,votesSize))
+      return (
+        <>
+          <h1>Anecdote with most votes</h1>
+          <p>Multiple anecdotes with most votes</p> 
+        </>
+      )
     } else {
+      printVotes(props.votes,votesSize)
+      console.log("There is a winner! ")
+      console.log("Biggest index: " + bigIndex)
+      console.log("Largest vote count: " + voteCount)
       return (
         <>
           <h1>Anecdote with most votes</h1>
@@ -52,6 +80,7 @@ const BigVote = (props) => {
       )
   }
 }
+
 
 
 
@@ -84,11 +113,7 @@ const App = () => {
 
   const [votes,setVote] = useState({0:0,1:0,2:0,3:0,4:0,5:0,6:0,7:0})
 
-  function printVotes(votes){
-    console.log("printing votes:",Object.entries(votes).map(([key,value])=>{
-      console.log(key + ": " + value)
-    }))
-  }
+  
 
   function increaseVote(index,votes){
     const votesCopy = {...votes}
