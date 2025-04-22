@@ -1,16 +1,16 @@
 import { useState } from 'react'
 
-const BigVote = (props) => {
-  
+function useVoteCountingFunction(votes){
+
   const printVotes = (votes)=>{
     console.log("printing votes:",Object.entries(votes).map(([key,value])=>{
       console.log(key + ": " + value)
     }))
  }
 
-  const votesSize = Object.entries(props.votes).length
+  const votesSize = Object.entries(votes).length
 
-  function bigVoteSearch(votes,votesSize){
+  const bigVoteSearch = (votes,votesSize)=>{
     let biggestVoteIndex = null;
     let voteCounter = votes[0]
     for (let i = 1; i<votesSize;i++){
@@ -24,11 +24,12 @@ const BigVote = (props) => {
     }
     return [biggestVoteIndex,voteCounter]
   }
-  
-  function checkMultipleLargeIndices(votes,votesSize){
+
+  const checkMultipleLargeIndices = (votes,votesSize)=> {
+    console.log("checking for multiple indices with the same number of votes")
     let multipleBigs = false
-    const [bigVote,voteCount] = bigVoteSearch(props.votes)
-    for (let i = 0;i<votesSize;i++){
+    const [bigVote,voteCount] = bigVoteSearch(votes,votesSize)
+     for (let i = 0;i<votesSize;i++){
       if(votes[i] === voteCount && i != bigVote && votes[i] != 0){
         multipleBigs = true
         return multipleBigs
@@ -37,7 +38,7 @@ const BigVote = (props) => {
     return multipleBigs
   }
 
-  function sumVotes(votes,votesSize){
+  const sumVotes = (votes,votesSize)=>{
     let sum = 0
     for (let i = 0;i<votesSize;i++){
       sum += votes[i]
@@ -45,6 +46,15 @@ const BigVote = (props) => {
 
     return sum
   }
+
+  return {printVotes,votesSize,bigVoteSearch,checkMultipleLargeIndices,sumVotes}
+
+}
+
+const BigVote = (props) => {
+    const {printVotes,bigVoteSearch,checkMultipleLargeIndices,sumVotes,votesSize} = useVoteCountingFunction(props.votes)
+
+    printVotes(props.votes)
 
     const [bigIndex,voteCount] = bigVoteSearch(props.votes,votesSize)
  
@@ -81,9 +91,6 @@ const BigVote = (props) => {
   }
 }
 
-
-
-
 const App = () => {
 
   const anecdotes = [
@@ -113,7 +120,12 @@ const App = () => {
 
   const [votes,setVote] = useState({0:0,1:0,2:0,3:0,4:0,5:0,6:0,7:0})
 
-  
+  function resetVoteCount(votes){
+    let votesCopy = {...votes}
+    votesCopy = {0:0,1:0,2:0,3:0,4:0,5:0,6:0,7:0}
+    setVote(votesCopy)
+    console.log("votesCopy reset: ",votesCopy)
+  }
 
   function increaseVote(index,votes){
     const votesCopy = {...votes}
@@ -128,6 +140,8 @@ const App = () => {
       <button onClick={() => increaseVote(selected,votes)}>upvote!</button>
       <br/>
       <button onClick={() => setNextAnecdote()}>Set next anecdote</button>
+      <br/>
+      <button onClick={() => resetVoteCount(votes)}>Reset votes</button>
       <BigVote
         votes={votes}
         anecdotes={anecdotes}
