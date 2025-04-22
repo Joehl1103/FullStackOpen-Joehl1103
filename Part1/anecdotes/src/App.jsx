@@ -91,6 +91,8 @@ const BigVote = (props) => {
   }
 }
 
+
+
 const App = () => {
 
   const anecdotes = [
@@ -117,7 +119,7 @@ const App = () => {
     let randomNumber = random(0,anecdotes.length-1)
     setSelected(randomNumber)
   }
-
+  
   const [votes,setVote] = useState({0:0,1:0,2:0,3:0,4:0,5:0,6:0,7:0})
 
   function resetVoteCount(votes){
