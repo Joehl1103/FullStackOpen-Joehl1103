@@ -4,6 +4,7 @@
     "vite": "^6.2.5"
   },
   "dependencies": {
+    "jsdom": "^26.1.0",
     "lodash": "^4.17.21"
   }
 }
