@@ -16,7 +16,7 @@ let makeTree = (categories,parent) => {
         .filter(c => c.parent === parent)
     console.log("Filtered category: ",filteredCategory)
     if(Array.isArray(filteredCategory) && filteredCategory.length === 0){
-        node[parent] = null
+        node = null
     }
     filteredCategory.forEach(c => {
         console.log("c.id: ",c.id)
