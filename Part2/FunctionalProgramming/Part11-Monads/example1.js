@@ -2,7 +2,7 @@
 const Bacon = require('baconjs')
 
 function getInPortuguese(word){
-    const apiKey = "AIzaSyCYeC-819nJFtzXguCplQ9_A2avbLuYRzA"
+    const apiKey = "placedholdee"
     const url = 'https://www.googleapis.com' + 
         '/language/translate/v2' +
         '?key=' + apiKey +
