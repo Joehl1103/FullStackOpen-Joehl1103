@@ -36,6 +36,8 @@ const App = () => {
       important: Math.random() < 0.5,
       id: String(notes.length + 1)
     }
+    axios
+      .post('http://localhost:3001/notes',noteObject)
     setNotes(notes.concat(noteObject)) // isn't this mutating the state directly?
     setNewNote('') // set newNote object to blank again
   }
