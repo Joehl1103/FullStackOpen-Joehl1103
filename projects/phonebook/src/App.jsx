@@ -1,30 +1,27 @@
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import PersonDisplay from './components/Person'
 import Search from './components/Search'
 import Add from './components/Add'
+import axios from 'axios'
 
 function App() {
- const [persons,setPersons] = useState([
-        {
-          name: 'Joseph Loomis',
-          number: "(787) 987-1234"
-        },{
-          name: 'Jalunga Dongelston',
-          number: "(878) 123-3947"
-        },
-        {
-          name: 'Paloma Smith',
-          number:'(898) 432-2341'
-        },
-        {
-          name:'Harry Bravo',
-          number: '(123) 234-2342'
-        }
- ])
+ const [persons,setPersons] = useState([])
  const [newName,setNewName] = useState('')
  const [newPhone,setNewPhone] = useState('')
  const [searchTerm,setSearchTerm] = useState('')
 
+ const hook = () => {
+  console.log('effect')
+  axios
+    .get('http://localhost:3001/persons')
+    .then(response => {
+      console.log('Promise fulfilled')
+      setPersons(response.data)
+    })
+ }
+
+ useEffect(hook,[])
+ 
  function addPersonToList(event){
   // prevent default form behavior: re-rendering the page
   event.preventDefault()
