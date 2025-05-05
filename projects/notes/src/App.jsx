@@ -1,7 +1,6 @@
 import Note from './components/Note'
 import { useState,useEffect } from 'react'
-import axios from 'axios'
-
+import noteService from './services/notes'
 
 
 
@@ -13,33 +12,37 @@ const App = () => {
   // executed immediately after rendering
 
   const hook = () => {
-    console.log('effect running...')
-    let start = performance.now()
-    axios
-      .get('http://localhost:3001/notes')
-      .then(response => {
-          console.log('promise fulfilled')
-          setNotes(response.data)
+    noteService
+      .getAll()
+      .then(initialNotes => { // for the response.data returned object
+          setNotes(initialNotes) // set the response.data for the initial notes
       })
-    let end = performance.now()
-    console.log("total time: ",(end-start).toFixed(2))
   }
   useEffect(hook,[])
 
-  // executed immediately since part of the body of the component
-  console.log('render',notes.length,'notes')
+  const toggleImportanceOf = (id) => {
+    const note = notes.find(n => n.id === id)
+    const changedNote = {...note,important: !note.important}
+    noteService
+      .update(id,changedNote)
+      .then(returnedNote => {
+         setNotes(notes.map(n => n.id === id ? returnedNote : n)) // map method returns a new array that is passed to the setNotes method
+      })
+    console.log(`importance of  ${id} needs to be toggled`)
+  } 
 
   const addNote = (event) => {
     event.preventDefault()
     const noteObject= {
       content: newNote,
       important: Math.random() < 0.5,
-      id: String(notes.length + 1)
     }
-    axios
-      .post('http://localhost:3001/notes',noteObject)
-    setNotes(notes.concat(noteObject)) // isn't this mutating the state directly?
-    setNewNote('') // set newNote object to blank again
+    noteService
+      .create(noteObject)
+      .then(returnedNote => {
+        setNotes(notes.concat(returnedNote)) // concat creates a new copy
+        setNewNote('') // set newNote object to blank again
+      })
   }
 
   const handleNoteChange = (event) => {
@@ -59,7 +62,10 @@ const App = () => {
       </div>
       <ul>
         {notesToShow.map(note => 
-          <Note key={note.id} note={note}/>)}
+          <Note 
+            key={note.id}
+            note={note}
+            toggleImportanceOf={() => toggleImportanceOf(note.id)}/>)}
       </ul>
       <form onSubmit={addNote}>
           <input 
