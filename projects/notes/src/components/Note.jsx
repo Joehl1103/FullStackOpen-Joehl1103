@@ -1,6 +1,12 @@
-const Note  =({note})=> {
+const Note  =(props)=> {
+    const label = props.note.important ? 'make not important' : 'make important';
+
     return (
-      <li>{note.content} {note.important === true && "🚨Important🚨"} </li>
+        <li>
+          {props.note.content} {props.note.important === true && "🚨Important🚨"} 
+          <button onClick={props.toggleImportanceOf}>{label}</button>
+
+        </li>
     )
   
   }
