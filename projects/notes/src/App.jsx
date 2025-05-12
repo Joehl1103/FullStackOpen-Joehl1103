@@ -1,6 +1,6 @@
 import Note from './components/Note'
 import { useState,useEffect } from 'react'
-import noteService from './services/notes'
+import noteService from './services/noteService'
 
 
 
@@ -27,6 +27,10 @@ const App = () => {
       .update(id,changedNote)
       .then(returnedNote => {
          setNotes(notes.map(n => n.id === id ? returnedNote : n)) // map method returns a new array that is passed to the setNotes method
+      })
+      .catch(error => {
+        alert(`the note '${note.content}' was already deleted from the server`)
+        setNotes(notes.filter(n => n.id !== id))
       })
     console.log(`importance of  ${id} needs to be toggled`)
   } 
