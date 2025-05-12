@@ -3,6 +3,7 @@ import PersonDisplay from './components/Person'
 import Search from './components/Search'
 import Add from './components/Add'
 import axios from 'axios'
+import {noteService} from './service/personService'
 
 function App() {
  const [persons,setPersons] = useState([])
@@ -27,19 +28,19 @@ function App() {
   event.preventDefault()
 
   const newNameExists = checkForExistingName()
-  console.log("Does newName exist? ",newNameExists)
-  if (newNameExists){
-    alert(`${newName} already exists in the phonebook`)
-    return
-  }
-  // create the new object using newName, set by the onChange event handler
-  const newObject = {name: newName,number: newPhone}
-  // destrcture persons in a new array, and include the newObject
-  const personsCopy = [...persons, newObject]
-  // set the copy to the original
-  setPersons(personsCopy)
-  // reset newName
-  setNewName('')
+    console.log("Does newName exist? ",newNameExists)
+    if (newNameExists){
+      alert(`${newName} already exists in the phonebook`)
+      return
+    }
+    // create the new object using newName, set by the onChange event handler
+    const newObject = {name: newName,number: newPhone}
+    // destrcture persons in a new array, and include the newObject
+    const personsCopy = [...persons, newObject]
+    // set the copy to the original
+    setPersons(personsCopy)
+    // reset newName
+    setNewName('')
 }
 
 function checkForExistingName(){
