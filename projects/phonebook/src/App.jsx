@@ -2,8 +2,7 @@ import { useState,useEffect } from 'react'
 import PersonDisplay from './components/Person'
 import Search from './components/Search'
 import Add from './components/Add'
-import axios from 'axios'
-import {noteService} from './service/personService'
+import personService from './service/personService'
 
 function App() {
  const [persons,setPersons] = useState([])
@@ -11,18 +10,18 @@ function App() {
  const [newPhone,setNewPhone] = useState('')
  const [searchTerm,setSearchTerm] = useState('')
 
+ // Display current items in database
  const hook = () => {
   console.log('effect')
-  axios
-    .get('http://localhost:3001/persons')
-    .then(response => {
-      console.log('Promise fulfilled')
-      setPersons(response.data)
-    })
+  personService
+    .getAll()
+    .then(displayedPersons => setPersons(displayedPersons))
+  
  }
 
  useEffect(hook,[])
  
+ // Add a person to the list
  function addPersonToList(event){
   // prevent default form behavior: re-rendering the page
   event.preventDefault()
@@ -33,15 +32,19 @@ function App() {
       alert(`${newName} already exists in the phonebook`)
       return
     }
+
+
     // create the new object using newName, set by the onChange event handler
     const newObject = {name: newName,number: newPhone}
-    // destrcture persons in a new array, and include the newObject
-    const personsCopy = [...persons, newObject]
-    // set the copy to the original
-    setPersons(personsCopy)
-    // reset newName
-    setNewName('')
-}
+
+    personService
+      .create(newObject)
+      .then(returnedPerson => {
+        const personsCopy = [...persons, returnedPerson]
+        setPersons(personsCopy)
+        setNewName('')
+      })
+    }
 
 function checkForExistingName(){
   console.log("checkForExistingName newName: ",newName)

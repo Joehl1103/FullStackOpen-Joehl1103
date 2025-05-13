@@ -11,4 +11,4 @@ const create = (newPerson) => {
     return request.then(response => response.data)
 }
 
-export {create,getAll}
+export default {create,getAll}
