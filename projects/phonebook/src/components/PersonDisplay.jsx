@@ -1,5 +1,3 @@
-import Delete from './Delete'
-
 const PersonDisplay = (props) => {
     // console.log("Person Display Props: ",props)
     const st = props.searchTerm
