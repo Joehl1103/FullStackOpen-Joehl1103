@@ -1,5 +1,5 @@
 import { useState,useEffect } from 'react'
-import PersonDisplay from './components/Person'
+import PersonDisplay from './components/PersonDisplay'
 import Search from './components/Search'
 import Add from './components/Add'
 import personService from './service/personService'
@@ -12,7 +12,7 @@ function App() {
 
  // Display current items in database
  const hook = () => {
-  console.log('effect')
+  // console.log('effect')
   personService
     .getAll()
     .then(displayedPersons => setPersons(displayedPersons))
@@ -27,7 +27,7 @@ function App() {
   event.preventDefault()
 
   const newNameExists = checkForExistingName()
-    console.log("Does newName exist? ",newNameExists)
+    // console.log("Does newName exist? ",newNameExists)
     if (newNameExists){
       alert(`${newName} already exists in the phonebook`)
       return
@@ -47,10 +47,21 @@ function App() {
     }
 
 function checkForExistingName(){
-  console.log("checkForExistingName newName: ",newName)
+  // console.log("checkForExistingName newName: ",newName)
   const existingName = persons.filter(person => person.name.toLowerCase().includes(newName.toLowerCase))
-  console.log("existingName: ",typeof existingName, " ",JSON.stringify(existingName))
+  // console.log("existingName: ",typeof existingName, " ",JSON.stringify(existingName))
   return existingName.length !== 0 ? true : false
+}
+
+function deletePerson(id,personToBeDeleted){
+  personService
+    .deletePerson(id,personToBeDeleted)
+    .then(responseData => {
+      // re render the component's person list without the deleted object
+      // spread the persons object into a new persons array, without the deleted person object
+      const tempPersons = persons.filter(person => person.id !== responseData.id)
+      setPersons(tempPersons)
+    })
 }
 
   return (
@@ -71,7 +82,8 @@ function checkForExistingName(){
         <h3>List</h3>
       <PersonDisplay 
         persons={persons}
-        searchTerm={searchTerm}/>
+        searchTerm={searchTerm}
+        deletePerson={deletePerson}/>
     </>
   )
 
