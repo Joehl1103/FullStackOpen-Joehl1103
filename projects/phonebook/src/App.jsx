@@ -26,12 +26,15 @@ function App() {
   // prevent default form behavior: re-rendering the page
   event.preventDefault()
 
-  const newNameExists = checkForExistingName()
+  const newNameExists = checkForExistingName(newName)
     // console.log("Does newName exist? ",newNameExists)
     if (newNameExists){
-      alert(`${newName} already exists in the phonebook`)
+      if(window.confirm(`${newName} already exists in the phonebook. Replace the old number with the new one?`)){
+        // replace method
+      }
       return
     }
+    console.log(`${newName} does not exist. Proceed.`)
 
 
     // create the new object using newName, set by the onChange event handler
@@ -46,10 +49,11 @@ function App() {
       })
     }
 
-function checkForExistingName(){
-  // console.log("checkForExistingName newName: ",newName)
-  const existingName = persons.filter(person => person.name.toLowerCase().includes(newName.toLowerCase))
-  // console.log("existingName: ",typeof existingName, " ",JSON.stringify(existingName))
+function checkForExistingName(newName){
+  console.log("checkForExistingName newName: ",newName)
+  console.log("Persons: ",persons)
+  const existingName = persons.filter(person =>  person.name.toLowerCase() === newName.toLowerCase())
+  console.log("existingName: ",typeof existingName, " ",JSON.stringify(existingName))
   return existingName.length !== 0 ? true : false
 }
 
@@ -67,6 +71,14 @@ function deletePerson(id,personToBeDeleted){
     return
   }
   
+}
+
+function updatePerson(id,personToBeUpdated){
+  personService
+    .updatePerson(id)
+    .then(responseData =>{
+      // re render the component to include the updated persons array
+    })
 }
 
   return (
