@@ -54,7 +54,8 @@ function checkForExistingName(){
 }
 
 function deletePerson(id,personToBeDeleted){
-  personService
+  if(window.confirm(`Are you sure you want to delete ${personToBeDeleted.name}?`)){
+    personService
     .deletePerson(id,personToBeDeleted)
     .then(responseData => {
       // re render the component's person list without the deleted object
@@ -62,6 +63,10 @@ function deletePerson(id,personToBeDeleted){
       const tempPersons = persons.filter(person => person.id !== responseData.id)
       setPersons(tempPersons)
     })
+  } else {
+    return
+  }
+  
 }
 
   return (

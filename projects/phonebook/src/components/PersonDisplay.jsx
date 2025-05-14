@@ -22,7 +22,7 @@ const PersonDisplay = (props) => {
                 return <li key={person.id}>Name: {person.name}, Phone Number: {person.number} 
                 <button 
                     type='button' 
-                    onClick={() => props.deletePerson(person.id)}>Delete</button></li>
+                    onClick={() => props.deletePerson(person.id,person)}>Delete</button></li>
             })}
         </div>
     ) 
@@ -35,7 +35,7 @@ const PersonDisplay = (props) => {
                 key={person.id}>Name: {person.name}, Phone Number: {person.number} 
                 <button 
                     type='button' 
-                    onClick={() => props.deletePerson(person.id)}>Delete</button>
+                    onClick={() => props.deletePerson(person.id,person)}>Delete</button>
                 </li>
             })}
 
