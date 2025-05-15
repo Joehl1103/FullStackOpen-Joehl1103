@@ -30,30 +30,26 @@ function App() {
     // console.log("Does newName exist? ",newNameExists)
     if (newNameExists){
       if(window.confirm(`${newName} already exists in the phonebook. Replace the old number with the new one?`)){
-        // replace method
+        const personToBeUpdatedArray = persons.filter(person => person.name.toLowerCase() === newName.toLowerCase())
+        const personToBeUpdateId = personToBeUpdatedArray[0].id
+        const updatedPerson = {name: newName,number: newPhone}
+        personService
+          .updatePerson(personToBeUpdateId,updatedPerson)
+          .then(hook)
+
       }
       return
     }
-    console.log(`${newName} does not exist. Proceed.`)
-
-
     // create the new object using newName, set by the onChange event handler
     const newObject = {name: newName,number: newPhone}
 
     personService
       .create(newObject)
-      .then(returnedPerson => {
-        const personsCopy = [...persons, returnedPerson]
-        setPersons(personsCopy)
-        setNewName('')
-      })
+      .then(hook)
     }
 
 function checkForExistingName(newName){
-  console.log("checkForExistingName newName: ",newName)
-  console.log("Persons: ",persons)
   const existingName = persons.filter(person =>  person.name.toLowerCase() === newName.toLowerCase())
-  console.log("existingName: ",typeof existingName, " ",JSON.stringify(existingName))
   return existingName.length !== 0 ? true : false
 }
 
@@ -61,25 +57,13 @@ function deletePerson(id,personToBeDeleted){
   if(window.confirm(`Are you sure you want to delete ${personToBeDeleted.name}?`)){
     personService
     .deletePerson(id,personToBeDeleted)
-    .then(responseData => {
-      // re render the component's person list without the deleted object
-      // spread the persons object into a new persons array, without the deleted person object
-      const tempPersons = persons.filter(person => person.id !== responseData.id)
-      setPersons(tempPersons)
-    })
+    .then(hook)
   } else {
     return
   }
   
 }
 
-function updatePerson(id,personToBeUpdated){
-  personService
-    .updatePerson(id)
-    .then(responseData =>{
-      // re render the component to include the updated persons array
-    })
-}
 
   return (
     <>
