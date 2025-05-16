@@ -9,7 +9,7 @@ const App = () => {
   const [notes,setNotes] = useState([])
   const [newNote,setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
-  const [errorMessage,setErrorMessage] = useState('some error happened')
+  const [errorMessage,setErrorMessage] = useState(null)
 
   // executed immediately after rendering
 
@@ -20,7 +20,15 @@ const App = () => {
           setNotes(initialNotes) // set the response.data for the initial notes
       })
   }
-  useEffect(hook,[])
+  useEffect(
+    hook,
+    [] // ensures that the hook only runs once, meaning that the content never changes
+  )
+
+  // prevents the notes from rendering on first render, until the useEffect goes into action
+  if(!notes){
+    return null;
+  }
 
   const toggleImportanceOf = (id) => {
     const note = notes.find(n => n.id === id)
@@ -32,7 +40,7 @@ const App = () => {
       })
       .catch(error => {
         setErrorMessage(
-          `Note '${note.content}' was already removed from server`
+          `${error.message}: Note '${note.content}' was already removed from server`
         )
         setTimeout(() => {
           setErrorMessage(null)

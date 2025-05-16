@@ -5,13 +5,14 @@ const baseUrl = 'http://localhost:3001/notes'
 
 const getAll = () => {
     const request = axios.get(baseUrl)
-    // hardcoded non-existing note
-    const nonExisting = {
-        id: 1000,
-        content: 'This note is not saved to server',
-        important: true
-    }
-    return request.then(response => response.data.concat(nonExisting))
+    // hardcoded non-existing note to demonstrate error handling
+    // const nonExisting = {
+    //     id: 1000,
+    //     content: 'This note is not saved to server',
+    //     important: true
+    // }
+    // return request.then(response => response.data.concat(nonExisting))
+    return request.then(response => response.data)
 }
 
 const create = newObject => {
