@@ -3,13 +3,15 @@ import PersonDisplay from './components/PersonDisplay'
 import Search from './components/Search'
 import Add from './components/Add'
 import personService from './service/personService'
+import Notification from './components/Notification'
 
 function App() {
  const [persons,setPersons] = useState([])
  const [newName,setNewName] = useState('')
  const [newPhone,setNewPhone] = useState('')
  const [searchTerm,setSearchTerm] = useState('')
-
+ const [notification,setNotification] = useState(null)
+ const [notificationType, setNotificationType] = useState(null)
  // Display current items in database
  const hook = () => {
   // console.log('effect')
@@ -36,16 +38,32 @@ function App() {
         personService
           .updatePerson(personToBeUpdateId,updatedPerson)
           .then(hook)
+          .then(() => {
+            setNotificationType('modified');
+            setNotification(`Modified ${personToBeUpdatedArray[0].name}`)
+            setTimeout(() => {
+              setNotificationType(null)
+              setNotification(null) 
+            },5000)
+          })
 
       }
       return
     }
     // create the new object using newName, set by the onChange event handler
-    const newObject = {name: newName,number: newPhone}
+    const newPerson = {name: newName,number: newPhone}
 
     personService
-      .create(newObject)
+      .create(newPerson)
       .then(hook)
+      .then(() => {
+          setNotificationType("added")
+          setNotification(`Added ${newPerson.name}`)
+          setTimeout(() => {
+            setNotificationType(null)
+            setNotification(null)
+            },5000)
+          })
     }
 
 function checkForExistingName(newName){
@@ -58,6 +76,14 @@ function deletePerson(id,personToBeDeleted){
     personService
     .deletePerson(id,personToBeDeleted)
     .then(hook)
+    .then(() => {
+      setNotificationType("deleted")
+      setNotification(`Deleted ${personToBeDeleted.name}`)
+      setTimeout(() => {
+        setNotificationType(null)
+        setNotification(null)
+        },5000)
+      })
   } else {
     return
   }
@@ -68,6 +94,9 @@ function deletePerson(id,personToBeDeleted){
   return (
     <>
       <h2>Phonebook</h2>
+      <Notification 
+        notificationType={notificationType}
+        notification={notification}/>
       <Search
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}/>
