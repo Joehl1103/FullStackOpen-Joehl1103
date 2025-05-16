@@ -1,6 +1,7 @@
 import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
 import { StrictMode } from 'react'
+import './notification.css'
 
 createRoot(document.getElementById('root')).render(
 <StrictMode>
