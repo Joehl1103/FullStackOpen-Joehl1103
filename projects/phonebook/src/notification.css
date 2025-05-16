@@ -20,7 +20,7 @@
     display:inline;
 }
 
-.deleted {
+.deleted, .error {
     color:darkred;
     background: rgb(255, 161, 161);
     font-size:20px;

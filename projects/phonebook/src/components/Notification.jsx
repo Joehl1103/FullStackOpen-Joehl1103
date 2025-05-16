@@ -10,10 +10,7 @@ one piece of state that controls which message is displayed
 
 
 const Notification =({notification,notificationType}) => {
-  
-    const deletedCSS = {
-
-    }
+   
     if (notificationType === null){
         return null
     } else if (notificationType === 'added'){
@@ -34,6 +31,12 @@ const Notification =({notification,notificationType}) => {
                 {notification}
             </div>
 
+        )
+    } else if (notificationType === "error"){
+        return (
+            <div className="error">
+                {notification}
+            </div>
         )
     }
 
