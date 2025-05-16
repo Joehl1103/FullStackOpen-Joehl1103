@@ -41,11 +41,9 @@ function App() {
           .then(() => {
             setNotificationType('modified');
             setNotification(`Modified ${personToBeUpdatedArray[0].name}`)
-            setTimeout(() => {
-              setNotificationType(null)
-              setNotification(null) 
-            },5000)
+            timeout()
           })
+          .catch(error => errorMessage(error))
 
       }
       return
@@ -59,11 +57,9 @@ function App() {
       .then(() => {
           setNotificationType("added")
           setNotification(`Added ${newPerson.name}`)
-          setTimeout(() => {
-            setNotificationType(null)
-            setNotification(null)
-            },5000)
+          timeout()
           })
+      .catch(error => errorMessage(error))
     }
 
 function checkForExistingName(newName){
@@ -79,15 +75,26 @@ function deletePerson(id,personToBeDeleted){
     .then(() => {
       setNotificationType("deleted")
       setNotification(`Deleted ${personToBeDeleted.name}`)
-      setTimeout(() => {
-        setNotificationType(null)
-        setNotification(null)
-        },5000)
+      timeout()
       })
+    .catch(error => errorMessage(error))
   } else {
     return
   }
   
+}
+
+function timeout(){
+   setTimeout(() => {
+        setNotificationType(null)
+        setNotification(null)
+        },5000)
+}
+
+function errorMessage(error){
+  setNotificationType("error")
+  setNotification(`${error.message}`)
+  timeout()
 }
 
 
