@@ -11,4 +11,5 @@ function getCountryData(countryName){
     return request.then(response => response.data)
 }
 
+
 export default {getAll,getCountryData}

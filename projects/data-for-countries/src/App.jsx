@@ -61,7 +61,9 @@ function App() {
               capital: response.capital[0],
               area: response.area,
               languages: response.languages,
-              flagURL: response.flags.png // are flags of different kinds or all they all emoji characters?
+              flagURL: response.flags.png,
+              capitalInfo: response.capitalInfo
+               // are flags of different kinds or all they all emoji characters?
           }
         setMatches(oneCountryObject)
         setType('single')
