@@ -1,14 +1,20 @@
-const Matches = (matches) => {
-
+const Matches = (props) => {
+    const {matches,type,searchAndReturnOneCountryObject} = props
     console.log("Matches in Matches Component:",matches,"Type of Matches: ",typeof matches)
+    console.log("type",type)
 
-    /* note that Matches is either an array of names or an object depending on
-    whether it is an array of just names or an object containing all of the country's info
-    */
-    if (Array.isArray(matches.matches)){
+    function convertNameToArrayAndCallOneCountryFunction(name){
+        const nameArray = [name]
+        searchAndReturnOneCountryObject(nameArray)
+    }
+
+
+
+    if (type === 'multiple'){
         let nMatchCount = null;
 
-        const matchesArray = matches.matches
+        const matchesArray = matches
+        console.log("matchesArray", matchesArray)
 
         function countNumberOfMatches(matchesArray){
             let count = 0;
@@ -28,18 +34,19 @@ const Matches = (matches) => {
             )
         // >1 && < 11
         } else {
-            const countryArray = matches.matches
+            const countryArray = matches
         
             return (
                 <div>
                 {countryArray.map(name => {
-                    return <p key={name}>{name}</p>
+                    return <p key={name}>{name} <button type="button" onClick={() => convertNameToArrayAndCallOneCountryFunction(name)}>See all info</button></p>
                 })}
                 </div>
             )
         }
-    } else {
-        const countryObject = matches.matches
+    } else if(type === 'single'){
+        const countryObject = matches
+        console.log("Country Object:", countryObject)
         const countryObjectLanguageObject = countryObject.languages
         if (countryObjectLanguageObject != undefined){
             const languageObjectEntries = Object.entries(countryObjectLanguageObject)
@@ -70,7 +77,7 @@ const Matches = (matches) => {
                 </div>
             )
 
-        } else {
+        } else if(type === 'none'){
             console.log("Country Object Language Object undefined")
 
             return (

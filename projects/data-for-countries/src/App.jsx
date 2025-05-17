@@ -3,9 +3,10 @@ import Matches from './Components/Matches'
 import searchService from './services/searchService'
 
 function App() {
-  const [matches,setMatches] = useState(null)
+  const [matches,setMatches] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
- // const searchKeys = useState(['name','capital','area','languages','flag'])
+  const [type,setType] = useState('none')
+
 
   const search = (event) => {
     console.log("search term: ",event.target.value)
@@ -35,10 +36,12 @@ function App() {
       })
        
       .then(names => {
+     
         if (names.length === 1){
           searchAndReturnOneCountryObject(names)
         }
         setMatches(names)
+        setType('multiple')
       })
       .catch(error => {
         console.log(error.message)
@@ -47,6 +50,7 @@ function App() {
   }
 
   function searchAndReturnOneCountryObject(nameArray){
+    console.log("searchAndReturnOneCountryObject function called with name Array",nameArray)
     searchService
       .getCountryData(nameArray[0])
       .then(response => {
@@ -60,22 +64,26 @@ function App() {
               flagURL: response.flags.png // are flags of different kinds or all they all emoji characters?
           }
         setMatches(oneCountryObject)
+        setType('single')
         console.log("Matches set to oneCountryObject", oneCountryObject)
   })
 }
 // RENDER
-  if (matches === null){
+
+if (matches.length === 0){
   return (
     <>
-      <label>find countries: </label>
-  
-      <input 
-          type="text" 
-          value={searchTerm} 
-          onChange={search}/>
-    </>
+        <label>find countries: </label>
+    
+        <input 
+            type="text" 
+            value={searchTerm} 
+            onChange={search}/>
+      </> 
   )
-  } else {
+
+} else {
+ 
     return (
       <>
         <label>find countries: </label>
@@ -85,12 +93,13 @@ function App() {
             value={searchTerm} 
             onChange={search}/>
 
-        <Matches matches={matches}/>
+        <Matches matches={matches} type={type} searchAndReturnOneCountryObject={searchAndReturnOneCountryObject}/>
     
       </>
     )
 
   }
 }
+
 
 export default App
