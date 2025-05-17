@@ -1,3 +1,5 @@
+import Weather from './Weather'
+
 const Matches = (props) => {
     const {matches,type,searchAndReturnOneCountryObject} = props
     console.log("Matches in Matches Component:",matches,"Type of Matches: ",typeof matches)
@@ -73,6 +75,8 @@ const Matches = (props) => {
                     </ul>
                     <p>Flag:</p><br/>
                     <img src={countryObject.flagURL}/>
+                    <h2>Weather in {countryObject.name}</h2>
+                    <Weather capitalInfo={countryObject.capitalInfo}/>
 
                 </div>
             )
