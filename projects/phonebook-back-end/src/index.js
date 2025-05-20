@@ -1,6 +1,12 @@
 import express from 'express'
 const app = express()
 
+// MIDDLEWARE
+import morgan from 'morgan'
+morgan.token('user-info',function(req,res) {return JSON.stringify(req.body)})
+app.use(morgan(':method :url :status :res[content-length] -:response-time ms :user-info'))
+
+
 app.use(express.json())
 
 // DATA
@@ -98,6 +104,14 @@ app.delete('/api/persons/:id',(request,response) => {
         console.error(error.message)
     }
 })
+
+// POST REQUEST MIDDLEWARE
+
+// executes if no existing route is called
+const unknownEndpoint = (request,response) => {
+    response.status(404).send({error: 'unknown endpoint'})
+}
+app.use(unknownEndpoint)
 
 // Set up Port
 const PORT = 3001
