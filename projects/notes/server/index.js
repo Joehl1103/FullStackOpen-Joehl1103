@@ -1,8 +1,13 @@
-import express from 'express'
+/*global require*/
+
+
+const express = require('express')
 const app = express()
 
-import cors from 'cors'
+const cors  = require('cors')
 app.use(cors())
+
+import process from ''
 
 /* JSON Parsers
 takes the JSON data of a request, transforms it into a JS object and then attaches it to the body property of the request object
@@ -80,7 +85,7 @@ app.delete('/api/notes/:id',(request,response) =>{
   response.status(204).end()
 })
 
-const PORT = process.env || 3001
+const PORT = process.env.PORT || 3001
 app.listen(PORT,() => {
   console.log(`Server running on port ${PORT}`)
 })
