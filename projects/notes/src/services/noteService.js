@@ -1,7 +1,7 @@
 /**This is a service module to allow reuse of the main HTTP methods for the notes api endpoint */
 
 import axios from 'axios'
-const baseUrl = 'http://localhost:3001/api/notes'
+const baseUrl = '/api/notes'
 
 const getAll = () => {
     const request = axios.get(baseUrl)

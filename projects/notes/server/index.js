@@ -1,11 +1,11 @@
 /*global require*/
 
-
 const express = require('express')
 const cors  = require('cors')
 
 const app = express()
 app.use(cors())
+app.use(express.static('dist'))
 
 /* JSON Parsers
 takes the JSON data of a request, transforms it into a JS object and then attaches it to the body property of the request object
@@ -31,7 +31,7 @@ let notes = [
 ]
 
 app.get('/',(request, response)=> {
-  response.send('<h1>Hello World!</h1>')
+  response.send('server/dist/assets/index-OAzzoRJh.js')
 })
 
 app.get('/api/notes',(request,response) => {
