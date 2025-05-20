@@ -2,12 +2,10 @@
 
 
 const express = require('express')
-const app = express()
-
 const cors  = require('cors')
-app.use(cors())
 
-import process from ''
+const app = express()
+app.use(cors())
 
 /* JSON Parsers
 takes the JSON data of a request, transforms it into a JS object and then attaches it to the body property of the request object
