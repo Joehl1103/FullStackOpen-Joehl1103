@@ -4,12 +4,13 @@ const PersonDisplay = (props) => {
     const personsArray = props.persons
     const personsArrayLowerCase = personsArray.map(
         person => { return person = {
+            id: person.id,
             name: person.name.toLowerCase(),
             number: person.number
         }})
     const personsArrayFiltered = personsArrayLowerCase.filter(person => {
         return person.name.includes(st)})
-    //  console.log("Filtered Persons Array object: ",personsArrayFiltered)
+     console.log("Filtered Persons Array object: ",personsArrayFiltered)
 
     // console.log("Search term prop in PersonDisplay: ", props.searchTerm)
     if (st != ""){

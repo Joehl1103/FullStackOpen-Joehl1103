@@ -1,16 +1,20 @@
-import express from 'express'
+const express = require('express')
+const cors = require('cors')
 const app = express()
+app.use(cors())
 
 // MIDDLEWARE
-import morgan from 'morgan'
+const morgan = require('morgan')
+
 morgan.token('user-info',function(req,res) {return JSON.stringify(req.body)})
 app.use(morgan(':method :url :status :res[content-length] -:response-time ms :user-info'))
+
 
 
 app.use(express.json())
 
 // DATA
-import personData from './db.json' with {type: "json"}
+const personData = require('./db.json')
 let persons = [...personData]
 
 // HELPER METHODS
