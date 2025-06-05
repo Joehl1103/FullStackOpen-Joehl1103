@@ -1,8 +1,8 @@
 const { test, describe } = require('node:test')
 const assert = require('node:assert')
-const listHelper = require('../utils/list_helper')
+const listHelper = require('../../utils/list_helper')
 
-const blogs = require('../utils/blogs.json')
+const blogs = require('../../utils/blogs.json')
 
 test('dummy returns one',() => {
     const blogs = []
@@ -62,8 +62,8 @@ describe('most likes',() => {
     test('most likes author and likes object',() => {
         const mostLikesObjects = [
             {
-                author: 'Robert C. Martin',
-                likes: 15
+                author: 'Michael Chan',
+                likes: 36
             },
             {
                 author: 'Edsger W. Dijkstra',
