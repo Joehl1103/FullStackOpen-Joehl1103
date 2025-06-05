@@ -41,7 +41,7 @@ test('post new blog', async () => {
 
 })
 
-test.only('if likes missing default to 0', async () => {
+test('if likes missing default to 0', async () => {
     await api
         .post('/api/blogs')
         .send(helper.newBlogsNoLikes)
@@ -54,6 +54,73 @@ test.only('if likes missing default to 0', async () => {
     assert.strictEqual(newBlogPostFromResponse.likes,0)
 })
 
+test.describe('that missing title and author give bad request and message test suite', async () => {
+
+    const blogWithMissingTitleAndAuthor = {
+        likes: 0
+    }
+
+    const blogWithMissingTitle = {
+        author: "author",
+        likes: 0
+    }
+
+    const blogWithMissingAuthor = {
+        title: "title",
+        likes: 0
+    }
+
+    test('that missing title and author give bad requests and message', async () => {
+   
+
+        const response = await api
+            .post('/api/blogs')
+            .send(blogWithMissingTitleAndAuthor)
+            .expect(400)
+            .expect('Content-Type',/text\/html/)
+
+        console.log('post request made',response)
+        assert.strictEqual(response.text,'author and title are missing')
+
+                
+
+    })
+
+    test.only('that missing author give bad request and message', async () => {
+   
+
+        const response = await api
+            .post('/api/blogs')
+            .send(blogWithMissingAuthor)
+            .expect(400)
+            .expect('Content-Type',/text\/html/)
+
+        console.log('post request made',response)
+        assert.strictEqual(response.text,'author is missing')
+
+                
+
+    })
+
+     test.only('that missing title give bad request and message', async () => {
+   
+
+        const response = await api
+            .post('/api/blogs')
+            .send(blogWithMissingTitle)
+            .expect(400)
+            .expect('Content-Type',/text\/html/)
+
+        console.log('post request made',response)
+        assert.strictEqual(response.text,'no title')
+
+                
+
+    })
+})
+
+
 after(async () => {
     await mongoose.connection.close()
 })
+

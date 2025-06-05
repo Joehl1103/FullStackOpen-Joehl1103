@@ -12,8 +12,24 @@ blogsRouter.get('/',(request,response) => {
 blogsRouter.post('/',(request,response) => {
     // check if request has likes
     let requestBody = request.body
+    let blog = undefined 
+    // check for likes
     const likes = requestBody.likes
-    let blog = undefined
+    const author = requestBody.author
+    const title = requestBody.title
+
+    if(!author && !title){
+        response.status(400).send('author and title are missing')
+        console.log(response)
+        return
+    } else if (!author && title){
+        response.status(400).send('author is missing')
+        return
+    } else if (author && !title){
+        response.status(400).send('no title')
+        return
+    }
+
     if (!likes){
         requestBody.likes = 0
         blog = new Blog(requestBody)
