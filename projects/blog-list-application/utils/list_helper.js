@@ -39,8 +39,6 @@ const mostLikes = (blogs) => {
 const mostLikesObject = (blogs) => {
     let returnedObject = _.groupBy(blogs, blog => blog.author)
 
-    console.log('returnedObject',returnedObject)
-
     const { arrayOfLikes} = returnArrayOfLikesAndAddSumOfLikesToObject(returnedObject)
     
     const maxLikes = _.max(arrayOfLikes)
@@ -68,13 +66,11 @@ function returnArrayOfLikesAndAddSumOfLikesToObject(object){
 }
 
 function createAuthorObject(keyArray,parentObject){
-    console.log('Parent object',parentObject)
     const targetArray = []
 
     for (let i = 0;i < keyArray.length;i++){
         
         const tempLikes = parentObject[keyArray[i]]['sumOfLikes']
-        console.log(`tempLikes ${tempLikes}`)
         const newObject = {
             author: keyArray[i],
             likes: tempLikes
@@ -84,8 +80,6 @@ function createAuthorObject(keyArray,parentObject){
     }
     return targetArray
 }
-
-mostLikesObject(blogs)
 
 const mostBlogs = (blogs) => {
   const countOfAuthors = _.countBy(blogs,blog => blog.author)
@@ -97,14 +91,11 @@ const mostBlogs = (blogs) => {
 
   const maxBlogAuthor = _.findKey(countOfAuthors,(value)=> value === maxBlogCount)
 
-  console.log(`maxBlogAuthor ${maxBlogAuthor}`)
-
   const maxBlogObject = {
     author: maxBlogAuthor,
     blogs: maxBlogCount
   }
 
-  console.log('maxBlogObject',maxBlogObject)
   return maxBlogObject
 }
 
