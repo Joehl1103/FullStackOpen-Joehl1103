@@ -28,6 +28,13 @@ const newBlogsNoLikes = {
     url: "http://blog.com"
 }
 
+const updatedBlogOne = {
+    title: "first blog post modified",
+    author: "author modified",
+    url: 'http://blog.com',
+    likes: 4
+}
+
 const blogsInDb = async () => {
     const blogs = await Blog.find({})
     return blogs.map(blog => blog.toJSON())
@@ -35,12 +42,7 @@ const blogsInDb = async () => {
 
 const getFirstBlogId = async () => {
     const firstBlog = await Blog.findOne({ title: "first blog post" })
-    console.log('firstBlog',firstBlog)
-    
-    // console.log('firstBlogId Object',firstBlog._id)
-    const firstBlogId = firstBlog._id.toString()
-
-    return firstBlogId
+    return firstBlog._id
 }
 
 const nonExistingId = '6842dd6b28663e5954fe4a30'
@@ -51,5 +53,6 @@ module.exports = {
     newBlogsNoLikes,
     blogsInDb,
     getFirstBlogId,
-    nonExistingId
+    nonExistingId,
+    updatedBlogOne
 }
