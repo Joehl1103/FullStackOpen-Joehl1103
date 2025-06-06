@@ -115,9 +115,11 @@ test.describe('that missing title and author give bad request and message test s
 
     })
 })
+
 describe('deleting tests', () => {
     test('that deleting test successfully gives 204 bad request', async () => {
-        const firstBlogId = await helper.getFirstBlogId()
+        const firstBlogIdObject = await helper.getFirstBlogId()
+        const firstBlogId = firstBlogIdObject.toString()
         await api
             .delete(`/api/blogs/${firstBlogId}`)
             .expect(204)
@@ -137,6 +139,25 @@ describe('deleting tests', () => {
 
 })
 
+describe('updating test', () => {
+    test('that updating a blog replaces content', async () => {
+        const firstBlogId = await helper.getFirstBlogId()
+        const response = await api
+            .put(`/api/blogs/${firstBlogId}`)
+            .send(helper.updatedBlogOne)
+            .expect(200)
+            .expect("Content-Type",/text\/html/)
+        assert.strictEqual(response.text,'blog updated correctly')
+    })
+
+    test('no blog found with id', async () => {
+        const response = await api
+            .put(`/api/blogs/${helper.nonExistingId}`)
+            .expect(404)
+
+        assert.strictEqual(response.text,'no blog found')
+    })
+})
 
 after(async () => {
     await mongoose.connection.close()
