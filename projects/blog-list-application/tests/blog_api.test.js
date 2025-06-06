@@ -1,4 +1,4 @@
-const { test, after, beforeEach } = require('node:test')
+const { test, after, beforeEach, describe } = require('node:test')
 const assert = require('node:assert')
 const mongoose = require('mongoose')
 const supertest = require('supertest')
@@ -79,14 +79,13 @@ test.describe('that missing title and author give bad request and message test s
             .expect(400)
             .expect('Content-Type',/text\/html/)
 
-        console.log('post request made',response)
         assert.strictEqual(response.text,'author and title are missing')
 
                 
 
     })
 
-    test.only('that missing author give bad request and message', async () => {
+    test('that missing author give bad request and message', async () => {
    
 
         const response = await api
@@ -95,14 +94,13 @@ test.describe('that missing title and author give bad request and message test s
             .expect(400)
             .expect('Content-Type',/text\/html/)
 
-        console.log('post request made',response)
         assert.strictEqual(response.text,'author is missing')
 
                 
 
     })
 
-     test.only('that missing title give bad request and message', async () => {
+     test('that missing title give bad request and message', async () => {
    
 
         const response = await api
@@ -111,12 +109,32 @@ test.describe('that missing title and author give bad request and message test s
             .expect(400)
             .expect('Content-Type',/text\/html/)
 
-        console.log('post request made',response)
         assert.strictEqual(response.text,'no title')
 
                 
 
     })
+})
+describe('deleting tests', () => {
+    test('that deleting test successfully gives 204 bad request', async () => {
+        const firstBlogId = await helper.getFirstBlogId()
+        await api
+            .delete(`/api/blogs/${firstBlogId}`)
+            .expect(204)
+    })
+
+    test('that non-existent id causes 400 error', async () => {
+        await api
+            .delete(`/api/blogs/${helper.nonExistingId}`)
+            .expect(400)
+    })
+
+    test('that no id returns 400', async () => {
+        await api
+            .delete('/api/blogs')
+            .expect(404)
+    })
+
 })
 
 
