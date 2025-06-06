@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=test node --test tests",
+    "test": "NODE_ENV=test node --test",
+    "test:only": "NODE_ENV=test node --test --test-only tests/blog_api.test.js",
     "start": "NODE_ENV=production node index.js",
     "dev": "NODE_ENV=development node --watch index.js"
   },

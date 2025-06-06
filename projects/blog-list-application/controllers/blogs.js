@@ -2,7 +2,6 @@ const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 
 blogsRouter.get('/',(request,response) => {
-    console.log(`Getting data at the following path ${request.path}`)
     Blog.find({})
         .then(blogs => {
             response.json(blogs)
@@ -20,7 +19,6 @@ blogsRouter.post('/',(request,response) => {
 
     if(!author && !title){
         response.status(400).send('author and title are missing')
-        console.log(response)
         return
     } else if (!author && title){
         response.status(400).send('author is missing')
@@ -42,6 +40,28 @@ blogsRouter.post('/',(request,response) => {
         .then((result) => {
             response.status(201).json(result)
         })
+})
+
+blogsRouter.delete('/:id', async (request,response) => {
+    const id = request.params.id
+    if(!id){
+        response.status(400).send('id not found in request')
+        return
+    }
+    const blogToBeDeleted = await Blog.findById(id)
+    if(!blogToBeDeleted){
+        response.status(400).send('no blog found')
+        return
+    }
+    await Blog.deleteOne({ _id: `${id}`})
+    const blog = await Blog.find({ _id: `${id}`})
+    if(blog.length === 0){
+        response.status(204).send('blog successfully deleted')
+        return
+    } else {
+        response.status(400).send('blog not deleted')
+        return
+    }
 })
 
 module.exports = blogsRouter

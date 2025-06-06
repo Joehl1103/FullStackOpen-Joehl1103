@@ -9,7 +9,7 @@ const app = express()
 mongoose
     .connect(config.MONGODB_URI)
     .then(() => {
-        console.log('Connected to database')
+        console.log(`Connected to database at url ${config.MONGODB_URI}`)
     })
     .catch((error) => {
         console.error(`Error conecting to database: ${error.message}`)
