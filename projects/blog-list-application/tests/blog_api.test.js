@@ -5,12 +5,18 @@ const supertest = require('supertest')
 const app = require('../app')
 const helper = require('./test_helper')
 const Blog = require('../models/blog')
+const User = require('../models/user')
+const bcrypt = require('bcrypt')
 
 const api = supertest(app)
 
 beforeEach(async () => {
     await Blog.deleteMany({})
     await Blog.insertMany(helper.initialBlogs)
+    await User.deleteMany({})
+    const passwordHash = await bcrypt.hash('sekret',10)
+    const user = new User({ username: 'rootey',passwordHash })
+    await user.save()
 })
 
 test('get all blogs', async () => {
@@ -24,8 +30,11 @@ test('name of id equals `id`', async () => {
 
 })
 
-test('post new blog', async () => {
+test.only('post new blog', async () => {
     const newBlog = helper.newBlogPost
+    const id = await helper.userId()
+    newBlog.user = id
+    console.log('newBlog',newBlog)
 
     await api
         .post('/api/blogs')

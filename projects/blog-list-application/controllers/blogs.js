@@ -1,5 +1,6 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
+const User = require('../models/user') 
 
 blogsRouter.get('/',(request,response) => {
     Blog.find({})
@@ -8,14 +9,24 @@ blogsRouter.get('/',(request,response) => {
         })
 })
 
-blogsRouter.post('/',(request,response) => {
+blogsRouter.post('/',async (request,response) => {
+
     // check if request has likes
-    let requestBody = request.body
-    let blog = undefined 
+    let body = request.body
+    console.log('body',body)
     // check for likes
-    const likes = requestBody.likes
-    const author = requestBody.author
-    const title = requestBody.title
+    const likes = body.likes
+    const author = body.author
+    const title = body.title
+    const userId = body.user
+    console.log('userId',userId)
+
+    const user = await User.findById(body.user)
+    console.log('checking user')
+    if(!user){
+        console.log('no user')
+        return response.status(400).json({ error: 'userId missing or not valid' })
+    }
 
     if(!author && !title){
         response.status(400).send('author and title are missing')
@@ -29,17 +40,24 @@ blogsRouter.post('/',(request,response) => {
     }
 
     if (!likes){
-        requestBody.likes = 0
-        blog = new Blog(requestBody)
-    } else {
-        blog = new Blog(requestBody)
-    }
+        body.likes = 0
+    } 
 
-    blog
-        .save()
-        .then((result) => {
-            response.status(201).json(result)
-        })
+    const blog = new Blog({
+        title: title,
+        author: author,
+        url: body.url,
+        likes: likes,
+        user: user._id
+    })
+
+    const savedBlog = await blog.save()
+    user.blogs = user.blogs.concat(savedBlog._id)
+    await user.save()
+
+    if(savedBlog){
+        response.status(201).json(savedBlog)
+    }
 })
 
 blogsRouter.delete('/:id', async (request,response) => {
