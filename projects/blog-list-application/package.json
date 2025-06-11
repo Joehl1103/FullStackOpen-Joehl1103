@@ -4,7 +4,9 @@
   "main": "index.js",
   "scripts": {
     "test": "NODE_ENV=test node --test",
-    "test:only": "NODE_ENV=test node --test --test-only tests/blog_api.test.js",
+    "test:only:blog": "NODE_ENV=test node --test --test-only tests/blog_api.test.js",
+    "test:users": "NODE_ENV=test node --test tests/user_api.test.js",
+    "test:only:users": "NODE_ENV=test node --test --test-only tests/user_api.test.js",
     "start": "NODE_ENV=production node index.js",
     "dev": "NODE_ENV=development node --watch index.js"
   },
@@ -17,8 +19,10 @@
   "description": "",
   "dependencies": {
     "@eslint/js": "^9.27.0",
+    "bcrypt": "^6.0.0",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "mongodb": "^6.16.0",
     "mongoose": "^8.15.1",
