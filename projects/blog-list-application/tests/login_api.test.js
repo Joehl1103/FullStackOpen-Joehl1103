@@ -5,6 +5,7 @@ const supertest = require('supertest')
 const app = require('../app')
 const User = require('../models/user')
 const bcrypt = require('bcrypt')
+const helper = require('./test_helper')
 console.log('before api')
 const api = supertest(app)
 console.log('after api')
@@ -13,16 +14,10 @@ describe('testing login', () => {
 
     beforeEach(async () => {
         await User.deleteMany({})
-        const passwordHash = await bcrypt.hash('REDACTED_TEST_PASSWORD',10)
-        const user = new User({
-            username: 'jaloomis',
-            name: 'Joe Loomis',
-            password: passwordHash
-        })
-        await user.save()
+        await helper.createAndSaveNewUser()
     })
 
-    test.only('succeeds with status 200', async () => {
+    test('succeeds with status 200', async () => {
         const user = await User.findOne({ username: 'jaloomis' })
         console.log('user',user)
         const loginInfo = {
@@ -54,7 +49,7 @@ describe('testing login', () => {
             .expect(401)
     })
 
-    test('fails if no user', async () => {
+    test.only('fails if no user', async () => {
         const loginInfo = {
             username: 'no user',
             password: 'REDACTED_TEST_PASSWORD'

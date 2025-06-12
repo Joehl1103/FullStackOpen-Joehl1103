@@ -1,6 +1,16 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/user') 
+const jwt = require('jsonwebtoken')
+const helper = require('../tests/test_helper')
+
+const getTokenFrom = request => {
+    const authorization = request.get('authorization')
+    if(authorization && authorization.startsWith('Bearer')){
+        return authorization.replace('Bearer ','')
+    }
+    return
+}
 
 blogsRouter.get('/',async (request,response) => {
     const blogs = await Blog.find({}).populate('user',{ name: 1, username: 1 })
@@ -8,47 +18,40 @@ blogsRouter.get('/',async (request,response) => {
 })
 
 blogsRouter.post('/',async (request,response) => {
-
     // check if request has likes
     let body = request.body
-    console.log('body',body)
+    const decodedToken = jwt.verify(getTokenFrom(request),process.env.SECRET)
+    if(!decodedToken._id){
+        return response.status(401).json({ error: 'token invalid' })
+    }
+    const user = await User.findById(decodedToken._id)
     // check for likes
-    const likes = body.likes
-    const author = body.author
-    const title = body.title
-    const userId = body.user
-    console.log('userId',userId)
-
-    const user = await User.findById(body.user)
-    console.log('checking user')
     if(!user){
-        console.log('no user')
         return response.status(400).json({ error: 'userId missing or not valid' })
     }
 
-    if(!author && !title){
+    if(!body.author && !body.title){
         response.status(400).send('author and title are missing')
         return
-    } else if (!author && title){
+    } else if (!body.author && body.title){
         response.status(400).send('author is missing')
         return
-    } else if (author && !title){
+    } else if (body.author && !body.title){
         response.status(400).send('no title')
         return
     }
-
-    if (!likes){
+    if (!body.likes){
         body.likes = 0
     } 
 
     const blog = new Blog({
-        title: title,
-        author: author,
+        title: body.title,
+        author: body.author,
         url: body.url,
-        likes: likes,
+        likes: body.likes,
         user: user._id
     })
-
+    
     const savedBlog = await blog.save()
     user.blogs = user.blogs.concat(savedBlog._id)
     await user.save()

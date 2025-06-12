@@ -14,9 +14,7 @@ beforeEach(async () => {
     await Blog.deleteMany({})
     await Blog.insertMany(helper.initialBlogs)
     await User.deleteMany({})
-    const passwordHash = await bcrypt.hash('sekret',10)
-    const user = new User({ username: 'rootey',passwordHash })
-    await user.save()
+    await helper.createAndSaveNewUser()
 })
 
 test('get all blogs', async () => {
@@ -30,15 +28,16 @@ test('name of id equals `id`', async () => {
 
 })
 
-test.only('post new blog', async () => {
+test('post new blog', async () => {
     const newBlog = helper.newBlogPost
     const id = await helper.userId()
     newBlog.user = id
-    console.log('newBlog',newBlog)
+    const token = await helper.generateToken()
 
     await api
         .post('/api/blogs')
         .send(newBlog)
+        .set('Authorization',`Bearer ${token}`)
         .expect(201)
         .expect('Content-Type', /application\/json/)
     
@@ -51,9 +50,12 @@ test.only('post new blog', async () => {
 })
 
 test('if likes missing default to 0', async () => {
+    const token = await helper.generateToken()
+
     await api
         .post('/api/blogs')
         .send(helper.newBlogsNoLikes)
+        .set('Authorization',`Bearer ${token}`)
         .expect(201)
         .expect('Content-Type',/application\/json/)
 
@@ -79,12 +81,14 @@ test.describe('that missing title and author give bad request and message test s
         likes: 0
     }
 
-    test('that missing title and author give bad requests and message', async () => {
+    test.only('that missing title and author give bad requests and message', async () => {
    
+        const token = await helper.generateToken()
 
         const response = await api
             .post('/api/blogs')
             .send(blogWithMissingTitleAndAuthor)
+            .set('Authorization',`Bearer ${token}`)
             .expect(400)
             .expect('Content-Type',/text\/html/)
 
@@ -96,10 +100,12 @@ test.describe('that missing title and author give bad request and message test s
 
     test('that missing author give bad request and message', async () => {
    
+        const token = await helper.generateToken()
 
         const response = await api
             .post('/api/blogs')
             .send(blogWithMissingAuthor)
+            .set('Authorization',`Bearer ${token}`)
             .expect(400)
             .expect('Content-Type',/text\/html/)
 
@@ -110,11 +116,12 @@ test.describe('that missing title and author give bad request and message test s
     })
 
      test('that missing title give bad request and message', async () => {
-   
+        const token = await helper.generateToken()
 
         const response = await api
             .post('/api/blogs')
             .send(blogWithMissingTitle)
+            .set('Authorization',`Bearer ${token}`)
             .expect(400)
             .expect('Content-Type',/text\/html/)
 
