@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "NODE_ENV=test node --test",
+    "test:blog": "NODE_ENV=test node --test tests/blog_api.test.js",
     "test:only:blog": "NODE_ENV=test node --test --test-only tests/blog_api.test.js",
     "test:users": "NODE_ENV=test node --test tests/user_api.test.js",
     "test:only:users": "NODE_ENV=test node --test --test-only tests/user_api.test.js",

@@ -1,6 +1,12 @@
 const _ = require('lodash')
-
+const supertest = require('supertest')
+const app = require('../app')
+const bcrypt = require('bcrypt')
 const blogs = require('./blogs.json')
+const User = require('../models/user')
+const jwt = require('jsonwebtoken')
+
+const api = supertest(app)
 
 const dummy = (blogs) => {
     return 1
@@ -100,11 +106,12 @@ const mostBlogs = (blogs) => {
 }
 
 
-
 module.exports = {
     dummy,
     totalLikes,
     mostLikes,
     mostLikesObject,
-    mostBlogs
+    mostBlogs,
+    createAndSaveNewUser,
+    generateToken
 }
