@@ -8,7 +8,7 @@ const errorHandler = (error,request,response,next) => {
         ){
             return response.status(400).json({ error: 'expected `username` to be unique'})
     }
-    console.log(`Error: ${error.message}`)
+    next(error)
 }
 
 module.exports = { errorHandler }
