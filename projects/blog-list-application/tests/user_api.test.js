@@ -46,7 +46,7 @@ describe('when there is initially one user in the database', () => {
         assert(usernames.includes(newUser.username))
     })
 
-    test('creation fails with a fresh username and incorrect username validation requirements', async () => {
+    test.only('creation fails with a fresh username and short username', async () => {
         let usersAtStart = undefined
         try {
             usersAtStart = await helper.usersInDb()
@@ -67,6 +67,29 @@ describe('when there is initially one user in the database', () => {
             .expect('Content-Type',/application\/json/)
 
         assert.ok(response.error.text.includes('Username must be at least 3 characters long'))
+    })
+
+    test('creation fails with a fresh username and username with space', async () => {
+        let usersAtStart = undefined
+        try {
+            usersAtStart = await helper.usersInDb()
+        } catch (e) {
+            console.log('error message: ', e.message)
+        }
+
+        const newUser = {
+            username: 'joe loomis',
+            name: 'Joe Loomis',
+            password: 'REDACTED_TEST_PASSWORD'
+        }
+
+        const response = await api
+            .post('/api/users')
+            .send(newUser)
+            .expect(400)
+            .expect('Content-Type',/application\/json/)
+
+        assert.ok(response.error.text.includes('username cannot contain whitespaces'))
     })
 
     test('creation fails with a fresh username and incorrect password validation requirements', async () => {
