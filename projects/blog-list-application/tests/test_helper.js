@@ -17,12 +17,24 @@ const initialBlogs = [
         likes: 10
     }
 ]
+const usersInDb = async () => {
+    const users = await User.find({})
+    const userMap = users.map(u => u.toJSON())
+    return userMap
+}
+
+const userId = async () => {
+    const users = await usersInDb()
+    const userId = users[0]._id.toString()
+    return userId
+}
 
 const newBlogPost = {
     title: "new blog post",
     author: "new author",
     url: "http://blog.com",
-    likes: 0
+    likes: 0,
+    user: userId()
 }
 
 const newBlogsNoLikes = {
@@ -45,22 +57,13 @@ const blogsInDb = async () => {
 
 const getFirstBlogId = async () => {
     const firstBlog = await Blog.findOne({ title: "first blog post" })
+    if(!firstBlog){
+        throw new Error('no blog with title `first blog post` found')
+    }
     return firstBlog._id
 }
 
 const nonExistingId = '6842dd6b28663e5954fe4a30'
-
-const usersInDb = async () => {
-    const users = await User.find({})
-    const userMap = users.map(u => u.toJSON())
-    return userMap
-}
-
-const userId = async () => {
-    const users = await usersInDb()
-    const userId = users[0]._id.toString()
-    return userId
-}
 
 const generateToken = async () => {
     const users = await usersInDb()
