@@ -8,7 +8,18 @@ const middleware = require('./utils/middleware')
 
 const app = express()
 
-mongoose
+// async function dbConnect(){
+//     try{
+//         await mongoose.connect(config.MONGODB_URI)
+//         console.log(`Connected to database at url ${config.MONGODB_URI}`)
+//     } catch {
+//         console.error(`Error conecting to database: ${error.message}`)
+//     }
+// }
+
+// dbConnect()
+
+const dbConnect = mongoose
     .connect(config.MONGODB_URI)
     .then(() => {
         console.log(`Connected to database at url ${config.MONGODB_URI}`)
@@ -18,6 +29,7 @@ mongoose
     })
 
 app.use(express.json())
+app.use(middleware.tokenExtractor)
 
 app.use('/api/blogs',blogRouter)
 app.use('/api/users',usersRouter)

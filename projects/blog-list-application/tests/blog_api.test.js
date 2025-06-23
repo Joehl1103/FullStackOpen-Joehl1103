@@ -1,4 +1,4 @@
-const { test, after, beforeEach, describe } = require('node:test')
+const { test, after, beforeEach, describe, before } = require('node:test')
 const assert = require('node:assert')
 const mongoose = require('mongoose')
 const supertest = require('supertest')
@@ -7,25 +7,30 @@ const helper = require('./test_helper')
 const Blog = require('../models/blog')
 const User = require('../models/user')
 const bcrypt = require('bcrypt')
-
 const api = supertest(app)
 
+console.log('top of blog api test')
+
 beforeEach(async () => {
-    await Blog.deleteMany({})
-    await Blog.insertMany(helper.initialBlogs)
-    await User.deleteMany({})
-    await helper.createAndSaveNewUser()
+    if(mongoose.connection.readyState === 1){
+        await Blog.deleteMany({})
+        await Blog.insertMany(helper.initialBlogs)
+        await User.deleteMany({})
+        await helper.createAndSaveNewUser()
+    }
+   
 })
 
 test('get all blogs', async () => {
     const response = await api.get('/api/blogs')
+    console.log(response.body)
     assert.strictEqual(response.body.length,helper.initialBlogs.length)
 })
 
 test('name of id equals `id`', async () => {
     const response = await api.get('/api/blogs')
+    console.log(response.body)
     assert.ok(response.body[0].hasOwnProperty('id'))
-
 })
 
 test('post new blog', async () => {
@@ -49,7 +54,7 @@ test('post new blog', async () => {
 
 })
 
-test('if likes missing default to 0', async () => {
+test.only('if likes missing default to 0', async () => {
     const token = await helper.generateToken()
 
     await api
@@ -81,7 +86,7 @@ test.describe('that missing title and author give bad request and message test s
         likes: 0
     }
 
-    test.only('that missing title and author give bad requests and message', async () => {
+    test('that missing title and author give bad requests and message', async () => {
    
         const token = await helper.generateToken()
 
@@ -134,11 +139,19 @@ test.describe('that missing title and author give bad request and message test s
 
 describe('deleting tests', () => {
     test('that deleting test successfully gives 204 bad request', async () => {
-        const firstBlogIdObject = await helper.getFirstBlogId()
+        let firstBlogIdObject 
+        try {
+            firstBlogIdObject = await helper.getFirstBlogId()
+        }catch (e) {
+            assert.fail(e.message)
+        }
         const firstBlogId = firstBlogIdObject.toString()
-        await api
-            .delete(`/api/blogs/${firstBlogId}`)
-            .expect(204)
+        const response = await api
+                .delete(`/api/blogs/${firstBlogId}`)
+                .expect(204)
+
+        const blogsAfterDeletion = await helper.blogsInDb()
+        assert.strictEqual(blogsAfterDeletion.length, helper.initialBlogs.length - 1)
     })
 
     test('that non-existent id causes 400 error', async () => {
@@ -176,6 +189,8 @@ describe('updating test', () => {
 })
 
 after(async () => {
+    console.log('closing connection')
     await mongoose.connection.close()
+    console.log('connection closed')
 })
 
