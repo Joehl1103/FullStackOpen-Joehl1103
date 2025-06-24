@@ -70,6 +70,8 @@ blogsRouter.delete('/:id', async (request,response) => {
     if(!blogToBeDeleted){
         return response.status(400).send('no blog found')
     }
+    console.log('blogToBeDeleted ok')
+    console.log('blog user id',blogToBeDeleted)
     try {
         await Blog.deleteOne({ _id: id })
         return response.status(204).send('blog successfully deleted')

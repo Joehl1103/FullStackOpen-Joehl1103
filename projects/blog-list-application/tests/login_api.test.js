@@ -7,7 +7,7 @@ const User = require('../models/user')
 const bcrypt = require('bcrypt')
 const helper = require('./test_helper')
 console.log('before api')
-const api = supertest(app)
+const api = supertest(app.app)
 console.log('after api')
 
 describe('testing login', () => {
