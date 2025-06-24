@@ -23,7 +23,7 @@ usersRouter.post('/',async (request,response) => {
     const user = new User({
         username,
         name,
-        password
+        passwordHash
     })
     console.log('saving')
     const savedUser = await user.save()
@@ -35,6 +35,14 @@ usersRouter.post('/',async (request,response) => {
 usersRouter.get('/', async(request,response) => {
     const blogs = await User.find({}).populate('blogs', { title: 1,author:1,})
     response.status(200).json(blogs)
+
+})
+
+usersRouter.delete('/:id',async(request,response)=>{
+    console.log(request.params.id)
+    const id = request.params.id
+    await User.deleteOne({ _id: id})
+    return response.status(204).send('user successfully deleted')
 
 })
 

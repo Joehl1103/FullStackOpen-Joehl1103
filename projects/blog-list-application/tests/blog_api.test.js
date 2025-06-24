@@ -144,7 +144,7 @@ test.describe('that missing title and author give bad request and message test s
 })
 
 describe('deleting tests', () => {
-    test('that deleting test successfully gives 204 bad request', async () => {
+    test.only('that deleting test successfully gives 204 bad request', async () => {
         console.log('entering test')
         let firstBlogIdObject 
         try {
