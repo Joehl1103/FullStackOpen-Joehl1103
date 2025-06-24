@@ -22,10 +22,11 @@ blogsRouter.post('/',async (request,response) => {
     // check if request has likes
     let body = request.body
     const decodedToken = jwt.verify(request.token,process.env.SECRET)
-    if(!decodedToken._id){
+    console.log('decoded token',decodedToken)
+    if(!decodedToken.id){
         return response.status(401).json({ error: 'token invalid' })
     }
-    const user = await User.findById(decodedToken._id)
+    const user = await User.findById(decodedToken.id)
     // check for likes
     if(!user){
         return response.status(400).json({ error: 'userId missing or not valid' })
@@ -71,7 +72,16 @@ blogsRouter.delete('/:id', async (request,response) => {
         return response.status(400).send('no blog found')
     }
     console.log('blogToBeDeleted ok')
-    console.log('blog user id',blogToBeDeleted)
+    //TODO check whether or not the blog to be deleted has the same user id as the token (?) sent by the request
+    const decodedToken = jwt.verify(request.token,process.env.SECRET)
+    const user = await User.findById(decodedToken.id)
+    const blogUser = blogToBeDeleted.user.toString()
+    console.log('blogUser',blogUser)
+    if(!(user.id === blogUser)){
+        return response.status(401).json({ error: `id of token not the same as id of blog user` })
+    }
+    
+    console.log('blog user id',blogToBeDeleted.toString())
     try {
         await Blog.deleteOne({ _id: id })
         return response.status(204).send('blog successfully deleted')

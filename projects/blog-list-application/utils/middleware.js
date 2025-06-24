@@ -25,6 +25,8 @@ const errorHandler = (error,request,response,next) => {
         return response.status(401).json({ error: 'type error'})
     } else if(error.name === 'MongoPoolClosedError'){
         return response.status(401).json({ error: `${error.messsage}`})
+    } else {
+        return response.status(401).json({ error: `${error.message}` })
     }
 
     next(error)
