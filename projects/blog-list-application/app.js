@@ -37,4 +37,4 @@ app.use('/api/login',loginRouter)
 
 app.use(middleware.errorHandler)
 
-module.exports = app
+module.exports = { app, dbConnect }

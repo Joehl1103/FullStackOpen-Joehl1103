@@ -7,14 +7,19 @@ const helper = require('./test_helper')
 const Blog = require('../models/blog')
 const User = require('../models/user')
 const bcrypt = require('bcrypt')
-const api = supertest(app)
+const api = supertest(app.app)
 
 console.log('top of blog api test')
+
+before(async () => {
+    await app.dbConnect
+})
 
 beforeEach(async () => {
     if(mongoose.connection.readyState === 1){
         await Blog.deleteMany({})
-        await Blog.insertMany(helper.initialBlogs)
+        const initialBlogs = await helper.getInitialBlogs()
+        await Blog.insertMany(initialBlogs)
         await User.deleteMany({})
         await helper.createAndSaveNewUser()
     }
@@ -24,7 +29,8 @@ beforeEach(async () => {
 test('get all blogs', async () => {
     const response = await api.get('/api/blogs')
     console.log(response.body)
-    assert.strictEqual(response.body.length,helper.initialBlogs.length)
+    const initialBlogs = await helper.getInitialBlogs()
+    assert.strictEqual(response.body.length,initialBlogs.length)
 })
 
 test('name of id equals `id`', async () => {
@@ -48,13 +54,13 @@ test('post new blog', async () => {
     
     const response = await api.get('/api/blogs')
     const newBlogPostFromResponse = response.body[2]
-
-    assert.strictEqual(response.body.length,helper.initialBlogs.length + 1)
+    const initialBlogs = await helper.getInitialBlogs()
+    assert.strictEqual(response.body.length,initialBlogs.length + 1)
     assert.strictEqual(newBlogPostFromResponse.title,newBlog.title)
 
 })
 
-test.only('if likes missing default to 0', async () => {
+test('if likes missing default to 0', async () => {
     const token = await helper.generateToken()
 
     await api
@@ -139,19 +145,23 @@ test.describe('that missing title and author give bad request and message test s
 
 describe('deleting tests', () => {
     test('that deleting test successfully gives 204 bad request', async () => {
+        console.log('entering test')
         let firstBlogIdObject 
         try {
             firstBlogIdObject = await helper.getFirstBlogId()
         }catch (e) {
+            console.log('failed to await firstBlogIdObject')
             assert.fail(e.message)
         }
+        console.log('await firstBlogIdObject',firstBlogIdObject)
         const firstBlogId = firstBlogIdObject.toString()
         const response = await api
                 .delete(`/api/blogs/${firstBlogId}`)
                 .expect(204)
 
+        const initialBlogs = await helper.getInitialBlogs()
         const blogsAfterDeletion = await helper.blogsInDb()
-        assert.strictEqual(blogsAfterDeletion.length, helper.initialBlogs.length - 1)
+        assert.strictEqual(blogsAfterDeletion.length, initialBlogs.length - 1)
     })
 
     test('that non-existent id causes 400 error', async () => {

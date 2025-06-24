@@ -3,20 +3,6 @@ const User = require('../models/user')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 
-const initialBlogs = [
-    {
-        title: "first blog post",
-        author: "author",
-        url: 'http://blog.com',
-        likes: 4
-    },
-    {
-        title: "second blog post",
-        author: "author",
-        url: 'http://blog.com',
-        likes: 10
-    }
-]
 const usersInDb = async () => {
     const users = await User.find({})
     const userMap = users.map(u => u.toJSON())
@@ -28,6 +14,38 @@ const userId = async () => {
     const userId = users[0]._id.toString()
     return userId
 }
+
+const getInitialBlogs = async() => {
+    const id = await userId()
+    const users = await usersInDb()
+    const username = users[0].username
+    const name = users[0].name
+    const initialBlogs = [
+    {
+        title: "first blog post",
+        author: "author",
+        url: 'http://blog.com',
+        likes: 4,
+        user: {
+            _id: id,
+            username: username,
+            name: name
+        }
+    },
+    {
+        title: "second blog post",
+        author: "author",
+        url: 'http://blog.com',
+        likes: 10,
+        user: {
+            _id: id,
+            username: username,
+            name: name
+        }
+    }]
+    return initialBlogs
+}
+
 
 const newBlogPost = {
     title: "new blog post",
@@ -87,7 +105,7 @@ const createAndSaveNewUser = async () => {
 }
 
 module.exports = {
-    initialBlogs,
+    getInitialBlogs,
     newBlogPost,
     newBlogsNoLikes,
     blogsInDb,

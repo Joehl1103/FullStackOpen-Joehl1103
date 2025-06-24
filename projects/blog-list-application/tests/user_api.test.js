@@ -7,7 +7,7 @@ const helper = require('./test_helper')
 const app = require('../app')
 const supertest = require('supertest')
 
-const api = supertest(app)
+const api = supertest(app.app)
 
 
 describe('when there is initially one user in the database', () => {
