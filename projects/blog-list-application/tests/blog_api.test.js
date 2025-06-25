@@ -17,11 +17,8 @@ before(async () => {
 
 beforeEach(async () => {
     if(mongoose.connection.readyState === 1){
-        await Blog.deleteMany({})
-        const initialBlogs = await helper.getInitialBlogs()
-        await Blog.insertMany(initialBlogs)
-        await User.deleteMany({})
-        await helper.createAndSaveNewUser()
+        await helper.deleteAndCreateRootUser()
+        await helper.deleteAndCreateRootBlogs()
     }
    
 })
@@ -44,6 +41,8 @@ test('post new blog', async () => {
     const id = await helper.userId()
     newBlog.user = id
     const token = await helper.generateToken()
+
+
 
     await api
         .post('/api/blogs')
@@ -145,18 +144,27 @@ test.describe('that missing title and author give bad request and message test s
 
 describe('deleting tests', () => {
     test.only('that deleting test successfully gives 204 bad request', async () => {
-        console.log('entering test')
+        const userResponse = await api  
+            .get('/api/users')
+            .expect(200)
+        
+        console.log('users in db',userResponse.body)
         let firstBlogIdObject 
         try {
             firstBlogIdObject = await helper.getFirstBlogId()
         }catch (e) {
-            console.log('failed to await firstBlogIdObject')
             assert.fail(e.message)
         }
-        console.log('await firstBlogIdObject',firstBlogIdObject)
         const firstBlogId = firstBlogIdObject.toString()
-        const response = await api
+        const loginResponse = await api
+            .post(`/api/login/`)
+            .send(helper.rootUserInfo)
+            .expect(200)
+
+        const token = await loginResponse.body.token
+        const deleteResponse = await api
                 .delete(`/api/blogs/${firstBlogId}`)
+                .set('Authorization',`Bearer ${token}`)
                 .expect(204)
 
         const initialBlogs = await helper.getInitialBlogs()

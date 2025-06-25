@@ -15,6 +15,24 @@ const userId = async () => {
     return userId
 }
 
+const rootUserInfo = {
+    username: 'rootey',
+    password: 'REDACTED_TEST_PASSWORD'
+}
+
+const deleteAndCreateRootUser = async () => {
+    await User.deleteMany({})
+    const passwordHash = await bcrypt.hash(rootUserInfo.password,10)
+    const user = new User({ username: rootUserInfo.username,passwordHash })
+    await user.save()
+}
+
+const deleteAndCreateRootBlogs = async() => {
+    await Blog.deleteMany({})
+    const initialBlogs = await getInitialBlogs()
+    await Blog.insertMany(initialBlogs)
+}
+
 const getInitialBlogs = async() => {
     const id = await userId()
     const users = await usersInDb()
@@ -94,15 +112,15 @@ const generateToken = async () => {
 }
 
 
-const createAndSaveNewUser = async () => {
-    const passwordHash = await bcrypt.hash('REDACTED_TEST_PASSWORD',10)
-        const user = new User({
-            username: 'jaloomis',
-            name: 'Joe Loomis',
-            password: passwordHash
-        })
-    await user.save()
-}
+// const createAndSaveNewUser = async () => {
+//     const passwordHash = await bcrypt.hash('REDACTED_TEST_PASSWORD',10)
+//         const user = new User({
+//             username: 'jaloomis',
+//             name: 'Joe Loomis',
+//             password: passwordHash
+//         })
+//     await user.save()
+// }
 
 module.exports = {
     getInitialBlogs,
@@ -115,5 +133,8 @@ module.exports = {
     userId,
     usersInDb,
     generateToken,
-    createAndSaveNewUser
+    // createAndSaveNewUser,
+    rootUserInfo,
+    deleteAndCreateRootUser,
+    deleteAndCreateRootBlogs
 }

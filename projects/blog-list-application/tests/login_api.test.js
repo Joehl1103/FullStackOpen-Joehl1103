@@ -14,11 +14,11 @@ describe('testing login', () => {
 
     beforeEach(async () => {
         await User.deleteMany({})
-        await helper.createAndSaveNewUser()
+        await helper.deleteAndCreateRootUser()
     })
 
     test('succeeds with status 200', async () => {
-        const user = await User.findOne({ username: 'jaloomis' })
+        const user = await User.findOne({ username: 'rootey' })
         console.log('user',user)
         const loginInfo = {
             username: user.username,
@@ -37,7 +37,7 @@ describe('testing login', () => {
     })
 
     test('fails if password incorrect', async () => {
-        const user = await User.findOne({ username: 'jaloomis' })
+        const user = await User.findOne({ username: 'rootey' })
         const loginInfo = {
             username: user.username,
             password: 'bad password'
