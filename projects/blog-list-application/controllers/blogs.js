@@ -23,14 +23,17 @@ blogsRouter.post('/',async (request,response) => {
     let body = request.body
     const decodedToken = jwt.verify(request.token,process.env.SECRET)
     console.log('decoded token',decodedToken)
-    if(!decodedToken.id){
+    if(!decodedToken._id){
+        console.log('decoded token not ok')
         return response.status(401).json({ error: 'token invalid' })
     }
-    const user = await User.findById(decodedToken.id)
+    console.log('decoded token ok')
+    const user = await User.findById(decodedToken._id)
     // check for likes
     if(!user){
         return response.status(400).json({ error: 'userId missing or not valid' })
     }
+    console.log('user ok')
 
     if(!body.author && !body.title){
         response.status(400).send('author and title are missing')
@@ -71,13 +74,18 @@ blogsRouter.delete('/:id', async (request,response) => {
     if(!blogToBeDeleted){
         return response.status(400).send('no blog found')
     }
-    console.log('blogToBeDeleted ok')
-    //TODO check whether or not the blog to be deleted has the same user id as the token (?) sent by the request
+    
     const decodedToken = jwt.verify(request.token,process.env.SECRET)
+    console.log('decoded token',decodedToken)
+    //TODO note that I am changing to .id but that I am keeping an eye out for where it might fail because of being ._id
     const user = await User.findById(decodedToken.id)
     const blogUser = blogToBeDeleted.user.toString()
     console.log('blogUser',blogUser)
+    //TODO idem
+    console.log(user.id)
+    //TODO idem
     if(!(user.id === blogUser)){
+        console.log('user id and blogUser id are not the same')
         return response.status(401).json({ error: `id of token not the same as id of blog user` })
     }
     

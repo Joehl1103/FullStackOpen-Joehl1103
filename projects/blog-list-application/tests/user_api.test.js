@@ -12,11 +12,7 @@ const api = supertest(app.app)
 
 describe('when there is initially one user in the database', () => {
     beforeEach(async () => {
-        await User.deleteMany({})
-        const passwordHash = await bcrypt.hash('sekret',10)
-        const user = new User({ username: 'rootey',passwordHash })
-
-        await user.save()
+        await helper.deleteAndCreateRootUser()
     })
 
     test('creation succeeds with a fresh username and validation requirements', async () => {
