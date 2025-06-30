@@ -19,21 +19,11 @@ blogsRouter.get('/',async (request,response) => {
 })
 
 blogsRouter.post('/',async (request,response) => {
-    // check if request has likes
     let body = request.body
-    const decodedToken = jwt.verify(request.token,process.env.SECRET)
-    console.log('decoded token',decodedToken)
-    if(!decodedToken._id){
-        console.log('decoded token not ok')
-        return response.status(401).json({ error: 'token invalid' })
-    }
-    console.log('decoded token ok')
-    const user = await User.findById(decodedToken._id)
-    // check for likes
+    const user = request.user
     if(!user){
         return response.status(400).json({ error: 'userId missing or not valid' })
     }
-    console.log('user ok')
 
     if(!body.author && !body.title){
         response.status(400).send('author and title are missing')
@@ -68,28 +58,20 @@ blogsRouter.post('/',async (request,response) => {
 blogsRouter.delete('/:id', async (request,response) => {
     const id = request.params.id
     if(!id){
+        console.log('no id')
         return response.status(400).send('id not found in request')
     }
     const blogToBeDeleted = await Blog.findById(id)
     if(!blogToBeDeleted){
+        console.log('no blog to be deleted')
         return response.status(400).send('no blog found')
     }
-    
-    const decodedToken = jwt.verify(request.token,process.env.SECRET)
-    console.log('decoded token',decodedToken)
-    //TODO note that I am changing to .id but that I am keeping an eye out for where it might fail because of being ._id
-    const user = await User.findById(decodedToken.id)
+    const user = request.user
     const blogUser = blogToBeDeleted.user.toString()
-    console.log('blogUser',blogUser)
-    //TODO idem
-    console.log(user.id)
-    //TODO idem
     if(!(user.id === blogUser)){
         console.log('user id and blogUser id are not the same')
         return response.status(401).json({ error: `id of token not the same as id of blog user` })
     }
-    
-    console.log('blog user id',blogToBeDeleted.toString())
     try {
         await Blog.deleteOne({ _id: id })
         return response.status(204).send('blog successfully deleted')

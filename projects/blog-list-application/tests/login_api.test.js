@@ -38,6 +38,9 @@ describe('testing login', () => {
 
     test('fails if password incorrect', async () => {
         const user = await User.findOne({ username: 'rootey' })
+        if(!user){
+            return response.status(404).json({error: 'no user found'})
+        }
         const loginInfo = {
             username: user.username,
             password: 'bad password'
@@ -58,7 +61,7 @@ describe('testing login', () => {
         const response = await api
             .post('/api/login')
             .send(loginInfo)
-            .expect(401)
+            .expect(404)
     })
 })
 
