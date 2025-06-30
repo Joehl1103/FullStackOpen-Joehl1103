@@ -36,26 +36,40 @@ test('name of id equals `id`', async () => {
     assert.ok(response.body[0].hasOwnProperty('id'))
 })
 
-test.only('post new blog', async () => {
-    const newBlog = helper.newBlogPost
-    const id = await helper.userId()
-    newBlog.user = id
-    const token = await helper.generateToken()
-
-    await api
-        .post('/api/blogs')
-        .send(newBlog)
-        .set('Authorization',`Bearer ${token}`)
-        .expect(201)
-        .expect('Content-Type', /application\/json/)
+test.describe('posting blogs', async () => {
+    test('post new blog', async () => {
+        const newBlog = helper.newBlogPost
+        const id = await helper.userId()
+        newBlog.user = id
+        const token = await helper.generateToken()
     
-    const response = await api.get('/api/blogs')
-    const newBlogPostFromResponse = response.body[2]
-    const initialBlogs = await helper.getInitialBlogs()
-    assert.strictEqual(response.body.length,initialBlogs.length + 1)
-    assert.strictEqual(newBlogPostFromResponse.title,newBlog.title)
+        await api
+            .post('/api/blogs')
+            .send(newBlog)
+            .set('Authorization',`Bearer ${token}`)
+            .expect(201)
+            .expect('Content-Type', /application\/json/)
+        
+        const response = await api.get('/api/blogs')
+        const newBlogPostFromResponse = response.body[2]
+        const initialBlogs = await helper.getInitialBlogs()
+        assert.strictEqual(response.body.length,initialBlogs.length + 1)
+        assert.strictEqual(newBlogPostFromResponse.title,newBlog.title)
+    
+    })
 
+    test('fails with 401 if token not provided',async() => {
+        const newBlog = helper.newBlogPost
+        const id = await helper.userId()
+        newBlog.user = id
+
+        await api
+            .post('/api/blogs')
+            .send(newBlog)
+            .expect(401)
+    })
 })
+
 
 test('if likes missing default to 0', async () => {
     const token = await helper.generateToken()
@@ -158,7 +172,7 @@ describe('deleting tests', () => {
             .send(helper.rootUserInfo)
             .expect(200)
 
-        const token = await loginResponse.body.token
+        const token = loginResponse.body.token
         const deleteResponse = await api
                 .delete(`/api/blogs/${firstBlogId}`)
                 .set('Authorization',`Bearer ${token}`)
@@ -170,12 +184,20 @@ describe('deleting tests', () => {
     })
 
     test('that non-existent id causes 400 error', async () => {
+        const loginResponse = await api
+            .post(`/api/login/`)
+            .send(helper.rootUserInfo)
+            .expect(200) 
+
+        const token = loginResponse.body.token
+
         await api
             .delete(`/api/blogs/${helper.nonExistingId}`)
-            .expect(400)
+            .set('Authorization',`Bearer ${token}`)
+            .expect(404)
     })
 
-    test('that no id returns 400', async () => {
+    test.only('that no id returns 400', async () => {
         await api
             .delete('/api/blogs')
             .expect(404)

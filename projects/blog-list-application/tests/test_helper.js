@@ -70,7 +70,7 @@ const newBlogPost = {
     author: "new author",
     url: "http://blog.com",
     likes: 0,
-    user: userId()
+    user: null
 }
 
 const newBlogsNoLikes = {

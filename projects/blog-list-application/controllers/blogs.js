@@ -4,6 +4,7 @@ const User = require('../models/user')
 const jwt = require('jsonwebtoken')
 const helper = require('../tests/test_helper')
 const blog = require('../models/blog')
+const middleware = require('../utils/middleware')
 
 // const getTokenFrom = request => {
 //     const authorization = request.get('authorization')
@@ -18,7 +19,7 @@ blogsRouter.get('/',async (request,response) => {
     response.status(200).json(blogs)
 })
 
-blogsRouter.post('/',async (request,response) => {
+blogsRouter.post('/',middleware.userExtractor, async (request,response) => {
     let body = request.body
     const user = request.user
     if(!user){
@@ -55,7 +56,7 @@ blogsRouter.post('/',async (request,response) => {
     }
 })
 
-blogsRouter.delete('/:id', async (request,response) => {
+blogsRouter.delete('/:id', middleware.userExtractor, async (request,response) => {
     const id = request.params.id
     if(!id){
         console.log('no id')
@@ -64,7 +65,7 @@ blogsRouter.delete('/:id', async (request,response) => {
     const blogToBeDeleted = await Blog.findById(id)
     if(!blogToBeDeleted){
         console.log('no blog to be deleted')
-        return response.status(400).send('no blog found')
+        return response.status(404).send('no blog found')
     }
     const user = request.user
     const blogUser = blogToBeDeleted.user.toString()
