@@ -105,7 +105,7 @@ const generateToken = async () => {
     const users = await usersInDb()
     const firstUser = users[0]
     const token = jwt.sign(
-        firstUser,
+        { username: firstUser.username, id: firstUser._id },
         process.env.SECRET,
     )
     return token

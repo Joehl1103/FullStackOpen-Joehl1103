@@ -36,13 +36,11 @@ test('name of id equals `id`', async () => {
     assert.ok(response.body[0].hasOwnProperty('id'))
 })
 
-test('post new blog', async () => {
+test.only('post new blog', async () => {
     const newBlog = helper.newBlogPost
     const id = await helper.userId()
     newBlog.user = id
     const token = await helper.generateToken()
-
-
 
     await api
         .post('/api/blogs')
@@ -143,12 +141,11 @@ test.describe('that missing title and author give bad request and message test s
 })
 
 describe('deleting tests', () => {
-    test.only('that deleting test successfully gives 204 bad request', async () => {
+    test('that deleting test successfully gives 204 bad request', async () => {
         const userResponse = await api  
             .get('/api/users')
             .expect(200)
         
-        console.log('users in db',userResponse.body)
         let firstBlogIdObject 
         try {
             firstBlogIdObject = await helper.getFirstBlogId()
