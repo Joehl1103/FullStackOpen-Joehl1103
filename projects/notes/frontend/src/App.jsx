@@ -36,7 +36,11 @@ const App = () => {
 
       <Notification message={errorMessage}/>
 
-      {user === null ? <Login setErrorMessage={setErrorMessage} setUser={setUser}/> : 
+      {user === null ? 
+        <Login 
+          setErrorMessage={setErrorMessage} 
+          setUser={setUser}/>
+        : 
         <div>
           <p>{user.name} logged-in</p>
           <NoteForm

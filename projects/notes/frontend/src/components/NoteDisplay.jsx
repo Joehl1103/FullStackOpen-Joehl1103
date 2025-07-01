@@ -1,4 +1,4 @@
-import { useState,useEffect } from "react"
+import { useState} from "react"
 import noteService from "../services/noteService"
 import Note from './Note'
 
