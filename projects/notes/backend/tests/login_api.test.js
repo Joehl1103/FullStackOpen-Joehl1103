@@ -54,7 +54,7 @@ describe('testing login', () => {
             .expect(401)
     })
 
-    test.only('fails if no user', async () => {
+    test('fails if no user', async () => {
         const loginInfo = {
             username: 'no user',
             password: 'daQw8S6HjB^KA!tC3*x9'

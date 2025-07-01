@@ -12,6 +12,7 @@
     "test:users": "NODE_ENV=test node --test tests/users_api.test.js",
     "test:only:users": "NODE_ENV=test node --test --test-only tests/users_api.test.js",
     "test:login": "NODE_ENV=test node --test tests/login_api.test.js",
+    "test:only:login": "NODE_ENV=test node --test --test-only tests/login_api.test.js",
     "build:ui": "rm -rf dist && cd ../frontend && npm run build && cp -r dist ../backend",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push origin main",
     "deploy:backend": "git add . && git commit -m bebuild && git push origin main",
