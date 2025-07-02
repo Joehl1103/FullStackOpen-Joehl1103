@@ -39,6 +39,13 @@ const App = () => {
       return null;
   }
 
+  const handleLogout = () => {
+    console.log('logging out')
+    window.localStorage.clear()
+    window.location.reload()
+
+  }
+
   return (
     <>
       <h1>Notes</h1>
@@ -51,7 +58,7 @@ const App = () => {
           setUser={setUser}/>
         : 
         <div>
-          <p>{user.name} logged-in</p>
+          <p>{user.name} logged-in <button onClick={handleLogout}>Logout</button></p> 
           <NoteForm
             setNotes={setNotes}
             setNewNote={setNewNote}
