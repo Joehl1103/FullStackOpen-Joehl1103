@@ -1,7 +1,7 @@
 const Note  =(props)=> {
     const label = props.note.important ? 'make not important' : 'make important';
     const note = props.note
-    console.log(typeof note.id)
+    // console.log(typeof note.id)
 
     return (
         <li className='note'>

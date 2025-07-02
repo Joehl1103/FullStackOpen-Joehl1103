@@ -12,7 +12,7 @@ const App = () => {
   const [notes,setNotes] = useState([])
   const [newNote,setNewNote] = useState('')
 
-  const hook = () => {
+  const getAllNotesHook = () => {
     noteService
       .getAll()
       .then(initialNotes => { // for the response.data returned object
@@ -20,12 +20,21 @@ const App = () => {
       })
   }
   useEffect(
-    hook,
+    getAllNotesHook,
     [] // ensures that the hook only runs once, meaning that the content never changes
   )
 
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedNoteAppUser')
+    if(loggedUserJSON){
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      noteService.setToken(user.token)
+    }
+  },[])
+
   // prevents the notes from rendering on first render, until the useEffect goes into action
-  console.log('notes at start',notes)
+  // console.log('notes at start',notes)
   if(!notes){
       return null;
   }
