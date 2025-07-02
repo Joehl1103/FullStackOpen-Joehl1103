@@ -11,9 +11,9 @@ const setToken = newToken =>{
 }
 
 const getAll = () => {
-    console.log('starting getAll')
+    // console.log('starting getAll')
     const request = axios.get(baseUrl)
-    console.log('called request')
+    // console.log('called request')
     return request
             .then(response => {
                 return response.data

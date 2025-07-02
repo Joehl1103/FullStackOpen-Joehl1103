@@ -8,12 +8,14 @@ const Login = (props) => {
 
     const handleLogin = async (event) => {
         event.preventDefault()
-        console.log('logging in with',username,password)
+        // console.log('logging in with',username,password)
         try{
           const user = await loginService.login({
             username,password,
           })
-          console.log('user in handleLogin',user)
+          window.localStorage.setItem(
+            'loggedNoteAppUser',JSON.stringify(user)
+          )
           noteService.setToken(user.token)
           props.setUser(user)
           setUsername('')

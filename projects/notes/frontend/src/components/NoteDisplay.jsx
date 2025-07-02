@@ -30,14 +30,14 @@ const NoteDisplay = (props) => {
       const deleteNote = (id) => {
         noteService.deleteNote(id)
           .then(response => {
-            console.log("delete response",response)
+            // console.log("delete response",response)
             const notesCopy = [...props.notes].filter(note => note.id !== id)
             props.setNotes(notesCopy)
 
           })
       }
 
-      console.log('notes in notedisplay',props.notes)
+      // console.log('notes in notedisplay',props.notes)
       const notesToShow = showAll ? props.notes : props.notes.filter(note => note.important === true)
 
       return (
