@@ -18,7 +18,7 @@ describe('testing login', () => {
         const user = new User({
             username: 'jaloomis',
             name: 'Joe Loomis',
-            password: passwordHash
+            passwordHash: passwordHash
         })
         await user.save()
     })

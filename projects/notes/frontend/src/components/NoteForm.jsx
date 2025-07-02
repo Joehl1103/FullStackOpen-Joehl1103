@@ -14,6 +14,9 @@ const NoteForm = (props) => {
             props.setNotes(props.notes.concat(returnedNote)) // concat creates a new copy
             props.setNewNote('') // set newNote object to blank again
           })
+          .catch(exception => {
+            console.log('exception in noteService.create',exception)
+          })
     }
 
     const handleNoteChange = (event) => {
