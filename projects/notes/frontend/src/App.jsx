@@ -26,7 +26,7 @@ const App = () => {
 
   // prevents the notes from rendering on first render, until the useEffect goes into action
   console.log('notes at start',notes)
-  if(notes.length === 0){
+  if(!notes){
       return null;
   }
 
@@ -45,7 +45,9 @@ const App = () => {
           <p>{user.name} logged-in</p>
           <NoteForm
             setNotes={setNotes}
-            setNewNote={setNewNote}/>
+            setNewNote={setNewNote}
+            newNote={newNote}
+            notes={notes}/>
         </div>
       }
       

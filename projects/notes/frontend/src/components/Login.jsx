@@ -13,6 +13,7 @@ const Login = (props) => {
           const user = await loginService.login({
             username,password,
           })
+          console.log('user in handleLogin',user)
           noteService.setToken(user.token)
           props.setUser(user)
           setUsername('')

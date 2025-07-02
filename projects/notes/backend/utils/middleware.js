@@ -13,6 +13,7 @@ const unknownEndpoint = (request,response) => {
 }
 
 const errorHandler = (error,request,response,next) => {
+    // console.log('error handler')
     // console.log('request body',request)
     // console.log('error response body',response)
     console.error('error message in the error handler: ',error.message)
