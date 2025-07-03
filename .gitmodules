@@ -1,0 +1,3 @@
+[submodule "projects/blog-list-application/bloglist-frontend"]
+	path = projects/blog-list-application/bloglist-frontend
+	url = https://github.com/fullstack-hy2020/bloglist-frontend.git
