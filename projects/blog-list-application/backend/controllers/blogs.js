@@ -58,6 +58,7 @@ blogsRouter.post('/',middleware.userExtractor, async (request,response) => {
 })
 
 blogsRouter.delete('/:id', middleware.userExtractor, async (request,response) => {
+    console.log('params',request.params)
     const id = request.params.id
     if(!id){
         console.log('no id')
@@ -69,13 +70,17 @@ blogsRouter.delete('/:id', middleware.userExtractor, async (request,response) =>
         return response.status(404).send('no blog found')
     }
     const user = request.user
+    console.log('user',user)
     const blogUser = blogToBeDeleted.user.toString()
-    if(!(user.id === blogUser)){
-        console.log('user id and blogUser id are not the same')
-        return response.status(401).json({ error: `id of token not the same as id of blog user` })
-    }
+    console.log('blogToBeDeleted',blogToBeDeleted)
+    console.log('blogUser',blogUser)
+    // if(!(user.id === blogUser)){
+    //     console.log('user id and blogUser id are not the same')
+    //     return response.status(401).json({ error: `id of token not the same as id of blog user` })
+    // }
     try {
         await Blog.deleteOne({ _id: id })
+        console.log('succesfully deleted!')
         return response.status(204).send('blog successfully deleted')
     } catch (e) {
         return response.status(500).json({ error: 'error while deleting' })
