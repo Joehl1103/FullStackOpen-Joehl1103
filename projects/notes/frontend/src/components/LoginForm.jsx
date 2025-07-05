@@ -20,14 +20,17 @@ const LoginForm = ({
           const user = await loginService.login({
             username,password,
           })
+          console.log('logged in with user',user)
           window.localStorage.setItem(
             'loggedNoteAppUser',JSON.stringify(user)
           )
           noteService.setToken(user.token)
+          console.log(`token set to ${user.token}`)
           setUser(user)
           setUsername('')
           setPassword('')
-        } catch {
+        } catch (e){
+          console.log(`Error: ${e.message}`)
           setErrorMessage('Wrong credentials')
           setTimeout(() => {
             setErrorMessage(null)
