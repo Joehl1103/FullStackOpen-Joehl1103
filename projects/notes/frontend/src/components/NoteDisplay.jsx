@@ -42,8 +42,9 @@ const NoteDisplay = (props) => {
 
       return (
         <div>
+          <h4>List of Notes</h4>
             <button onClick={() => setShowAll(!showAll)}>
-                Show {showAll ? 'important' : 'all'}
+                Show {showAll ? 'important notes' : 'all notes'}
             </button>
         <div>
             {notesToShow.map(note =>

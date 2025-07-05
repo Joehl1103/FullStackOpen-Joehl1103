@@ -76,7 +76,9 @@ const App = () => {
         <Togglable buttonLabel='Show login form'>
           <LoginForm
             username={username}
+            setUsername={setUsername}
             password={password}
+            setPassword={setPassword}
             handleUsernameChange={({ target }) => setUsername(target.value)}
             handlePasswordChange={({ target }) => setPassword(target.value)}
             setUser={setUser}
@@ -86,11 +88,14 @@ const App = () => {
         : 
         <div>
           <p>{user.name} logged-in <button onClick={handleLogout}>Logout</button></p> 
-          <NoteForm
-            setNotes={setNotes}
-            setNewNote={setNewNote}
-            newNote={newNote}
+          <Togglable buttonLabel='add new note'>
+            <NoteForm
+              setNotes={setNotes}
+              setNewNote={setNewNote}
+              newNote={newNote}
             notes={notes}/>
+          </Togglable>
+          
         </div>
       }
       
