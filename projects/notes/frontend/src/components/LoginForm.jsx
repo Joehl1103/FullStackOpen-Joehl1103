@@ -1,10 +1,17 @@
-import { useState } from 'react'
 import loginService from '../services/login'
 import noteService from '../services/noteService'
 
-const Login = (props) => {
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
+const LoginForm = ({ 
+  setUser,
+  setErrorMessage, 
+  username,
+  password,
+  setUsername,
+  setPassword,
+  handleUsernameChange,
+  handlePasswordChange
+}) => {
+
 
     const handleLogin = async (event) => {
         event.preventDefault()
@@ -17,13 +24,13 @@ const Login = (props) => {
             'loggedNoteAppUser',JSON.stringify(user)
           )
           noteService.setToken(user.token)
-          props.setUser(user)
+          setUser(user)
           setUsername('')
           setPassword('')
-        } catch (exception){
-          props.setErrorMessage('Wrong credentials')
+        } catch {
+          setErrorMessage('Wrong credentials')
           setTimeout(() => {
-            props.setErrorMessage(null)
+            setErrorMessage(null)
           },5000)
         }
       }
@@ -36,7 +43,7 @@ const Login = (props) => {
                 type="text"
                 value={username}
                 name="Username"
-                onChange={({ target }) => setUsername(target.value)}
+                onChange={handleUsernameChange}
               />
             </div>
             <div>
@@ -45,7 +52,7 @@ const Login = (props) => {
                 type="password"
                 value={password}
                 name="Password"
-                onChange={({ target }) => setPassword(target.value)}
+                onChange={handlePasswordChange}
               />
             </div>
             <button type="submit">login</button>
@@ -53,4 +60,4 @@ const Login = (props) => {
     )
 }
 
-export default Login
+export default LoginForm
