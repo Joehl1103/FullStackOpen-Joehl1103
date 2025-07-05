@@ -1,16 +1,19 @@
 import { useState,useEffect } from 'react'
 import Notification from './components/Notification'
 import Footer from './components/Footer'
-import Login from './components/Login'
 import NoteDisplay from './components/NoteDisplay'
 import NoteForm from './components/NoteForm'
 import noteService from './services/noteService'
+import LoginForm from './components/LoginForm'
+import Togglable from './components/Togglable'
 
 const App = () => {
   const [errorMessage,setErrorMessage] = useState(null)
   const [user, setUser] = useState(null)
   const [notes,setNotes] = useState([])
   const [newNote,setNewNote] = useState('')
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
 
   const getAllNotesHook = () => {
     noteService
@@ -46,6 +49,23 @@ const App = () => {
 
   }
 
+  // const loginForm = () => {
+   
+
+  //   return (
+  //     <>
+  //       <div style={hideWhenVisible}>
+  //         <button onClick={() => setLoginVisible(true)}>log in</button>
+  //       </div>
+  //       <div style={showWhenVisible}>
+       
+  //         <button onClick={() => setLoginVisible(false)}>cancel</button>
+  //       </div>
+  //     </>
+  //   )
+  //   }
+  
+
   return (
     <>
       <h1>Notes</h1>
@@ -53,9 +73,16 @@ const App = () => {
       <Notification message={errorMessage}/>
 
       {user === null ? 
-        <Login 
-          setErrorMessage={setErrorMessage} 
-          setUser={setUser}/>
+        <Togglable buttonLabel='Show login form'>
+          <LoginForm
+            username={username}
+            password={password}
+            handleUsernameChange={({ target }) => setUsername(target.value)}
+            handlePasswordChange={({ target }) => setPassword(target.value)}
+            setUser={setUser}
+            setErrorMessage={setErrorMessage}
+          />
+        </Togglable>
         : 
         <div>
           <p>{user.name} logged-in <button onClick={handleLogout}>Logout</button></p> 
