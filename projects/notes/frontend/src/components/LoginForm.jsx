@@ -1,41 +1,15 @@
-import loginService from '../services/login'
-import noteService from '../services/noteService'
+import { useState } from 'react'
 
-const LoginForm = ({ 
-  setUser,
-  setErrorMessage, 
-  username,
-  password,
-  setUsername,
-  setPassword,
-  handleUsernameChange,
-  handlePasswordChange
-}) => {
+const LoginForm = ({ loginUser }) => {
 
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
 
     const handleLogin = async (event) => {
         event.preventDefault()
-        // console.log('logging in with',username,password)
-        try{
-          const user = await loginService.login({
-            username,password,
-          })
-          console.log('logged in with user',user)
-          window.localStorage.setItem(
-            'loggedNoteAppUser',JSON.stringify(user)
-          )
-          noteService.setToken(user.token)
-          console.log(`token set to ${user.token}`)
-          setUser(user)
-          setUsername('')
-          setPassword('')
-        } catch (e){
-          console.log(`Error: ${e.message}`)
-          setErrorMessage('Wrong credentials')
-          setTimeout(() => {
-            setErrorMessage(null)
-          },5000)
-        }
+        loginUser(username,password)
+        setUsername('')
+        setPassword('')
       }
     
         return (
@@ -46,7 +20,7 @@ const LoginForm = ({
                 type="text"
                 value={username}
                 name="Username"
-                onChange={handleUsernameChange}
+                onChange={({ target }) => setUsername(target.value)}
               />
             </div>
             <div>
@@ -55,7 +29,7 @@ const LoginForm = ({
                 type="password"
                 value={password}
                 name="Password"
-                onChange={handlePasswordChange}
+                onChange={({ target }) => setPassword(target.value)}
               />
             </div>
             <button type="submit">login</button>

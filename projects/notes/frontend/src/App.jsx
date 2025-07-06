@@ -4,6 +4,7 @@ import Footer from './components/Footer'
 import NoteDisplay from './components/NoteDisplay'
 import NoteForm from './components/NoteForm'
 import noteService from './services/noteService'
+import loginService from './services/login'
 import LoginForm from './components/LoginForm'
 import Togglable from './components/Togglable'
 
@@ -11,8 +12,6 @@ const App = () => {
   const [errorMessage,setErrorMessage] = useState(null)
   const [user, setUser] = useState(null)
   const [notes,setNotes] = useState([])
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
 
   const getAllNotesHook = () => {
     noteService
@@ -41,6 +40,28 @@ const App = () => {
       return null;
   }
 
+  const handleLogin = async (username,password) => {
+    try{
+      const user = await loginService.login({
+        username,password,
+      })
+      console.log('logged in with user',user)
+      window.localStorage.setItem(
+        'loggedNoteAppUser',JSON.stringify(user)
+      )
+      noteService.setToken(user.token)
+      console.log(`token set to ${user.token}`)
+      setUser(user)
+
+    } catch (e){
+      console.log(`Error: ${e.message}`)
+      setErrorMessage('Wrong credentials')
+      setTimeout(() => {
+        setErrorMessage(null)
+      },5000)
+    }     
+  }
+
   const handleLogout = () => {
     console.log('logging out')
     window.localStorage.clear()
@@ -67,16 +88,7 @@ const App = () => {
 
       {user === null ? 
         <Togglable buttonLabel='Show login form'>
-          <LoginForm
-            username={username}
-            setUsername={setUsername}
-            password={password}
-            setPassword={setPassword}
-            handleUsernameChange={({ target }) => setUsername(target.value)}
-            handlePasswordChange={({ target }) => setPassword(target.value)}
-            setUser={setUser}
-            setErrorMessage={setErrorMessage}
-          />
+          <LoginForm loginUser={handleLogin}/>
         </Togglable>
         : 
         <div>
