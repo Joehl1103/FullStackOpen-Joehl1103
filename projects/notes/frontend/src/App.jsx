@@ -11,7 +11,6 @@ const App = () => {
   const [errorMessage,setErrorMessage] = useState(null)
   const [user, setUser] = useState(null)
   const [notes,setNotes] = useState([])
-  const [newNote,setNewNote] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
@@ -49,22 +48,16 @@ const App = () => {
 
   }
 
-  // const loginForm = () => {
-   
-
-  //   return (
-  //     <>
-  //       <div style={hideWhenVisible}>
-  //         <button onClick={() => setLoginVisible(true)}>log in</button>
-  //       </div>
-  //       <div style={showWhenVisible}>
-       
-  //         <button onClick={() => setLoginVisible(false)}>cancel</button>
-  //       </div>
-  //     </>
-  //   )
-  //   }
-  
+  const addNote = (noteObject) => {
+    noteService
+          .create(noteObject)
+          .then(returnedNote => {
+            setNotes(notes.concat(returnedNote)) // concat creates a new copy
+          })
+          .catch(exception => {
+            console.log('exception in noteService.create',exception)
+          })
+  }
 
   return (
     <>
@@ -89,11 +82,7 @@ const App = () => {
         <div>
           <p>{user.name} logged-in <button onClick={handleLogout}>Logout</button></p> 
           <Togglable buttonLabel='add new note'>
-            <NoteForm
-              setNotes={setNotes}
-              setNewNote={setNewNote}
-              newNote={newNote}
-            notes={notes}/>
+            <NoteForm createNote={addNote}/>
           </Togglable>
           
         </div>
@@ -103,8 +92,6 @@ const App = () => {
         setErrorMessage={setErrorMessage}
         notes={notes}
         setNotes={setNotes}
-        newNote={newNote}
-        setNewNote={setNewNote}
         />
       <Footer/>
     </>
