@@ -28,14 +28,19 @@ const NoteDisplay = (props) => {
       } 
 
       const deleteNote = (id) => {
+        if(window.confirm(`Are you sure you want to delete this note?`)){
         noteService.deleteNote(id)
-          .then(response => {
+          .then(() => {
             // console.log("delete response",response)
             const notesCopy = [...props.notes].filter(note => note.id !== id)
             props.setNotes(notesCopy)
 
           })
-      }
+          .catch(error => {
+            console.log(`Error deleting note in the front end ${error.message}`)
+          })
+        }
+        }
 
       // console.log('notes in notedisplay',props.notes)
       const notesToShow = showAll ? props.notes : props.notes.filter(note => note.important === true)
