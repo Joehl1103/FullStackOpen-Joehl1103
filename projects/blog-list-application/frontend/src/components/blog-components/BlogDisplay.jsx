@@ -22,6 +22,7 @@ const BlogDisplay = ({ notificationSettingLogic,setNotificationType }) => {
         setTimeout(async () => {
           const newBlogs = await blogService.getAll()
           setBlogs(newBlogs)
+          window.location.reload()
         },100)
         notificationSettingLogic('deleted',`${title} by ${author} successfully deleted`,7000)
       }
