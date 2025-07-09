@@ -3,8 +3,6 @@ import blogService from '../../services/blogs'
 const Blog = (props) => {
   // console.log('props',props)
   const {blog,deleteAndRefresh} = props
-
- 
   
   return (
     <div>
