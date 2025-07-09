@@ -35,7 +35,7 @@ usersRouter.get('/', async (request,response) => {
 })
 
 function validatePassword(password){
-    return validated = /^(?=.*[A-Z])(?=.*[\d])(?=.*[!*@#$%&]).*$/.test(password)
+    return /^(?=.*[A-Z])(?=.*[\d])(?=.*[!*@#$%&]).*$/.test(password)
 }
 
 module.exports = usersRouter
