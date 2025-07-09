@@ -69,7 +69,7 @@ describe('when there is initially one user in the database', () => {
         assert.ok(response.error.text.includes('Username must be at least 5 characters long'))
     })
 
-    test('creation fails with a fresh username and incorrect password validation requirements', async () => {
+    test.only('creation fails with a fresh username and incorrect password validation requirements', async () => {
         let usersAtStart = undefined
         try {
             usersAtStart = await helper.usersInDb()
@@ -89,11 +89,12 @@ describe('when there is initially one user in the database', () => {
             .expect(400)
             .expect('Content-Type',/application\/json/)
 
-        assert.ok(response.error.text.includes('Password must contain at least 1 number, 1 upper-case letter, and one special character: !@#$%&*'))
+        assert.ok(response.error.text.includes('Password must contain at least 1 upper case letter, 1 lower case, and 1 symbol: !@#$%&*'))
 
     })
 
-    test.only('creation fails with proper statuscode and message if username already exists', async () => {
+    test('creation fails with proper statuscode and message if username already exists', async () => {
+
         const usersAtStart = await helper.usersInDb()
 
         const newUser = {
