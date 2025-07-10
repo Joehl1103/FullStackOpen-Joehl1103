@@ -41,13 +41,17 @@ const createBlog = async (blogInfo) =>{
 }
 
 const deleteBlog = async (id) => {
+  console.log('entering deleteBlog')
   const config = {
     headers: { Authorization: token},
   }
   console.log(`config = ${config.headers.Authorization}`)
   try {
+    console.log('hitting delete')
     const request = axios.delete(`${baseUrl}/${id}`,config)
+    console.log('hit delete')
     const response = request.data
+    console.log('delete response',response)
     return response
   } catch (e){
     console.log(`Error: ${e.message}`)
