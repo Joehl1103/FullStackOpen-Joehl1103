@@ -31,7 +31,8 @@ const BlogDisplay = ({ notificationSettingLogic,setNotificationType }) => {
 
     return (
         <div>
-          <Togglable buttonLabel='create new blog'>
+          {console.log('About to render Togglable with cancelLabel: cancel')}
+          <Togglable buttonLabel='create new blog' cancelLabel='cancel'>
             <BlogForm
               title={title}
               setTitle={setTitle}

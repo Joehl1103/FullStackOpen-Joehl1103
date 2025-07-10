@@ -52,7 +52,7 @@ const App = () => {
           )}
           
         {user === null ? 
-        <Togglable buttonLabel='login'>
+        <Togglable buttonLabel='login' cancelLabel='cancel'>
            <LoginForm 
             user={user}
             setUser={setUser}
