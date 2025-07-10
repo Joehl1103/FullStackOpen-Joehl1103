@@ -11,12 +11,11 @@ const BlogDisplay = ({ notificationSettingLogic,setNotificationType,user }) => {
   const [url, setUrl] = useState('')
 
   async function fetchData(){
-    console.log('fetching data')
     try {
     const response = await blogService.getAll()
-    console.log('response',response)
+    function reverse(a,b){return b.likes - a.likes}
+    response.sort(reverse)
     setBlogs(response)
-    console.log('set blogs to ',response)
   }catch(e){
     console.log(`Error: ${e.message}`)
   }}

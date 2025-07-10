@@ -21,6 +21,7 @@ const BlogForm = ({
           likes: 0,
           user: null
         }
+        console.log('blogInfo',blogInfo)
         try {
           const response = await blogService.createBlog(blogInfo)
           setBlogs(blogs.concat(response))

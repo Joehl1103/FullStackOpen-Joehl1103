@@ -20,19 +20,15 @@ axios.interceptors.response.use(
     }
 )
 
-const config ={
-  header: { Authorization: token},
-}
-
 const getAll = () => {
   const request = axios.get(baseUrl)
   return request.then(response => response.data)
 }
 
 const createBlog = async (blogInfo) =>{
-  // const config = {
-  //   headers: { Authorization: token},
-  // }
+  const config = {
+    headers: { Authorization: token},
+  }
   try{
     const request = await axios.post(baseUrl,blogInfo,config)
     const response = request.data
@@ -45,9 +41,9 @@ const createBlog = async (blogInfo) =>{
 }
 
 const deleteBlog = async (id) => {
-  // const config = {
-  //   headers: { Authorization: token},
-  // }
+  const config = {
+    headers: { Authorization: token},
+  }
   console.log(`config = ${config.headers.Authorization}`)
   try {
     const request = axios.delete(`${baseUrl}/${id}`,config)
@@ -60,6 +56,9 @@ const deleteBlog = async (id) => {
 }
 
 const updateBlog = async (blogObject,id) =>{
+  const config = {
+    headers: { Authorization: token},
+  }
   try {
     const request = axios.put(`${baseUrl}/${id}`,blogObject,config)
     const response = request.data
