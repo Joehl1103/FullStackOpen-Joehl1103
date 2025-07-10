@@ -74,10 +74,6 @@ blogsRouter.delete('/:id', middleware.userExtractor, async (request,response) =>
     const blogUser = blogToBeDeleted.user.toString()
     console.log('blogToBeDeleted',blogToBeDeleted)
     console.log('blogUser',blogUser)
-    // if(!(user.id === blogUser)){
-    //     console.log('user id and blogUser id are not the same')
-    //     return response.status(401).json({ error: `id of token not the same as id of blog user` })
-    // }
     try {
         await Blog.deleteOne({ _id: id })
         console.log('succesfully deleted!')

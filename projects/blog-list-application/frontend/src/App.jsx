@@ -66,6 +66,7 @@ const App = () => {
               <BlogDisplay
                 notificationSettingLogic={notificationSettingLogic}
                 setNotificationType={setNotificationType}
+                user={user}
               />
             </div>
             }
