@@ -6,7 +6,7 @@ const baseUrl = '/api/notes'
 // private variable
 let token = null
 
-const setToken = newToken =>{
+const setToken = newToken => {
     token = `Bearer ${newToken}`
 }
 
@@ -15,12 +15,12 @@ const getAll = () => {
     const request = axios.get(baseUrl)
     // console.log('called request')
     return request
-            .then(response => {
-                return response.data
-            })
-            .catch(error => {
-               console.log('error',error) 
-            })
+        .then(response => {
+            return response.data
+        })
+        .catch(error => {
+            console.log('error',error)
+        })
 }
 
 const create = async newObject => {
@@ -36,11 +36,11 @@ const create = async newObject => {
 const update = (id,newObject) => {
     const request = axios.put(`${baseUrl}/${id}`,newObject)
     return request.then(response => response.data)
- }
+}
 
 const deleteNote = (id) => {
     const request = axios.delete(`${baseUrl}/${id}`)
     return request.then(response => response.data)
 }
 
-export default {getAll,create,update,deleteNote,setToken}
+export default { getAll,create,update,deleteNote,setToken }
