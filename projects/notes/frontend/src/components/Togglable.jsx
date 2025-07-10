@@ -1,4 +1,5 @@
-import { useState, forwardRef, useImperativeHandle } from "react";
+import { useState, useImperativeHandle } from 'react'
+import PropTypes from 'prop-types'
 
 // what element is the ref assigned to? Or, does the imperativeHandle assign the ref to toggleVisibility
 
@@ -6,7 +7,7 @@ const Togglable = ({ buttonLabel,ref,children }) => {
     const [loginVisible,setLoginVisible] = useState(false)
 
     const hideWhenVisible = { display: loginVisible ? 'none' : '' }
-    const showWhenVisible = { display: loginVisible ? '' : 'none'}
+    const showWhenVisible = { display: loginVisible ? '' : 'none' }
 
     const toggleVisibility = () => {
         setLoginVisible(!loginVisible)
@@ -29,7 +30,10 @@ const Togglable = ({ buttonLabel,ref,children }) => {
             </div>
         </>
     )
-    
+}
+
+Togglable.propTypes = {
+    buttonLabel: PropTypes.string.isRequired
 }
 
 export default Togglable
