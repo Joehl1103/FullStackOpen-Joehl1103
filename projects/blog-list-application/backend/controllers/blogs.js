@@ -59,23 +59,36 @@ blogsRouter.post('/',middleware.userExtractor, async (request,response) => {
 
 blogsRouter.delete('/:id', middleware.userExtractor, async (request,response) => {
     console.log('params',request.params)
-    const id = request.params.id
-    if(!id){
+    const blogId = request.params.id
+    if(!blogId){
         console.log('no id')
         return response.status(400).send('id not found in request')
     }
-    const blogToBeDeleted = await Blog.findById(id)
+    console.log('blogid ok. hitting findById')
+    let blogToBeDeleted
+    try{
+        blogToBeDeleted = await Blog.findById(blogId)
+    } catch (e){
+        console.log(`Error deleting blog: ${e.message}`)
+        return response.status(500).json({ Error: e.message})
+    }
     if(!blogToBeDeleted){
         console.log('no blog to be deleted')
         return response.status(404).send('no blog found')
     }
-    const user = request.user
-    console.log('user',user)
+    const userId = request.user._id.toString()
+    // console.log(`userId if of type ${typeof userId}: ${userId}`)
+    // console.log(`blogToBeDeleted user id is of type ${typeof blogToBeDeleted.user}`)
+
+    if(userId !== blogToBeDeleted.user.toString()){
+        console.log(`user id ${user} is NOT equal to blog user ${blogToBeDeleted.user} `)
+        return response.status(400).json({ Error: '`user id ${user} is NOT equal to blog user ${blogToBeDeleted.user} `'})
+    } 
     const blogUser = blogToBeDeleted.user.toString()
     console.log('blogToBeDeleted',blogToBeDeleted)
     console.log('blogUser',blogUser)
     try {
-        await Blog.deleteOne({ _id: id })
+        await Blog.deleteOne({ _id: blogId })
         console.log('succesfully deleted!')
         return response.status(204).send('blog successfully deleted')
     } catch (e) {
