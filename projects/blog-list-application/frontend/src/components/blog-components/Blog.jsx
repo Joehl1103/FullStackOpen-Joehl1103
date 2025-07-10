@@ -27,6 +27,7 @@ const Blog = ({ blog,deleteAndRefresh,user,fetchData }) => {
             Author: {blog.author}<br/>
             Url: <a href={blog.url}>{blog.url}</a><br/>
             Likes: {blog.likes}{' '}<button onClick={handleLike}>like</button><br/>
+            Blog added by {user.username}<br/>
             <button onClick={() => deleteAndRefresh(blog.id,blog.title,blog.author)}>delete blog</button><br/>
           </Togglable>
      </div>
