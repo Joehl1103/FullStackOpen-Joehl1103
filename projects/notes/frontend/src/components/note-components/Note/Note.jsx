@@ -5,8 +5,8 @@ const Note  = (props) => {
 
     return (
         <li className='note'>
-            {note.content} {note.important === true && '🚨Important🚨'}&nbsp;
-            <button onClick={props.toggleImportanceOf}>{label}</button>&nbsp;
+            {note.content} {note.important === true && '🚨Important🚨'}{' '};
+            <button onClick={props.toggleImportanceOf}>{label}</button>{' '};
             <button onClick={() => props.deleteNote(note.id)}>Delete</button>
         </li>
     )
