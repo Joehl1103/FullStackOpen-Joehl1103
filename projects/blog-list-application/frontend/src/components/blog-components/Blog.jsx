@@ -22,7 +22,7 @@ const Blog = ({ blog,deleteAndRefresh,user,fetchData }) => {
   return (
     <div>
       <div className='blogDiv'>
-          <h4>{blog.title}</h4>
+          <h4>{blog.title} by {blog.author}</h4>
           <Togglable buttonLabel='view details' cancelLabel='hide details'>
             Author: {blog.author}<br/>
             Url: <a href={blog.url}>{blog.url}</a><br/>
