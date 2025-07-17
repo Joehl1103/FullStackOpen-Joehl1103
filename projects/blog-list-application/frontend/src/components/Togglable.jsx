@@ -14,12 +14,12 @@ const Togglable = ({ buttonLabel,cancelLabel,children }) => {
 
     return (
         <div className="togglable">
-            <div style={hideWhenVisible}>
-                <button onClick={toggleVisibility}>{buttonLabel}</button>
+            <div  style={hideWhenVisible}>
+                <button className="visible" onClick={toggleVisibility}>{buttonLabel}</button>
             </div>
             <div className="details" style={showWhenVisible}>
                 {children}
-                <button onClick={toggleVisibility}>{cancelLabel}</button>
+                <button className="hideDetails" onClick={toggleVisibility}>{cancelLabel}</button>
             </div>
         </div>
     )
