@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
 
-describe('testing blog visibility', () => {
+describe('testing blog', () => {
 
     let container
 
@@ -22,7 +22,7 @@ describe('testing blog visibility', () => {
 
     beforeEach(() => {
         container = render(
-            <Blog blog={blog} user={user} />
+            <Blog blog={blog} user={user} handleLike={mockHandler} />
         ).container
     })
 
@@ -37,7 +37,7 @@ describe('testing blog visibility', () => {
         expect(details).toHaveStyle('display: none')
     })
     
-    test.only('renders author,url,likes when details are clicked', async () => {
+    test('renders author,url,likes when details are clicked', async () => {
 
         const user = userEvent.setup()
         const button = screen.getByText("view details")
@@ -59,5 +59,27 @@ describe('testing blog visibility', () => {
         expect(hideDetails).toBeVisible()
 
     })
+
+    test.only('when like button clicked, event handler is called', async () => {
+
+        const user = userEvent.setup()
+        const detailsButton = screen.getByText('view details')
+        await user.click(detailsButton)
+    
+        const likeButton = screen.getByText('like')
+        // console.log('like button',likeButton)
+        await user.click(likeButton)
+        await user.click(likeButton)
+        console.log('mock handler calls',mockHandler.mock.calls)
+
+        screen.debug()
+
+        expect(mockHandler.mock.calls).toHaveLength(2)
+
+    })
+
 })
+
+  
+
 

@@ -37,6 +37,22 @@ const BlogDisplay = ({ notificationSettingLogic,setNotificationType,user }) => {
       
     }
 
+    async function handleLike(blog){
+      console.log('handleLike function')
+      const newBlogObject = {
+        title: blog.title,
+        author: blog.author,
+        url: blog.url,
+        likes: blog.likes+1,
+        user: user.id
+      }
+      await blogService.updateBlog(newBlogObject,blog.id)
+      setTimeout(() =>{
+        fetchData()
+      },75)
+  
+    }
+
     return (
         <div>
           <Togglable buttonLabel='create new blog' cancelLabel='cancel'>
@@ -62,6 +78,7 @@ const BlogDisplay = ({ notificationSettingLogic,setNotificationType,user }) => {
                 deleteAndRefresh={deleteAndRefresh}
                 user={user}
                 fetchData={fetchData}
+                handleLike={handleLike}
                 />
             )}
         </div>
