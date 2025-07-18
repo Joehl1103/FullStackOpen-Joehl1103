@@ -6,44 +6,28 @@ const BlogForm = ({
     setAuthor,
     url,
     setUrl,
-    setNotificationType,
-    notificationSettingLogic,
-    blogs,
-    setBlogs
+    createBlog
     }) => {
 
-    const createBlog = async (event) => {
+    const handleSubmit = (event) => {
         event.preventDefault()
-        const blogInfo = {
-          title: title,
-          author: author,
-          url: url,
-          likes: 0,
-          user: null
-        }
-        console.log('blogInfo',blogInfo)
-        try {
-          const response = await blogService.createBlog(blogInfo)
-          setBlogs(blogs.concat(response))
-          setTitle('')
-          setAuthor('')
-          setUrl('')          
-          notificationSettingLogic('blogSuccess',`${title} by ${author} added!`,5000)
-        } catch(error) {
-            setNotificationType('blogFailure',error.message)
-        }
-        
-      }
+        createBlog(
+            title,
+            author,
+            url
+        )
+    }
+    
     return (
         <>
             <h2>Add new blog</h2>
-                <form onSubmit={createBlog}>
+                <form onSubmit={handleSubmit}>
                 title: {' '}
-                <input type="text" name="title" value={title} onChange={({ target }) => setTitle(target.value)}/><br/>
+                <input id='title' type="text" name="title" value={title} onChange={({ target }) => setTitle(target.value)}/><br/>
                 author: {' '}
-                <input type="text" name="author" value={author} onChange={({ target }) => setAuthor(target.value)}/><br/>
+                <input id='author' type="text" name="author" value={author} onChange={({ target }) => setAuthor(target.value)}/><br/>
                 url: {' '}
-                <input type="text" name="url" value={url} onChange={({ target }) => setUrl(target.value)}/><br/>
+                <input id='url' type="text" name="url" value={url} onChange={({ target }) => setUrl(target.value)}/><br/>
 
                 <button type="submit">create new blog</button>
 
