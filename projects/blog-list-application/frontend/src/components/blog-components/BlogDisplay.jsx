@@ -53,6 +53,32 @@ const BlogDisplay = ({ notificationSettingLogic,setNotificationType,user }) => {
   
     }
 
+    const createBlog = async (title,author,url) => {
+      console.log('title',title)
+      console.log('author',author)
+      console.log('url',url)
+      const blogInfo = {
+        title: title,
+        author: author,
+        url: url,
+        likes: 0,
+        user: null
+      }
+      console.log('blogInfo',blogInfo)
+      try {
+        const response = await blogService.createBlog(blogInfo)
+        console.log('create blog response',response)
+        setBlogs(blogs.concat(response))
+        setTitle('')
+        setAuthor('')
+        setUrl('')          
+        notificationSettingLogic('blogSuccess',`${title} by ${author} added!`,5000)
+      } catch(error) {
+          setNotificationType('blogFailure',error.message)
+      }
+      
+    }
+
     return (
         <div>
           <Togglable buttonLabel='create new blog' cancelLabel='cancel'>
@@ -63,10 +89,7 @@ const BlogDisplay = ({ notificationSettingLogic,setNotificationType,user }) => {
               setAuthor={setAuthor}
               url={url}
               setUrl={setUrl}
-              setNotificationType={setNotificationType}
-              notificationSettingLogic={notificationSettingLogic}
-              blogs={blogs}
-              setBlogs={setBlogs}
+              createBlog={createBlog}
             />
           </Togglable>
         
