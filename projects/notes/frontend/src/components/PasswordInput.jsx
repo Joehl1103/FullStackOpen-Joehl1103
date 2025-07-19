@@ -17,7 +17,7 @@ export default function PasswordInput({ password, setPassword }){
                 placeholder='password'
                 id='password'
                 onChange={({ target }) => setPassword(target.value)}/>
-            <span onClick={() => setVisible(!visible)}>{visible ? <EyeOutlined/> : <EyeInvisibleOutlined/> }</span>
+            <span onClick={() => setVisible(!visible)}>{visible ?  <EyeInvisibleOutlined/> : <EyeOutlined/> }</span>
         </div>
     )
 }
