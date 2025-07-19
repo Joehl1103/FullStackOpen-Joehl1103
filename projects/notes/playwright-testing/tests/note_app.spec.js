@@ -66,14 +66,18 @@ describe('Note app', () => {
       await expect(page.getByText('a note created by playwright')).toBeVisible()
     })
 
-    describe('and a note exists', () => {
+    describe('and several notes exists', () => {
       beforeEach(async ({ page }) => {
-        await createNote(page,'another note created by playwright')
+        await createNote(page,'first note')
+        await createNote(page,'second note')
+        await createNote(page,'third note')
       })
 
-      test('importance can be changed', async ({ page }) => {
-        await page.getByRole('button', { name: 'make not important'}).click()
-        await expect(page.getByText('make important')).toBeVisible()
+      test.only('one note can be made unimportant', async ({ page }) => {
+        await page.pause()
+        const noteElement = await page.getByText('second note').locator('..')
+        await noteElement.getByRole('button', { name: 'make not important'}).click()
+        await expect(noteElement.getByText('make important')).toBeVisible()
       })
     })
 

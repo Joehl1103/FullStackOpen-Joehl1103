@@ -5,7 +5,7 @@ const Note  = (props) => {
 
     return (
         <li className='note'>
-            {note.content} {note.important === true && '🚨Important🚨'}{' '}
+            <span>{note.content} {note.important === true && '🚨Important🚨'}{' '}</span>
             <button onClick={props.toggleImportanceOf}>{label}</button>{' '}
             <button onClick={() => props.deleteNote(note.id)}>Delete</button>
         </li>
