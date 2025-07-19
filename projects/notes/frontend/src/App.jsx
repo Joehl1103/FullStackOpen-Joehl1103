@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import Notification from './components/Notification'
 import Footer from './components/Footer'
 import NoteDisplay from './components/note-components/NoteDisplay'
-import NoteForm from './components/note-components/noteform/NoteForm'
+import NoteForm from './components/note-components/NoteForm'
 import noteService from './services/noteService'
 import loginService from './services/login'
 import LoginForm from './components/LoginForm'
@@ -83,7 +83,7 @@ const App = () => {
 
     return (
         <>
-            <h1>Notes</h1>
+            <h1 data-testid="main-notes-header">Notes</h1>
 
             <Notification message={errorMessage}/>
 

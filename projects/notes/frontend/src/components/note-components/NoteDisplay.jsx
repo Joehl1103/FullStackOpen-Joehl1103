@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import noteService from '../../services/noteService'
-import Note from './Note/Note'
+import Note from './Note'
 
 const NoteDisplay = (props) => {
     const [showAll, setShowAll] = useState(true)
