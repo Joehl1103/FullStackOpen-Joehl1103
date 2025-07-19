@@ -58,6 +58,19 @@ describe('Note app', () => {
       await expect(page.getByText('a note created by playwright')).toBeVisible()
     })
 
+    describe('and a note exists', () => {
+      beforeEach(async ({ page }) => {
+        await page.getByRole('button',{ name: 'add new note'}).click()
+        await page.getByRole('textbox').fill('another note byt playwright')
+        await page.getByRole('button', { name: 'Submit'}).click()
+      })
+
+      test.only('importance can be changed', async ({ page }) => {
+        await page.getByRole('button', { name: 'make not important'}).click()
+        await expect(page.getByText('make important')).toBeVisible()
+      })
+    })
+
   })
 
 })
