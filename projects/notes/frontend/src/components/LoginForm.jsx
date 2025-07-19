@@ -29,6 +29,7 @@ const LoginForm = ({ loginUser }) => {
             </div>
             <div>
                 <PasswordInput
+                    data-testid="password"
                     password={password}
                     setPassword={setPassword}/>
             </div>
