@@ -21,19 +21,25 @@ blogsRouter.get('/',async (request,response) => {
 
 blogsRouter.post('/',middleware.userExtractor, async (request,response) => {
     console.log('entering post')
+
     let body = request.body
+    console.log('body in post',body)
     const user = request.user
     if(!user){
+        console.log('user is missing')
         return response.status(400).json({ error: 'userId missing or not valid' })
     }
 
     if(!body.author && !body.title){
+        console.log('no author and title')
         response.status(400).send('author and title are missing')
         return
     } else if (!body.author && body.title){
+        console.log('no author')
         response.status(400).send('author is missing')
         return
     } else if (body.author && !body.title){
+        console.log('no title')
         response.status(400).send('no title')
         return
     }
