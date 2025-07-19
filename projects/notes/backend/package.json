@@ -16,7 +16,8 @@
     "build:ui": "rm -rf dist && cd ../frontend && npm run build && cp -r dist ../backend",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push origin main",
     "deploy:backend": "git add . && git commit -m bebuild && git push origin main",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "start:test": "NODE_ENV=test node --watch index.js"
   },
   "author": "joe-loomis",
   "license": "ISC",

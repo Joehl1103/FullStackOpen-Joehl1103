@@ -11,15 +11,18 @@ const loginRouter = require('./controllers/login.js')
 const app = express()
 
 if(process.env.NODE_ENV === 'test'){
-    logger.info('connecting to test database at ',config.MONGODB_URI)
+    console.log('connecting to test database at ',config.MONGODB_URI)
+    // logger.info('connecting to test database at ',config.MONGODB_URI)
 } else {
-    logger.info('connecting to production database at ',config.MONGODB_URI)
+    console.log('connecting to test database at ',config.MONGODB_URI)
+    // logger.info('connecting to production database at ',config.MONGODB_URI)
 }
 
 mongoose
     .connect(config.MONGODB_URI)
     .then(() => {
-        logger.info('connected to MongoDB')
+        console.log('connected to MongoDB')
+        // logger.info('connected to MongoDB')
     })
     .catch((error) => {
         logger.error('error connecting to MongoDB:',error.message)
@@ -35,6 +38,12 @@ app.use(middleware.requestLogger)
 app.use('/api/notes',notesRouter)
 app.use('/api/users',usersRouter)
 app.use('/api/login',loginRouter)
+
+// reset the database if started in test mode
+if (process.env.NODE_ENV === 'test'){
+    const testingRouter = require('./controllers/testing')
+    app.use('/api/testing',testingRouter)
+}
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
