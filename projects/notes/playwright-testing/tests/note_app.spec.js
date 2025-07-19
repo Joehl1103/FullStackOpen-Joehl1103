@@ -42,6 +42,20 @@ describe('Note app', () => {
     await expect(page.getByText('henry portmeister logged-in')).toBeVisible()
   })
 
+  test.only('login fails with wrong password', async ({ page }) => {
+    await page.getByRole('button', { name: 'Show login form'}).click()
+    await page.getByTestId('username').fill('jamormis')
+    await page.getByTestId('password').fill('wrong')
+    await page.getByRole('button',{ name: 'login'}).click()
+
+    const errorDiv = page.locator('.error')
+    await expect(errorDiv).toContainText('Wrong credentials')
+    await expect(errorDiv).toHaveCSS('border-style','solid')
+    await expect(errorDiv).toHaveCSS('color','rgb(255, 0, 0)')
+
+    await expect(page.getByText('henry portmeister logged-in')).not.toBeVisible()
+  })
+
   describe('when logged in', () => {
     // before each test, log in as jamormis
     beforeEach(async ({ page }) => {
@@ -65,7 +79,7 @@ describe('Note app', () => {
         await page.getByRole('button', { name: 'Submit'}).click()
       })
 
-      test.only('importance can be changed', async ({ page }) => {
+      test('importance can be changed', async ({ page }) => {
         await page.getByRole('button', { name: 'make not important'}).click()
         await expect(page.getByText('make important')).toBeVisible()
       })
