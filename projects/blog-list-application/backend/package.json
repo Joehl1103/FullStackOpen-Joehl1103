@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=test node --test",
+    "test": "NODE_ENV=test node --watch --test",
     "test:blog": "NODE_ENV=test node --test tests/blog_api.test.js",
     "test:only:blog": "NODE_ENV=test node --test --test-only tests/blog_api.test.js",
     "test:users": "NODE_ENV=test node --test tests/user_api.test.js",
@@ -11,6 +11,7 @@
     "test:login": "NODE_ENV=test node --test tests/login_api.test.js",
     "test:only:login": "NODE_ENV=test node --test --test-only tests/login_api.test.js",
     "start": "NODE_ENV=production node index.js",
+    "start:test": "NODE_ENV=test node --watch index.js",
     "dev": "NODE_ENV=development node --watch index.js"
   },
   "repository": {

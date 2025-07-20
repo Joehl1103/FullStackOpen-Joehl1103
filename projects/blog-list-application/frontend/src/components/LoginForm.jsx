@@ -37,6 +37,7 @@ const LoginForm = (props) => {
           <div>
             username: {' '}
             <input 
+              data-testid="username"
               type="text"
               value={username}
               name="Username"
@@ -45,6 +46,7 @@ const LoginForm = (props) => {
           <div>
             password: {' '}
             <input
+              data-testid="password"
               type="password"
               value={password}
               name="password"
@@ -53,7 +55,7 @@ const LoginForm = (props) => {
                 setPassword(target.value)}}
             />
           </div>
-          <button type="submit">login</button>
+          <button type="submit" data-testid="login-button">login</button>
         </form>
       )
 }
