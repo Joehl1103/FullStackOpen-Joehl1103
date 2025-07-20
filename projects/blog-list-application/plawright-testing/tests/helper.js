@@ -1,8 +1,16 @@
-const loginWith = async (page) => {
+const loginWith = async (page,username,password) => {
     await page.getByText('show login form').click()
-    await page.getByTestId('username').fill('jaloomis')
-    await page.getByTestId('password').fill('REDACTED_TEST_PASSWORD')
+    await page.getByTestId('username').fill(username)
+    await page.getByTestId('password').fill(password)
     await page.getByTestId('login-button').click()
 }
 
-export { loginWith }
+const createBlog = async(page,title,author,url) => {
+    await page.getByTestId('title').fill(title)
+    await page.getByTestId('author').fill(author)
+    await page.getByTestId('url').fill(url)
+    await page.getByTestId('createBlogButton').click()
+    await page.getByText(`${title} by ${author}`).waitFor()
+}
+
+export { loginWith,createBlog }
