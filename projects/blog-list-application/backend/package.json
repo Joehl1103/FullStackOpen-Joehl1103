@@ -10,6 +10,8 @@
     "test:only:users": "NODE_ENV=test node --test --test-only tests/user_api.test.js",
     "test:login": "NODE_ENV=test node --test tests/login_api.test.js",
     "test:only:login": "NODE_ENV=test node --test --test-only tests/login_api.test.js",
+    "test:testing": "NODE_ENV=test node --test tests/testing_api.test.js",
+    "test:only:testing": "NODE_ENV=test node --test --test-only tests/testing_api.test.js",
     "start": "NODE_ENV=production node index.js",
     "start:test": "NODE_ENV=test node --watch index.js",
     "dev": "NODE_ENV=development node --watch index.js"

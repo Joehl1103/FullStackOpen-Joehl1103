@@ -11,9 +11,7 @@
 }
 
 .failure {
-    border:solid;
-    border-width: 2px;
-    border-color:rgb(100, 2, 2);
+    border:2px solid rgb(100, 2, 2);
     color: red;
     background-color: rgb(255, 144, 144);
     padding: 5px;

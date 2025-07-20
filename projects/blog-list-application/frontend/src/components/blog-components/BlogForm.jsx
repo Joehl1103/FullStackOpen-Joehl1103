@@ -23,13 +23,13 @@ const BlogForm = ({
             <h2>Add new blog</h2>
                 <form onSubmit={handleSubmit}>
                 title: {' '}
-                <input id='title' type="text" name="title" value={title} onChange={({ target }) => setTitle(target.value)}/><br/>
+                <input data-testid='title' type="text" name="title" value={title} onChange={({ target }) => setTitle(target.value)}/><br/>
                 author: {' '}
-                <input id='author' type="text" name="author" value={author} onChange={({ target }) => setAuthor(target.value)}/><br/>
+                <input data-testid='author' type="text" name="author" value={author} onChange={({ target }) => setAuthor(target.value)}/><br/>
                 url: {' '}
-                <input id='url' type="text" name="url" value={url} onChange={({ target }) => setUrl(target.value)}/><br/>
+                <input data-testid='url' type="text" name="url" value={url} onChange={({ target }) => setUrl(target.value)}/><br/>
 
-                <button type="submit">create new blog</button>
+                <button data-testid="createBlogButton" type="submit">create new blog</button>
 
             </form>
         </>
