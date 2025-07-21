@@ -2,12 +2,16 @@ const { test,expect,describe,beforeEach } = require('@playwright/test')
 const { loginWith, createBlog } = require('./helper')
 describe('blog app', () => {
     beforeEach(async ({ page, request }) => {
-        request.post('/api/testing/reset')
-        request.post('/api/users',{
+        await request.post('/api/testing/reset')
+
+        const newUser = {
             username: 'jaloomis',
             name:'Henry Kissinger',
             password: 'REDACTED_TEST_PASSWORD'
-        })
+        }
+        await request.post('/api/users', { data: newUser })
+
+        console.log('create new user',newUser)
 
         await page.goto('/')
 
@@ -49,7 +53,16 @@ describe('blog app', () => {
                 await page.getByTestId('toggle-on-button').click()
                 await page.getByRole('heading', { name: 'Add new blog'}).waitFor()
                 await createBlog(page,'first blog','first author','first url')
-                await expect(page.getByText('first blog by first author')).toBeVisible()
+                await expect(page.getByRole('heading', {name: 'first blog by first author' })).toBeVisible()
+            })
+
+            test.only('can like a created blog', async ({ page }) => {
+                await page.getByTestId('toggle-on-button').click()
+                await page.getByRole('heading', { name: 'Add new blog'}).waitFor()
+                await createBlog(page,'first blog','first author','first url')
+                await page.getByRole('button', { name: 'view details' }).click()
+                await page.getByRole('button', { name: 'like' }).click()
+                await expect(page.getByText('Likes: 1')).toBeVisible() 
             })
         })
     })

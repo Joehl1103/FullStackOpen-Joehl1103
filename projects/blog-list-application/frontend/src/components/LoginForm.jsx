@@ -1,6 +1,7 @@
 import loginService from '../services/login'
 import blogService from '../services/blogs'
 import { useState } from 'react'
+import PasswordInput from './PasswordInput'
 
 const LoginForm = (props) => {
 
@@ -44,16 +45,10 @@ const LoginForm = (props) => {
               onChange={({ target }) => setUsername(target.value)}/>
           </div>
           <div>
-            password: {' '}
-            <input
-              data-testid="password"
-              type="password"
-              value={password}
-              name="password"
-              onChange={({ target }) => {
-                console.log(`target.value ${target.value}`)
-                setPassword(target.value)}}
-            />
+          <PasswordInput
+                    data-testid="password"
+                    password={password}
+                    setPassword={setPassword}/>
           </div>
           <button type="submit" data-testid="login-button">login</button>
         </form>
