@@ -50,19 +50,23 @@ describe('blog app', () => {
             })
 
             test('a new blog can be created', async ({ page }) => {
-                await page.getByTestId('toggle-on-button').click()
                 await page.getByRole('heading', { name: 'Add new blog'}).waitFor()
-                await createBlog(page,'first blog','first author','first url')
                 await expect(page.getByRole('heading', {name: 'first blog by first author' })).toBeVisible()
             })
 
-            test.only('can like a created blog', async ({ page }) => {
-                await page.getByTestId('toggle-on-button').click()
-                await page.getByRole('heading', { name: 'Add new blog'}).waitFor()
+            test('can like a created blog', async ({ page }) => {
                 await createBlog(page,'first blog','first author','first url')
                 await page.getByRole('button', { name: 'view details' }).click()
                 await page.getByRole('button', { name: 'like' }).click()
                 await expect(page.getByText('Likes: 1')).toBeVisible() 
+            })
+
+            test.only('can delete a blog', async ({ page }) => {
+                await createBlog(page,'first blog','first author', 'first url')
+                await page.getByRole('button', { name: 'view details'}).click()
+                page.on('dialog',dialog => dialog.accept())
+                await page.getByRole('button',{ name: 'delete blog'}).click()
+                await expect(page.getByRole('heading', { name: 'first blog by first author' })).not.toBeVisible()
             })
         })
     })
