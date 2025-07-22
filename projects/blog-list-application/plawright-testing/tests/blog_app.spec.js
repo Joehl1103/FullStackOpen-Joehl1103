@@ -11,7 +11,14 @@ describe('blog app', () => {
         }
         await request.post('/api/users', { data: newUser })
 
-        console.log('create new user',newUser)
+        const anotherUser = {
+            username: 'anotherUser',
+            name: 'another username',
+            password: 'REDACTED_TEST_PASSWORD'
+        }
+
+        await request.post('/api/users', { data: anotherUser })
+        // console.log('create new user',newUser)
 
         await page.goto('/')
 
@@ -61,12 +68,25 @@ describe('blog app', () => {
                 await expect(page.getByText('Likes: 1')).toBeVisible() 
             })
 
-            test.only('can delete a blog', async ({ page }) => {
+            test('can delete a blog', async ({ page }) => {
                 await createBlog(page,'first blog','first author', 'first url')
                 await page.getByRole('button', { name: 'view details'}).click()
                 page.on('dialog',dialog => dialog.accept())
                 await page.getByRole('button',{ name: 'delete blog'}).click()
                 await expect(page.getByRole('heading', { name: 'first blog by first author' })).not.toBeVisible()
+            })
+
+            test.only('only creator can see delete button', async ({ page }) => {
+                await createBlog(page,'first blog','first author', 'first url')
+                page.on('dialog',dialog => dialog.accept())
+                await page.getByRole('button', { name: 'logout'}).click()
+                await expect(page.getByRole('button', { name: 'show login form' })).toBeVisible()
+
+                await loginWith(page,'anotherUser','REDACTED_TEST_PASSWORD')
+                await expect(page.getByText('Logged in as anotherUser')).toBeVisible()
+
+                await page.getByRole('button',{ name: 'view details' }).click()
+                await expect(page.getByRole('button', { name: 'delete blog'})).not.toBeVisible()
             })
         })
     })
