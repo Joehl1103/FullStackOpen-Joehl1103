@@ -20,7 +20,7 @@ blogsRouter.get('/',async (request,response) => {
 })
 
 blogsRouter.post('/',middleware.userExtractor, async (request,response) => {
-    console.log('entering post')
+    console.log('ENTERING BLOGS POST')
 
     let body = request.body
     console.log('body in post',body)

@@ -24,21 +24,8 @@ const BlogDisplay = ({ notificationSettingLogic,setNotificationType,user }) => {
     fetchData()
   }, [])
 
-    const deleteAndRefresh=async(id,title,author)=>{
-      if (window.confirm(`Are you sure that you want to delete ${title} by ${author}?`)){
-        await blogService.deleteBlog(id)
-        setTimeout(async () => {
-          const newBlogs = await blogService.getAll()
-          setBlogs(newBlogs)
-          window.location.reload()
-        },100)
-        notificationSettingLogic('deleted',`${title} by ${author} successfully deleted`,7000)
-      }
-      
-    }
-
     async function handleLike(blog){
-      console.log('handleLike function')
+      // console.log('handleLike function')
       const newBlogObject = {
         title: blog.title,
         author: blog.author,
@@ -79,6 +66,19 @@ const BlogDisplay = ({ notificationSettingLogic,setNotificationType,user }) => {
       
     }
 
+    const deleteAndRefresh=async(id,title,author)=>{
+      if (window.confirm(`Are you sure that you want to delete ${title} by ${author}?`)){
+        await blogService.deleteBlog(id)
+        setTimeout(async () => {
+          const newBlogs = await blogService.getAll()
+          setBlogs(newBlogs)
+          window.location.reload()
+        },100)
+        notificationSettingLogic('deleted',`${title} by ${author} successfully deleted`,7000)
+      }
+      
+    }
+
     return (
         <div>
           <Togglable buttonLabel='create new blog' cancelLabel='cancel'>
@@ -94,7 +94,9 @@ const BlogDisplay = ({ notificationSettingLogic,setNotificationType,user }) => {
           </Togglable>
         
             <h2>Blogs</h2>
-            {blogs.map(blog =>
+            {blogs.map(blog => {
+              {console.log('blog in blogs.map',blog)}
+              return(
               <Blog 
                 key={blog.id} 
                 blog={blog}
@@ -103,7 +105,8 @@ const BlogDisplay = ({ notificationSettingLogic,setNotificationType,user }) => {
                 fetchData={fetchData}
                 handleLike={handleLike}
                 />
-            )}
+            )
+          })}
         </div>
     )
 }
