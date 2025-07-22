@@ -1,7 +1,11 @@
 import Togglable from "../Togglable"
 import blogService from "../../services/blogs"
+import DeleteButton from "./DeleteButton"
+
 
 const Blog = ({ blog,deleteAndRefresh,user,fetchData,handleLike }) => {
+  console.log('user',user)
+  console.log('blog user',blog.user)
   
   return (
     <div>
@@ -12,7 +16,12 @@ const Blog = ({ blog,deleteAndRefresh,user,fetchData,handleLike }) => {
             Url: <a href={blog.url}>{blog.url}</a><br/>
             Likes: {blog.likes}{' '}<button onClick={() => handleLike(blog)}>like</button><br/>
             Blog added by {user.username}<br/>
-            <button onClick={() => deleteAndRefresh(blog.id,blog.title,blog.author)}>delete blog</button><br/>
+            {user.username === blog.user.username ? 
+              <DeleteButton 
+                blog={blog}
+                deleteAndRefresh={deleteAndRefresh}/> 
+                :
+                null}
           </Togglable>
      </div>
     </div>  
