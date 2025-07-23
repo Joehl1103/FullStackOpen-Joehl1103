@@ -57,11 +57,13 @@ describe('blog app', () => {
             })
 
             test('a new blog can be created', async ({ page }) => {
-                await page.getByRole('heading', { name: 'Add new blog'}).waitFor()
+                await page.getByRole('button', { name: 'create new blog' }).click()
+                await createBlog(page,'first blog','first author','first url')
                 await expect(page.getByRole('heading', {name: 'first blog by first author' })).toBeVisible()
             })
 
             test('can like a created blog', async ({ page }) => {
+                await page.getByRole('button', { name: 'create new blog' }).click()
                 await createBlog(page,'first blog','first author','first url')
                 await page.getByRole('button', { name: 'view details' }).click()
                 await page.getByRole('button', { name: 'like' }).click()
@@ -69,6 +71,7 @@ describe('blog app', () => {
             })
 
             test('can delete a blog', async ({ page }) => {
+                await page.getByRole('button', { name: 'create new blog' }).click()
                 await createBlog(page,'first blog','first author', 'first url')
                 await page.getByRole('button', { name: 'view details'}).click()
                 page.on('dialog',dialog => dialog.accept())
@@ -76,7 +79,8 @@ describe('blog app', () => {
                 await expect(page.getByRole('heading', { name: 'first blog by first author' })).not.toBeVisible()
             })
 
-            test.only('only creator can see delete button', async ({ page }) => {
+            test('only creator can see delete button', async ({ page }) => {
+                await page.getByRole('button', { name: 'create new blog' }).click()
                 await createBlog(page,'first blog','first author', 'first url')
                 page.on('dialog',dialog => dialog.accept())
                 await page.getByRole('button', { name: 'logout'}).click()
@@ -88,8 +92,27 @@ describe('blog app', () => {
                 await page.getByRole('button',{ name: 'view details' }).click()
                 await expect(page.getByRole('button', { name: 'delete blog'})).not.toBeVisible()
             })
+
+            test('blogs are sorted by likes', async({ page }) => {
+                await page.getByRole('button', { name: 'create new blog'}).click()
+                await createBlog(page,'first blog','first author', 'first url')
+                await createBlog(page,'second blog','second author', 'second url')
+
+                const blogItemOne = await(page.locator('.blogDiv')).first()
+                await blogItemOne.getByRole('button',{ name: 'view details' }).click()
+                await blogItemOne.getByRole('button',{ name: 'like' }).click()
+                await blogItemOne.getByText('Likes: 1').waitFor()
+
+                const blogItemTwo = await(page.locator('.blogDiv')).nth(1)
+                await blogItemTwo.getByRole('button',{ name: 'view details' }).click()
+                await blogItemTwo.getByRole('button',{ name: 'like' }).click()
+                await blogItemTwo.getByText('Likes: 1').waitFor()
+                await blogItemTwo.getByRole('button',{ name: 'like' }).click()
+                await page.getByText('Likes: 2').waitFor()
+
+                const blogItemTwoNowOne = await page.locator('.blogDiv').first()
+                await expect(blogItemTwoNowOne).toContainText('Likes: 2')
+            })
         })
     })
-
-   
 })

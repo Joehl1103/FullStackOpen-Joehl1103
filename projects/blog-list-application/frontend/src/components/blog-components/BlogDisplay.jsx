@@ -9,6 +9,7 @@ const BlogDisplay = ({ notificationSettingLogic,setNotificationType,user }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const [uniqueId, setUniqueId] = useState(1)
 
   async function fetchData(){
     try {
@@ -36,14 +37,14 @@ const BlogDisplay = ({ notificationSettingLogic,setNotificationType,user }) => {
       await blogService.updateBlog(newBlogObject,blog.id)
       setTimeout(() =>{
         fetchData()
-      },75)
+      },100)
   
     }
 
     const createBlog = async (title,author,url) => {
-      console.log('title',title)
-      console.log('author',author)
-      console.log('url',url)
+      // console.log('title',title)
+      // console.log('author',author)
+      // console.log('url',url)
       const blogInfo = {
         title: title,
         author: author,
@@ -51,10 +52,10 @@ const BlogDisplay = ({ notificationSettingLogic,setNotificationType,user }) => {
         likes: 0,
         user: null
       }
-      console.log('blogInfo',blogInfo)
+      // console.log('blogInfo',blogInfo)
       try {
         const response = await blogService.createBlog(blogInfo)
-        console.log('create blog response',response)
+        // console.log('create blog response',response)
         setBlogs(blogs.concat(response))
         setTitle('')
         setAuthor('')
@@ -79,6 +80,11 @@ const BlogDisplay = ({ notificationSettingLogic,setNotificationType,user }) => {
       
     }
 
+    function incrementUniqueId(){
+      const newUniqueId = uniqueId + 1
+      setUniqueId(newUniqueId)
+    }
+
     return (
         <div>
           <Togglable buttonLabel='create new blog' cancelLabel='cancel'>
@@ -94,16 +100,18 @@ const BlogDisplay = ({ notificationSettingLogic,setNotificationType,user }) => {
           </Togglable>
         
             <h2>Blogs</h2>
-            {blogs.map(blog => {
-              {console.log('blog in blogs.map',blog)}
+            {blogs.map((blog,index) => {
+              // {console.log('blog in blogs.map',blog)}
+              // {console.log('index',index)}
               return(
               <Blog 
-                key={blog.id} 
+                key={blog.id}
                 blog={blog}
                 deleteAndRefresh={deleteAndRefresh}
                 user={user}
                 fetchData={fetchData}
                 handleLike={handleLike}
+                uniqueId={index}
                 />
             )
           })}

@@ -24,9 +24,9 @@ const App = () => {
 
   const notificationSettingLogic=(type,message,timing)=>{
     setNotificationType(type)
-    console.log(`set type to ${type}`)
+    // console.log(`set type to ${type}`)
     setNotificationMessage(message)
-    console.log(`set message to ${message}`)
+    // console.log(`set message to ${message}`)
     setTimeout(()=>{
       setNotificationType(null)
       setNotificationMessage(null)
