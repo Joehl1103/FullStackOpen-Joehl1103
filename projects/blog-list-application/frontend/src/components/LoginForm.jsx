@@ -2,21 +2,36 @@ import loginService from '../services/login'
 import blogService from '../services/blogs'
 import { useState } from 'react'
 import PasswordInput from './PasswordInput'
+import userService from '../services/users'
 
 const LoginForm = (props) => {
 
     const {setUser,notificationSettingLogic } = props
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
-    
+
+    // function getUserIdWithUsername(userArray,username){
+    //   let userId
+    //   userArray.forEach(userObject => {
+    //     console.log('user inside forEach loop',userObject)
+    //     if(userObject.username === username){
+    //       console.log('username match',userObject)
+    //       console.log('id',userObject._id.toString())
+    //       userId = userObject._id.toString()
+    //     }
+    //   })
+    //   return userId
+    // }
+
     const handleLogin = async (event) => {
         event.preventDefault()
-        console.log('handling login')
-        console.log(`username: ${username} || password: ${password}`)
+
+        const users = await userService.getUsers()
+        // const userId = getUserIdWithUsername(users,username)
     
         try {
           const user = await loginService.login({
-            username, password,
+            username, password
           })
     
           window.localStorage.setItem('loggedInUser',JSON.stringify(user))

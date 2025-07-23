@@ -26,7 +26,7 @@ const getAll = () => {
 }
 
 const createBlog = async (blogInfo) =>{
-  console.log('blog info in createBlog service',blogInfo)
+  // console.log('blog info in createBlog service',blogInfo)
   const config = {
     headers: { Authorization: token},
   }

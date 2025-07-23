@@ -6,13 +6,16 @@ const loginWith = async (page,username,password) => {
 }
 
 const createBlog = async(page,title,author,url) => {
-    await page.getByTestId('toggle-on-button').click()
     await page.getByTestId('title').fill(title)
     await page.getByTestId('author').fill(author)
     await page.getByTestId('url').fill(url)
     await page.getByTestId('createBlogButton').click()
     console.log(`${title} by ${author}`)
     await page.getByRole('heading', { name: `${title} by ${author}` }).waitFor()
+}
+
+const addLike = async(page, id) => {
+    await page.getByTestId(`like-button${id}`).click()
 }
 
 export { loginWith,createBlog }

@@ -78,6 +78,10 @@ describe('testing blog', () => {
 
     })
 
+    test('deleting can only be done by user who created', async () => {
+        
+    })
+
 })
 
   
