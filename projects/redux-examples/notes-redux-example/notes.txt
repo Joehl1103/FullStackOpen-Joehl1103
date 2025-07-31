@@ -1,0 +1,4 @@
+7/29: rebuilding the notes-redux app
+7/30: refactoring the Notes.jsx component from App.jsx
+
+
