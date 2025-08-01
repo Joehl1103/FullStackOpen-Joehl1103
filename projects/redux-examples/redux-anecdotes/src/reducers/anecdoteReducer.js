@@ -37,6 +37,9 @@ const reducer = (state = initialState, action) => {
           return anecdote
         }
       })
+    case 'NEW_NOTE':
+      console.log('action payload content', action.payload.content)
+      return [...state].concat(asObject(action.payload.content))
 
     default:
       return state
