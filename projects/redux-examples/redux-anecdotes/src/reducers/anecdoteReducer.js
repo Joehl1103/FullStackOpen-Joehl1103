@@ -19,14 +19,10 @@ const asObject = (anecdote) => {
 
 const initialState = anecdotesAtStart.map(asObject)
 
-const getIdOfAnecdote = (state, content) => {
-  return state.filter(a => a.content === content)[0].id
-}
-
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'UPVOTE':
-      const anecdoteId = getIdOfAnecdote(state, action.payload.content)
+      const anecdoteId = action.payload
       const stateCopy = [...state]
       const anecdoteToChange = stateCopy.filter(a => a.id === anecdoteId)[0]
       const newAnecdote = {

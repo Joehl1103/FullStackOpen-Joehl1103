@@ -23,9 +23,7 @@ describe('anecdote reducer', () => {
 
     const newState = anecdoteReducer(state, {
       type: 'UPVOTE',
-      payload: {
-        content: 'some content',
-      }
+      payload: 1
     })
 
     console.log('newState', newState)
