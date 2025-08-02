@@ -1,5 +1,6 @@
-import { createStore } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
 import anecdoteReducer from './reducers/anecdoteReducer.js'
+
 
 const store = createStore(anecdoteReducer)
 
