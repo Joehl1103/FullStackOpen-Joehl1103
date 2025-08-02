@@ -1,3 +1,5 @@
+import middlewareReducer from "./middlewareReducer"
+
 const anecdotesAtStart = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -28,7 +30,7 @@ const reducer = (state = initialState, action) => {
         ...anecdoteToChange,
         votes: anecdoteToChange.votes + 1
       }
-      return stateCopy.map(anecdote => {
+      const stateCopyMod = stateCopy.map(anecdote => {
         if (anecdote.id === anecdoteId) {
           anecdote = newAnecdote
           return anecdote
@@ -36,10 +38,11 @@ const reducer = (state = initialState, action) => {
           return anecdote
         }
       })
+      return middlewareReducer(stateCopyMod, { type: 'SORT' })
+
     case 'NEW_NOTE':
       console.log('action payload content', action.payload.content)
       return [...state].concat(asObject(action.payload.content))
-
     default:
       return state
   }
