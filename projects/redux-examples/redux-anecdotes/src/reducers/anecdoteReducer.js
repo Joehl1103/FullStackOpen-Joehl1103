@@ -1,4 +1,5 @@
 import middlewareReducer from "./middlewareReducer"
+import { useDispatch } from 'react-redux'
 
 const anecdotesAtStart = [
   'If it hurts, do it more often',
@@ -18,14 +19,31 @@ const asObject = (anecdote) => {
   }
 }
 
+export const voteAction = (id) => {
+  return {
+    type: 'UPVOTE',
+    payload: id
+  }
+}
+
+export const addNewAnecdoteAction = (content) => {
+  return {
+    type: 'NEW_NOTE',
+    payload: { content: content }
+  }
+}
+
 const initialState = anecdotesAtStart.map(asObject)
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'UPVOTE':
       const anecdoteId = action.payload
+      console.log('anecdoteId', anecdoteId)
       const stateCopy = [...state]
+      console.log('stateCopy', stateCopy)
       const anecdoteToChange = stateCopy.filter(a => a.id === anecdoteId)[0]
+      console.log('anecdoteToChange', anecdoteToChange)
       const newAnecdote = {
         ...anecdoteToChange,
         votes: anecdoteToChange.votes + 1
