@@ -18,4 +18,4 @@ const asObject = (anecdote) => {
 
 const initialState = anecdotesAtStart.map(asObject)
 
-export { initialState }
+export { initialState, asObject }
