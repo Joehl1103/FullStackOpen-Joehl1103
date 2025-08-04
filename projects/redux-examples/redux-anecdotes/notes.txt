@@ -1,3 +1,4 @@
 7/31: in the middle of testing the UPVOTE reducer type  
 8/1: implemented adding notes
-8/1: figure out how to reverse the sorting algorithm w
+8/1: figure out how to reverse the sorting algorithm
+8/3: stuck on the state not resetting when I remove the characters from the input field 
