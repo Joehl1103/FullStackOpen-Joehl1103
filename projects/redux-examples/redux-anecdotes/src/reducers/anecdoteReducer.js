@@ -2,13 +2,6 @@ import middlewareReducer from "./middlewareReducer"
 import { initialState, asObject } from "../utils/initialState"
 import { createSlice, current } from '@reduxjs/toolkit'
 
-export const addNewAnecdoteAction = (content) => {
-  return {
-    type: 'NEW_NOTE',
-    payload: { content: content }
-  }
-}
-
 const anecdoteSlice = createSlice({
   name: 'anecdote',
   initialState: initialState,

@@ -11,7 +11,6 @@ const sort = (array) => {
     array[i] = array[max_idx]
     array[max_idx] = temp
   }
-  console.log('array in sort', array)
   return array
 }
 const middlewareReducer = (state, action) => {
@@ -19,7 +18,6 @@ const middlewareReducer = (state, action) => {
     case 'SORT': {
       const stateCopy = [...state]
       const sortedArray = sort(stateCopy)
-      console.log('sorted array in reducer', sortedArray)
       return sortedArray
     }
   }
