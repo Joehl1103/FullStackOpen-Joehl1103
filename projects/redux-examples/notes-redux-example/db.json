@@ -2,13 +2,28 @@
   "notes": [
     {
       "content": "reducer defines how redux store works",
-      "important": true,
-      "id": 1
+      "important": false,
+      "id": "1"
     },
     {
       "content": "state of store can contain any data",
-      "important": false,
-      "id": 2
+      "important": true,
+      "id": "2"
+    },
+    {
+      "id": "2561",
+      "content": "new note",
+      "important": false
+    },
+    {
+      "id": "de30",
+      "content": "new note",
+      "important": false
+    },
+    {
+      "id": "1338",
+      "content": "new note",
+      "important": false
     }
   ]
 }
