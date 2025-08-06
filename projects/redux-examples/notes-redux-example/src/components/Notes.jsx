@@ -5,7 +5,6 @@ import noteService from '../services/notes'
 const Note = ({ note, handleClick }) => {
   return (
     <>
-
       <li key={note.id} onClick={handleClick}>
         {note.content} <strong>{note.important ? 'important' : ''}</strong>
       </li>
@@ -22,6 +21,8 @@ const Notes = () => {
       ? notes.filter(note => note.important)
       : notes.filter(note => !note.important)
   })
+
+  console.log('notes in Notes component', notes)
 
   const handleImportanceToggle = async (id) => {
     // fetch the id and update it in the database
