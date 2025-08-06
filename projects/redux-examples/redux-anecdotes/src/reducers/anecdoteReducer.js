@@ -28,14 +28,7 @@ const anecdoteSlice = createSlice({
       return middlewareReducer(stateCopyMod, { type: 'SORT' })
 
     },
-    createNote(state, action) {
-      const newAnecdote = asObject(action.payload)
-      state.push(newAnecdote)
-      // return [...state].concat(asObject(action.payload.content))
-
-    },
     setNotes(state, action) {
-      console.log('payload in setNotes', action.payload)
       return action.payload
     }
   }

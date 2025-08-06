@@ -13,8 +13,6 @@ const Anecdotes = () => {
     anecdotes = anecdotes.filter(a => a.content.toLowerCase().includes(filterState))
   }
 
-  console.log('anecdotes in Anecdote component', anecdotes)
-
   const handleUpvote = (id, content) => {
     dispatch(upvote(id))
     dispatch(setNotification(`You just upvoted '${content}'`))
