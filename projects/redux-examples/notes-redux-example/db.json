@@ -2,7 +2,7 @@
   "notes": [
     {
       "content": "reducer defines how redux store works",
-      "important": false,
+      "important": true,
       "id": "1"
     },
     {
@@ -28,7 +28,7 @@
     {
       "id": "3e76",
       "content": "new note 4",
-      "important": false
+      "important": true
     },
     {
       "id": "4acb",

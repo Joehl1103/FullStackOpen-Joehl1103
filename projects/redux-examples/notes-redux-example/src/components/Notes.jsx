@@ -22,8 +22,6 @@ const Notes = () => {
       : notes.filter(note => !note.important)
   })
 
-  console.log('notes in Notes component', notes)
-
   const handleImportanceToggle = async (id) => {
     // fetch the id and update it in the database
     const noteToChange = await noteService.getNoteById(id)
