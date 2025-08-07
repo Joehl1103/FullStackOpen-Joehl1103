@@ -1,6 +1,7 @@
 import middlewareReducer from "./middlewareReducer"
 import { initialState, asObject } from "../utils/initialState"
 import { createSlice, current } from '@reduxjs/toolkit'
+import anecdoteService from '../services/anecdotes.js'
 
 const anecdoteSlice = createSlice({
   name: 'anecdote',
@@ -8,11 +9,8 @@ const anecdoteSlice = createSlice({
   reducers: {
     upvote(state, action) {
       const anecdoteId = action.payload
-      // console.log('anecdoteId', anecdoteId)
       const stateCopy = [...state]
-      // console.log('stateCopy', stateCopy)
       const anecdoteToChange = stateCopy.filter(a => a.id === anecdoteId)[0]
-      // console.log('anecdoteToChange', anecdoteToChange)
       const newAnecdote = {
         ...anecdoteToChange,
         votes: anecdoteToChange.votes + 1
@@ -28,11 +26,30 @@ const anecdoteSlice = createSlice({
       return middlewareReducer(stateCopyMod, { type: 'SORT' })
 
     },
-    setNotes(state, action) {
+    addAnecdote(state, action) {
+      const newNote = asObject(action.payload)
+      return state.concat(newNote)
+    },
+    setAnecdotes(state, action) {
       return action.payload
     }
   }
 })
 
-export const { upvote, createNote, setNotes } = anecdoteSlice.actions
+export const { upvote, setAnecdotes, addAnecdote } = anecdoteSlice.actions
+
+export const initializeAnecdotes = () => {
+  return async dispatch => {
+    const notes = await anecdoteService.getAll()
+    dispatch(setAnecdotes(notes))
+
+  }
+}
+
+export const addNewAnecdote = (content) => {
+  return async dispatch => {
+    await anecdoteService.addAnecdote({ content: content, votes: 0 })
+    dispatch(addAnecdote(content))
+  }
+}
 export default anecdoteSlice.reducer

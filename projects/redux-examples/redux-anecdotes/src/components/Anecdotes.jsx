@@ -1,9 +1,7 @@
-import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { upvote, setNotes } from '../reducers/anecdoteReducer'
+import { upvote } from '../reducers/anecdoteReducer'
 import { setNotification, removeNotification } from '../reducers/notificationReducer.js'
 import Notifications from './Notifications.jsx'
-import anecdoteService from '../services/anecdotes.js'
 
 const Anecdotes = () => {
   const dispatch = useDispatch()
