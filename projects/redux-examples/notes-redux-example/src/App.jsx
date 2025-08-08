@@ -4,21 +4,24 @@ import Notes from './components/Notes.jsx'
 import VisibilityFilter from './components/VisibilityFilter.jsx'
 import { initializeNotes } from './reducers/noteReducer.js'
 import { useDispatch } from 'react-redux'
-import { useQuery } from '@tanstack/react-query'
-import { getNotes } from './requests.js'
+import { useQuery, useMutation } from '@tanstack/react-query'
+import { getNotes, createNote } from './requests.js'
 
 const App = () => {
-  const dispatch = useDispatch()
 
-  useEffect(() => {
-    dispatch(initializeNotes())
-  }, [])
+  const newNoteMutation = useMutation({ mutationFn: createNote })
+
+  const addNote = async (event) => {
+    event.preventDefault()
+    const content = event.target.note.value
+    event.target.note.value = ''
+    newNoteMutation.mutate({ content, important: true })
+  }
 
   const result = useQuery({
     queryKey: ['notes'],
-    queryFn: () => getNotes
+    queryFn: () => getNotes()
   })
-  console.log(JSON.parse(JSON.stringify(result)))
 
   if (result.isLoading) {
     return <div>loading data ...</div>
@@ -26,12 +29,13 @@ const App = () => {
 
   const notes = result.data
 
+
   return (
     <>
-      <NoteForm />
+      <NoteForm addNote={addNote} />
       <h2>Notes</h2>
       <VisibilityFilter />
-      <Notes />
+      <Notes notesArray={notes} />
     </>
   )
 }
