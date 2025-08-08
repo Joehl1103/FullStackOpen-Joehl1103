@@ -6,8 +6,9 @@ const App = () => {
 
   const newNoteMutation = useMutation({
     mutationFn: createNote,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['notes'] })
+    onSuccess: (newNote) => {
+      const notes = queryClient.getQueryData(['notes'])
+      queryClient.setQueryData(['notes'], notes.concat(newNote))
     }
   })
 
@@ -18,14 +19,24 @@ const App = () => {
     newNoteMutation.mutate({ content, important: false })
   }
 
+  const updateNoteQuery = (notes, updatedNote) => {
+    return notes.map(n => {
+      if (n.id === updatedNote.id) {
+        n = updatedNote
+      }
+      return n
+    })
+  }
+
   const updateNoteMutation = useMutation({
     mutationFn: updateNote,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['notes'] })
+    onSuccess: (updatedNote) => {
+      const notes = queryClient.getQueryData(['notes'])
+      queryClient.setQueryData(['notes'], updateNoteQuery(notes, updatedNote))
     }
   })
+
   const toggleImportance = (note) => {
-    console.log('note in toggleImportance', note)
     updateNoteMutation.mutate({ ...note, important: !note.important })
   }
 
