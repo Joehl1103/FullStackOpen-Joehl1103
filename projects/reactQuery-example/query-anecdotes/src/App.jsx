@@ -5,9 +5,10 @@ import axios from 'axios'
 
 const App = () => {
 
+  const baseUrl = 'http://localhost:3001/anecdotes'
   const result = useQuery({
-    queryKey: ['notes'],
-    queryFn: () => axios.get('http://localhost:3001/anecdotes').then(res => res.data)
+    queryKey: ['anecdotes'],
+    queryFn: () => axios.get(baseUrl).then(res => res.data)
   })
 
   if (result.isPending) {
@@ -18,6 +19,7 @@ const App = () => {
   }
 
   console.log(JSON.parse(JSON.stringify('result of query', result)))
+
 
   const handleVote = (anecdote) => {
     console.log('vote')
