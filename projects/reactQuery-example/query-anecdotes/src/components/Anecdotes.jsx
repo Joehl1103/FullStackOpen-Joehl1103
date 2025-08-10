@@ -1,11 +1,11 @@
 import { useMutation,useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 import { useContext } from 'react'
-import NotificationContext from '../NotificationContext'
+import NotificationContext, { useNotificationDispatch } from '../NotificationContext'
 
 const Anecdotes = ({ anecdotes }) => {
 
-  const [notificationMessage,notificationDispatch] = useContext(NotificationContext)
+  const notificationDispatch = useNotificationDispatch()
 
   const baseUrl = 'http://localhost:3001/anecdotes'
 
@@ -53,7 +53,6 @@ const Anecdotes = ({ anecdotes }) => {
       )}
     </>
   )
-
 }
 
 export default Anecdotes

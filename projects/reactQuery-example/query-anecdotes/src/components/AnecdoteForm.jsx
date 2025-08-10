@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 import { useContext } from 'react'
-import NotificationContext from '../NotificationContext'
+import NotificationContext, { useNotificationDispatch } from '../NotificationContext'
 
 const AnecdoteForm = () => {
 
-  const [notificationMessage, notificationDispatch] = useContext(NotificationContext)
+  const notificationDispatch = useNotificationDispatch()
 
   const queryClient = useQueryClient()
 
