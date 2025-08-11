@@ -1,0 +1,6 @@
+8/24: two problems:
+* on the one hand, the logged in user is not persisting in the local storage, so whenever I refresh, it takes me back to the login form
+* on the other hand, the create blog mutation appears to be firing both when the page loads, and when any change occurs to the page
+8/24:
+* in the middle of refactoring the blog creation mutation
+8/25: stuck on an issue with `blogsDispatch` in the BlogDisplay component

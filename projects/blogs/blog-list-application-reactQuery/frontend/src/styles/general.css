@@ -1,0 +1,48 @@
+.inputDiv {
+  margin: 3px;
+  padding: 3px;
+}
+
+.navLinkIcon {
+  padding: 1px 5px 0 0;
+  margin: 0px;
+  text-decoration: none;
+  color: #4a2d34;
+}
+
+.navLinkItem {
+  padding: 0 5px 0 5px;
+  margin: 0 5px 0 5px;
+  text-decoration: none;
+  color: #4a2d34;
+}
+
+.navLinkItem:hover {
+  padding: 0 5px 0 5px;
+  margin: 0 5px 0 5px;
+  text-decoration: none;
+  color: #c78595;
+}
+
+.deleteButtonDiv {
+  margin:0;
+  padding:0;
+  display:flex;
+}
+
+.togglable {
+  margin: 0;
+  padding: 0;
+}
+
+.link {
+  color: black;
+}
+
+.link:hover {
+  color: #613f00;
+}
+
+
+
+

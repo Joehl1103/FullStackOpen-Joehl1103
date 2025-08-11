@@ -1,0 +1,14 @@
+{
+    "posts": [
+        {
+            "id": 1,
+            "title": "JSON-Server-test",
+            "author": "Amit-test"
+        },
+        {
+            "id": 2,
+            "title": "Node.js-test",
+            "author": "Mohit-test"
+        }
+    ]
+}

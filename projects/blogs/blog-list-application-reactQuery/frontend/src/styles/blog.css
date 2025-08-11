@@ -1,0 +1,32 @@
+.blogLink {
+  border: 1px black solid;
+  padding: 3px;
+}
+
+.commentDiv {
+  display: flex;
+  flex-direction: column;
+  left-margin: 0;
+}
+
+.commentForm {
+  border: 1px black solid;
+  padding: 5px;
+}
+
+.likeDiv {
+  display: flex;
+  flex-direction: row;
+  margin: 0;
+  padding:0;
+}
+
+.authUrl {
+  margin:0;
+  padding:0;
+}
+
+.blogUser {
+  font-size:13px;
+  color: gray;
+}

@@ -1,0 +1,2 @@
+8/25: took some time to reproduce the playwright example. I should produce a minimal reproducible example of the issue I am having with playwright: https://stackoverflow.com/help/minimal-reproducible-example
+I should probably also watch this video about reprex: https://reprex.tidyverse.org/articles/learn-reprex.html8/26: I figured out how to configure the Playwright webServer to use a test database by listing the blogs api as the endpoint to confirm. I now need to fix the tests for the redux app such that they will pass with the redux setup before moving on"

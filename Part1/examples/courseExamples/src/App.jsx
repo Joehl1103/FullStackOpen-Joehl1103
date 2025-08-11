@@ -1,39 +1,47 @@
 import { useState } from "react"
 
-const Display = ({counter}) => <div>{counter}</div>
+const Display = ({ counter }) => {
+  console.log('counter in Display', counter)
+  return (
+    <div>{counter}</div>
+  )
+}
 
-const Button = ({onClick,text}) => <button onClick={onClick}>{text}</button>
+const Button = ({ onClick, text }) => <button onClick={onClick}>{text}</button>
 
-const App = () => {
-  const [counter, setCounter] = useState(0)
-  console.log('rendering with counter value',counter)
-
+const useCounter = () => {
+  const [value, setValue] = useState(0)
 
   const increaseByOne = () => {
-    console.log('increasing, value before',counter)
-    setCounter(counter + 1)
+    setValue(value + 1)
   }
-  
+
   const deacreaseByOne = () => {
-    console.log('decreasing, value before',counter)
-    setCounter(counter - 1)
+    setValue(value - 1)
   }
-  
+
   const setToZero = () => {
-    console.log('resetting to zero, value before',counter)
-    setCounter(0)
+    setValue(0)
   }
-  
+
+  return {
+    value, increaseByOne, deacreaseByOne, setToZero
+  }
+
+}
+
+const App = () => {
+  const counter = useCounter()
 
   return (
     <>
-       <Display counter={counter}/>
-      <br/><br/>
-      <Button onClick={increaseByOne} text="plus"/>
-      <br/><br/>
-      <Button onClick={deacreaseByOne} text="minus"/>
-      <br/><br/>
-      <Button onClick={setToZero} text="reset"/>
+      <Display counter={counter.value} />
+      <br /><br />
+      <Button onClick={counter.increaseByOne} text="plus" />
+      <br /><br />
+      <Button onClick={counter.deacreaseByOne} text="minus" />
+      <br /><br />
+      <Button onClick={counter.setToZero} text="reset" />
 
     </>
   )
