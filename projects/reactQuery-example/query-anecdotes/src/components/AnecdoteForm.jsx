@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
-import { useContext } from 'react'
-import NotificationContext, { useNotificationDispatch } from '../NotificationContext'
+import { useNotificationDispatch } from '../NotificationContext'
 
 const AnecdoteForm = () => {
 
@@ -17,7 +16,7 @@ const AnecdoteForm = () => {
         return res.data
       })
       .catch((err) => {
-        console.log(`Error in post request ${err.message}`)
+        throw new Error(`Error in post request ${err.message}`)
       })
     return result
   }
@@ -26,12 +25,17 @@ const AnecdoteForm = () => {
     onSuccess: (newAnecdote) => {
       const notes = queryClient.getQueryData(['anecdotes'])
       queryClient.setQueryData(['anecdotes'], notes.concat(newAnecdote))
+    },
+    onError: (error) => {
+      notificationDispatch({ type: 'SHORT' })
+      console.log(`error while trying to mutate the array: ${error.message}`)
     }
   })
 
   const onCreate = (event) => {
     event.preventDefault()
     const content = event.target.anecdote.value
+    console.log('content in onCreate',content)
     newAnecdoteMutation.mutate({ content: content, votes: 0 })
     notificationDispatch({ type: 'NEW', payload: content })
     setTimeout(() => {

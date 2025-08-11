@@ -2,23 +2,23 @@
   "notes": [
     {
       "content": "reducer defines how redux store works",
-      "important": false,
+      "important": true,
       "id": "1"
     },
     {
       "content": "state of store can contain any data",
-      "important": true,
+      "important": false,
       "id": "2"
     },
     {
       "id": "2561",
       "content": "new note",
-      "important": false
+      "important": true
     },
     {
       "id": "de30",
       "content": "new note",
-      "important": false
+      "important": true
     },
     {
       "id": "1338",
@@ -28,7 +28,7 @@
     {
       "id": "3e76",
       "content": "new note 4",
-      "important": false
+      "important": true
     },
     {
       "id": "4acb",
@@ -38,6 +38,27 @@
     {
       "id": "1791",
       "content": "new note 6",
+      "important": false
+    },
+    {
+      "id": "d33d",
+      "content": "new note",
+      "important": true
+    },
+    {
+      "id": "9fc8",
+      "content": "new note ",
+      "important": false
+    },
+    {
+      "id": "896c"
+    },
+    {
+      "id": "aef0"
+    },
+    {
+      "id": "d0dd",
+      "content": "new note",
       "important": false
     }
   ]

@@ -1,7 +1,6 @@
-import { useMutation,useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
-import { useContext } from 'react'
-import NotificationContext, { useNotificationDispatch } from '../NotificationContext'
+import { useNotificationDispatch } from '../NotificationContext'
 
 const Anecdotes = ({ anecdotes }) => {
 
@@ -29,7 +28,7 @@ const Anecdotes = ({ anecdotes }) => {
   })
 
   const handleVote = (anecdote) => {
-    console.log('anecdote in handleVote',anecdote)
+    console.log('anecdote in handleVote', anecdote)
     const changedAnecdote = { ...anecdote, votes: anecdote.votes + 1 }
     incrementVoteMutation.mutate(changedAnecdote)
     notificationDispatch({ type: 'UPVOTE', payload: anecdote.content })
@@ -40,7 +39,8 @@ const Anecdotes = ({ anecdotes }) => {
 
   return (
     <>
-      {anecdotes.map(anecdote =>
+      {anecdotes.map(anecdote => {
+        return (
         <div key={anecdote.id}>
           <div>
             {anecdote.content}
@@ -50,6 +50,8 @@ const Anecdotes = ({ anecdotes }) => {
             <button onClick={() => handleVote(anecdote)}>vote</button>
           </div>
         </div>
+        )
+      }
       )}
     </>
   )

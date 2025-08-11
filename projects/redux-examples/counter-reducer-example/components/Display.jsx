@@ -1,8 +1,7 @@
-import { useContext } from 'react'
-import CounterContext from '../src/CounterContext'
+import { useCounterValue } from '../src/CounterContext.jsx'
 
 const Display = () => {
-  const [counter, dispatch] = useContext(CounterContext)
+  const counter = useCounterValue()
   return <div>BIG A$$ COUNTER: {counter}</div>
 }
 

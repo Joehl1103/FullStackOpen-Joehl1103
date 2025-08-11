@@ -6,6 +6,8 @@ export const notificationReducer = (state = '', action) => {
       return `you just created a new note with the following content: ${action.payload}`
     case 'UPVOTE':
       return `you just upvoted ${action.payload}`
+    case 'SHORT':
+      return `the note is too short. It should be at least 5 characters long`
     case 'NONE':
       return ''
     default:

@@ -14,6 +14,7 @@ const validator = (request, response, next) => {
       error: 'too short anecdote, must have length 5 or more'
     })
   } else {
+    console.log('content is greater than 5. moving on.')
     next()
   }
 }
