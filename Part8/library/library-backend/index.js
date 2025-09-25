@@ -180,6 +180,7 @@ const resolvers = {
   },
   Mutation: {
     addBook: (root, args) => {
+      console.log('entering add book')
       const book = { ...args, id: uuid() }
       books = books.concat(book)
       const author = authors.filter(a => a.name === args.author)
@@ -209,17 +210,17 @@ const resolvers = {
     }
     ,
     editAuthor: (root, args) => {
-      const authorExists = authors.some(a => a.name === args.name)
+      const authorExists = authors.some(a => a.name.trim().toLowerCase() === args.name.trim().toLowerCase())
       if (!authorExists) {
         console.log('author does not exist')
         return null
       }
       authors = authors.map(a =>
-        a.name === args.name
+        a.name.trim().toLowerCase() === args.name.trim().toLowerCase()
           ? { ...a, born: args.setBornTo }
           : a
       )
-      return authors.find(a => a.name === args.name)
+      return authors.find(a => a.name.toLowerCase().trim() === args.name.toLowerCase().trim())
     }
   }
 }
