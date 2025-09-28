@@ -1,0 +1,21 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start-mongosh-dev": "mongosh 'mongodb+srv://jkhloomis:CdELuL2G1BZ1S8BQ@cluster0.z1gftkf.mongodb.net/phonebook-graphql?retryWrites=true&w=majority&appName=Cluster0'"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@apollo/server": "^4.3.2",
+    "@dotenvx/dotenvx": "^1.51.0",
+    "dotenv": "^17.2.2",
+    "graphql": "^16.6.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.18.2",
+    "nodemon": "^2.0.20"
+  }
+}
