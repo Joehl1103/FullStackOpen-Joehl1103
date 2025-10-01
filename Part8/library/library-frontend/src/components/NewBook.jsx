@@ -1,36 +1,34 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useMutation } from '@apollo/client/react'
 import { ADD_BOOK, GET_ALL_AUTHORS, GET_ALL_BOOKS } from '../queries'
+import { useDispatch } from 'react-redux'
+import { setError } from '../reducers/errorSlice.js'
 
-const NewBook = (props) => {
+const NewBook = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [published, setPublished] = useState('')
   const [genre, setGenre] = useState('')
   const [genres, setGenres] = useState([])
+  const dispatch = useDispatch()
 
   const [addBook] = useMutation(ADD_BOOK, {
-    refetchQueries: [{ query: GET_ALL_BOOKS }, { query: GET_ALL_AUTHORS }]
+    refetchQueries: [{ query: GET_ALL_BOOKS }, { query: GET_ALL_AUTHORS }],
+    onError: (e) => dispatch(setError(e.message))
   })
 
-  if (!props.show) {
-    return null
-  }
 
   const submit = async (event) => {
     event.preventDefault()
 
-    console.log('add book...')
-
     try {
-      console.log('published typ', typeof published)
       if (typeof published === 'string') {
         const numberPub = Number(published)
         setPublished(Number(numberPub))
       }
-      const result = await addBook({ variables: { title, published, author, genres } })
-      console.log('success', result)
-
+      const variables = { title, published, author, genres }
+      await addBook({ variables: variables })
+      // addToGenreArray(genres)
       setTitle('')
       setPublished('')
       setAuthor('')
@@ -38,6 +36,7 @@ const NewBook = (props) => {
       setGenre('')
     } catch (e) {
       console.log('error while adding book', e)
+      throw new Error('Error while adding book')
     }
   }
 
@@ -48,6 +47,7 @@ const NewBook = (props) => {
 
   return (
     <div>
+      <h2>Add a book</h2>
       <form onSubmit={submit}>
         <div>
           title
