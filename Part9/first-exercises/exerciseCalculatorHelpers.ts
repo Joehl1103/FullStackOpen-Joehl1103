@@ -13,7 +13,7 @@ export function calcTrainingDays(weekArray: number[]): number {
 }
 
 function validateArray(array: number[]): void {
-  if (array.length < 7) {
+  if (array.length !== 7) {
     throw new Error(`Your array should include 7 items. It currently only includes ${array.length}`);
   }
   array.forEach(i => {

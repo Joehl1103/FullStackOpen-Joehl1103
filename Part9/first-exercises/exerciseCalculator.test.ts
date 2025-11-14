@@ -1,8 +1,8 @@
 import { calculateAvg, calcTrainingDays, calcSuccess, rate, describeRating, comp } from './exerciseCalculatorHelpers.ts'
 
-describe.only('calculateAverage', () => {
+describe('calculateAverage', () => {
   test('calculates average time of daily exercise hours', () => {
-    expect(calculateAvg([3, 0, 2, 4.5, 0, 3, 1])).toBe(1.9285714285714286)
+    expect(calculateAvg([3, 0, 2, 4.5, 0, 3, 1])).toBeCloseTo(1.9, 3)
   })
   test('testAllError', () => {
     const inputs: any[] = [
@@ -53,26 +53,26 @@ test('rate', () => {
   expect(rate(1.9285714285714286, 2)).toBe(2.9)
 })
 
-describe('describe rating', () => {
-  test('3 or more, Great!', () => {
-    expect(describeRating(3)).toBe('Great! Met or exceeded expectations!')
-    expect(describeRating(3.1)).toBe('Great! Met or exceeded expectations!')
-  })
-  test('1.5 or more, better than avg', () => {
-    expect(describeRating(1.75)).toBe('Better than average')
-  })
-  test('0.5 or more, push', () => {
-    expect(describeRating(0.75)).toBe('You could have pushed yourself more!')
-  })
-  test('less than 0.5, lowsy', () => {
-    expect(describeRating(0.4)).toBe('Pretty lowsy! Are you even trying?!')
-  })
+test.only('describe rating', () => {
+  const ratingsAndDescriptions: Array<[number, string]> = [
+    [3, 'Great! Met or exceeded expectations!'],
+    [3.1, 'Great! Met or exceeded expectations!'],
+    [1.75, 'Better than average'],
+    [0.75, 'You could have pushed yourself more!'],
+    [0.4, 'Pretty lousy! Are you even trying?!']
+  ]
+  function testRatingAndExpectedDescriptions(ratingAndDescription: Array<[number, string]>): void {
+    ratingsAndDescriptions.forEach(([rating, description]) => {
+      expect(describeRating(rating)).toBe(description)
+    })
+  }
+  testRatingAndExpectedDescriptions(ratingsAndDescriptions)
 })
 
 test('test comp', () => {
-  const arr = [3, 0, 2, 4.5, 0, 3, 1]
-  const targ = 2
-  const res = {
+  const weeklyArray = [3, 0, 2, 4.5, 0, 3, 1]
+  const targetDaily = 2
+  const result = {
     periodLength: 7,
     trainingDays: 5,
     success: false,
@@ -81,6 +81,6 @@ test('test comp', () => {
     target: 2,
     average: 1.9285714285714286
   }
-  expect(comp(arr, targ)).toStrictEqual(res)
+  expect(comp(weeklyArray, targetDaily)).toStrictEqual(result)
 
 })
