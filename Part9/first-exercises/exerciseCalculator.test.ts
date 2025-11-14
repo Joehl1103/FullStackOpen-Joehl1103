@@ -1,9 +1,31 @@
-import { calculateAvg, calcTrainingDays, calcSuccess, rate, describeRating, comp } from './exerciseCalculator.ts'
+import { calculateAvg, calcTrainingDays, calcSuccess, rate, describeRating, comp } from './exerciseCalculatorHelpers.ts'
 
-test('calculates average time of daily exercise hours', () => {
-  expect(calculateAvg([3, 0, 2, 4.5, 0, 3, 1])).toBe(1.9285714285714286)
+describe.only('calculateAverage', () => {
+  test('calculates average time of daily exercise hours', () => {
+    expect(calculateAvg([3, 0, 2, 4.5, 0, 3, 1])).toBe(1.9285714285714286)
+  })
+  test('testAllError', () => {
+    const inputs: any[] = [
+      [],
+      [1, 2, 3, 4, 5, 6, 'a'],
+      [1, 3, 3, 4, 5, 6, -7]
+    ]
+    const errorMessages = [
+      new Error("Your array should include 7 items. It currently only includes 0"),
+      new Error("each item in this array must be a number."),
+      new Error("all numbers in array must be positive.")
+    ]
+    function testAvgCalcErrors(arrInputs: Array<any[]>, errorMessages: Array<Error>): void {
+      for (let i = 0; i < arrInputs.length; i++) {
+        function calc() {
+          calculateAvg(arrInputs[i])
+        }
+        expect(() => calc()).toThrow(errorMessages[i])
+      }
+    }
+    testAvgCalcErrors(inputs, errorMessages)
+  })
 })
-
 test('calculates training days', () => {
   expect(calcTrainingDays([3, 0, 2, 4.5, 0, 3, 1])).toBe(5)
 })
@@ -24,7 +46,7 @@ describe('calculatesSuccess', () => {
   })
 })
 
-test.only('rate', () => {
+test('rate', () => {
   expect(rate(1.65, 2)).toBe(2.5)
   expect(rate(1.3, 2)).toBe(2)
   expect(rate(0.7897183, 2)).toBe(1.2)

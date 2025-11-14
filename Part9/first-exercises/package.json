@@ -9,7 +9,7 @@
   "scripts": {
     "test": "jest",
     "bmiCalculator": "ts-node bmiCalculator.ts",
-    "exerciseCalc": "ts-node exerciseCalculator.ts"
+    "exerciseCalc": "ts-node exerciseCalculatorMain.ts"
   },
   "dependencies": {
     "ts-node": "^10.9.2"

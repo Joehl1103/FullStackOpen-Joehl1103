@@ -2,6 +2,11 @@
   "compilerOptions": {
     "noImplicitAny": true,
     "allowImportingTsExtensions": true,
-    "noEmit": true
+    "noEmit": true,
+    "module": "nodenext",
+    "moduleResolution": "nodenext"
+  },
+  "ts-node": {
+    "esm": true
   }
 }
