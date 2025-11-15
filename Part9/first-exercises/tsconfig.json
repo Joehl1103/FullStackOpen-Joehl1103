@@ -4,7 +4,8 @@
     "allowImportingTsExtensions": true,
     "noEmit": true,
     "module": "nodenext",
-    "moduleResolution": "nodenext"
+    "moduleResolution": "nodenext",
+    "isolatedModules": true
   },
   "ts-node": {
     "esm": true

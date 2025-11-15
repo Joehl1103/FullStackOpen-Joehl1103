@@ -7,8 +7,8 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
-    "bmiCalculator": "ts-node bmiCalculator.ts",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "bmiCalculator": "ts-node ./bmiCalculator/main.ts",
     "exerciseCalc": "ts-node exerciseCalculatorMain.ts"
   },
   "dependencies": {
