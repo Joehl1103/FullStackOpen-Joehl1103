@@ -1,13 +1,23 @@
 {
   "compilerOptions": {
+    "target": "esnext",
     "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true,
+    "strictBindCallApply": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "esModuleInterop": true,
+    "declaration": true,
     "allowImportingTsExtensions": true,
-    "noEmit": true,
-    "module": "nodenext",
+    "module": "esnext",
     "moduleResolution": "nodenext",
     "isolatedModules": true
   },
   "ts-node": {
-    "esm": true
+    "esm": false
   }
 }

@@ -4,10 +4,12 @@
   "description": "",
   "license": "ISC",
   "author": "",
-  "type": "module",
+  "type": "commonjs",
   "main": "index.js",
   "scripts": {
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "start": "ts-node index.ts",
+    "dev": "ts-node-dev index.ts",
     "bmiCalculator": "ts-node ./bmiCalculator/main.ts",
     "exerciseCalc": "ts-node exerciseCalculatorMain.ts"
   },
@@ -15,9 +17,12 @@
     "ts-node": "^10.9.2"
   },
   "devDependencies": {
+    "@types/express": "^5.0.5",
     "@types/jest": "^30.0.0",
+    "express": "^5.1.0",
     "jest": "^30.2.0",
     "ts-jest": "^29.4.5",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^5.9.3"
   }
 }
