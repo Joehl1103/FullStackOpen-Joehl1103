@@ -1,3 +1,4 @@
+require.main === module
 
 function convertHeightToInches(heightInFeet: number): number {
   return heightInFeet * 12

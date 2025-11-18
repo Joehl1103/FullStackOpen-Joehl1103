@@ -4,7 +4,7 @@
   "description": "",
   "license": "ISC",
   "author": "",
-  "type": "commonjs",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
@@ -14,6 +14,8 @@
     "exerciseCalc": "ts-node exerciseCalculatorMain.ts"
   },
   "dependencies": {
+    "@types/supertest": "^6.0.3",
+    "supertest": "^7.1.4",
     "ts-node": "^10.9.2"
   },
   "devDependencies": {

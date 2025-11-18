@@ -12,12 +12,13 @@
     "alwaysStrict": true,
     "esModuleInterop": true,
     "declaration": true,
+    "noEmit": true,
     "allowImportingTsExtensions": true,
-    "module": "esnext",
+    "module": "NodeNext",
     "moduleResolution": "nodenext",
     "isolatedModules": true
   },
   "ts-node": {
-    "esm": false
+    "esm": true
   }
 }
