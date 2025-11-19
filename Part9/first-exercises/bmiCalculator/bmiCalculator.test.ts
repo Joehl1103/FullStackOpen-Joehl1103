@@ -6,12 +6,13 @@ test('bmi calc', () => {
     [177.3327, 'normal weight'],
     [213.0853, 'overweight'],
     [221.6659, 'obese']
-  ]
+  ];
+
   function calcBmi(height: number, weight: number): string {
-    return calculateBmi(height, weight)
-  }
+    return calculateBmi(height, weight);
+  };
   arr.forEach(([weight, response]) => {
-    console.log('weight', weight)
-    expect(calcBmi(5.9, weight)).toBe(response)
-  })
-})
+    console.log('weight', weight);
+    expect(calcBmi(5.9, weight)).toBe(response);
+  });
+});

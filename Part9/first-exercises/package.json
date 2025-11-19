@@ -11,12 +11,16 @@
     "start": "ts-node index.ts",
     "dev": "ts-node-dev index.ts",
     "bmiCalculator": "ts-node ./bmiCalculator/main.ts",
-    "exerciseCalc": "ts-node exerciseCalculatorMain.ts"
+    "exerciseCalc": "ts-node exerciseCalculatorMain.ts",
+    "lint": "eslint ."
   },
   "dependencies": {
+    "@stylistic/eslint-plugin": "^5.6.0",
     "@types/supertest": "^6.0.3",
+    "eslint": "^9.39.1",
     "supertest": "^7.1.4",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "typescript-eslint": "^8.47.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.5",
