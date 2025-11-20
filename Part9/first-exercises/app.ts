@@ -40,7 +40,7 @@ app.post('/exercises', (req, res) => {
     validateNumber(target)
     return res.status(200).json(calculateExercises(weeklyArray, target))
   } catch (e) {
-    return res.status(400).send(`Error while validating arguments: ${e.message}`)
+    return res.status(400).json({ error: `Error while validating arguments: ${e.message}` })
   }
 })
 

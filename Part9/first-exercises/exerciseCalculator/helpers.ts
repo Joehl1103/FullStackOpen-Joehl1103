@@ -14,16 +14,12 @@ const WEEK_END_INDEX = 10;
 const REQUIRED_ARGS = 10;
 
 export function validateNumber(num: number) {
-  console.log('over here')
   if (isNaN(num)) {
-    console.log('over there')
     throw new Error(`'${num}' is not a number.`);
   }
-  console.log('oh')
   if (num < 0) {
     throw new Error('all numbers in array must be positive.');
   }
-  console.log('my')
   return
 }
 
