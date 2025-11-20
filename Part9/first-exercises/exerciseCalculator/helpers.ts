@@ -13,15 +13,24 @@ const WEEK_START_INDEX = 3;
 const WEEK_END_INDEX = 10;
 const REQUIRED_ARGS = 10;
 
-function validateAndReturnNumberArray(array: string[]): number[] {
+export function validateNumber(num: number) {
+  console.log('over here')
+  if (isNaN(num)) {
+    console.log('over there')
+    throw new Error(`'${num}' is not a number.`);
+  }
+  console.log('oh')
+  if (num < 0) {
+    throw new Error('all numbers in array must be positive.');
+  }
+  console.log('my')
+  return
+}
+
+export function validateAndReturnNumberArray(array: string[]): number[] {
   const arrayOfNumbers: number[] = array.map(i => {
     const num = Number(i);
-    if (isNaN(num)) {
-      throw new Error(`${i} is not a number.`);
-    }
-    if (num < 0) {
-      throw new Error('all numbers in array must be positive.');
-    }
+    validateNumber(num)
     return num;
   });
   return arrayOfNumbers;

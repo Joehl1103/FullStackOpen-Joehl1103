@@ -8,7 +8,7 @@
   "main": "index.js",
   "scripts": {
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
-    "start": "ts-node index.ts",
+    "start": "nodemon index.ts",
     "dev": "ts-node-dev index.ts",
     "bmiCalculator": "ts-node ./bmiCalculator/main.ts",
     "exerciseCalc": "ts-node exerciseCalculatorMain.ts",
