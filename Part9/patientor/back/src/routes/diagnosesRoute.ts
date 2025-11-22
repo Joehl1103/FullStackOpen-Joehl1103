@@ -1,4 +1,4 @@
-const express = require('express');
+import express from 'express';
 import { Request, Response } from 'express';
 import { Diagnosis } from '../data/types';
 import diagnosesService from '../services/diagnosesService'

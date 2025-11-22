@@ -16,7 +16,7 @@ const getNonSensitiveEntries = (): NonSensitiveDiaryEntry[] => {
 
 const addDiary = (entry: NewDiaryEntry): DiaryEntry => {
   const parsedEntry: NewDiaryEntry = toNewDiaryEntry(entry)
-  const newDiaryEntry = {
+  const newDiaryEntry: DiaryEntry = {
     id: Math.max(...diaries.map(d => d.id)) + 1,
     ...parsedEntry
   };
