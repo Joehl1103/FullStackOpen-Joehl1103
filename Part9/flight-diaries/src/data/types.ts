@@ -1,6 +1,16 @@
-export type Weather = 'rainy' | 'sunny' | 'windy' | 'cloudy'
+export enum Weather {
+  Rainy = 'rainy',
+  Sunny = 'sunny',
+  Windy = 'windy',
+  Cloudy = 'cloudy'
+}
 
-export type Visibility = 'poor' | 'good' | 'ok' | 'great'
+export enum Visibility {
+  Poor = 'poor',
+  Good = 'good',
+  Ok = 'ok',
+  Great = 'great'
+};
 
 export interface DiaryEntry {
   id: number;
@@ -8,8 +18,10 @@ export interface DiaryEntry {
   weather: Weather;
   visibility: Visibility;
   comment?: string;
-}
+};
 
-export type NonSensitiveDiaryEntry = Omit<DiaryEntry, 'comment'>
+export type NonSensitiveDiaryEntry = Omit<DiaryEntry, 'comment'>;
+
+export type NewDiaryEntry = Omit<DiaryEntry, "id">;
 
 
