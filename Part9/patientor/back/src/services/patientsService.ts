@@ -10,18 +10,11 @@ function getPatientsWithoutSsns(): PatientWithoutSsn[] {
 };
 
 function addPatient(newPatientEntry: NewPatientEntry): Patient {
-  if (newPatientEntry.name && newPatientEntry.dateOfBirth && newPatientEntry.ssn && newPatientEntry.gender && newPatientEntry.occupation) {
-    const newPatient: Patient = {
-      id: uuid(),
-      name: newPatientEntry.name,
-      dateOfBirth: newPatientEntry.dateOfBirth,
-      ssn: newPatientEntry.ssn,
-      gender: newPatientEntry.gender,
-      occupation: newPatientEntry.occupation
-    }
-    return newPatient;
+  const newPatient: Patient = {
+    id: uuid(),
+    ...newPatientEntry
   }
-  throw new Error('Some data is missing.');
+  return newPatient;
 }
 
 export default {
