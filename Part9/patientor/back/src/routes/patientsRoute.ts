@@ -1,18 +1,22 @@
 import express, { Response, Request } from 'express';
 import patientsService from '../services/patientsService';
-import { Patient } from '../data/types';
-import { validatePatientData } from '../utils/patientValidation';
+import { NewPatientEntry, Patient } from '../data/types';
+import { errorMiddleware, parseNewPatientData } from '../utils/middleware';
+// import { validatePatientData } from '../utils/patientValidation';
 
 const router = express.Router();
 
 router.get('/', (_req: Request, res: Response): void => {
   res.send(patientsService.getPatientsWithoutSsns());
-})
+});
 
-router.post('/', (req, res): void => {
-  const validatedPatientData = validatePatientData(req.body)
-  const newPatient: Patient = patientsService.addPatient(validatedPatientData)
-  res.send(newPatient)
-})
+router.use(parseNewPatientData);
+router.use(errorMiddleware);
+
+router.post('/', (req: Request<unknown, unknown, NewPatientEntry>, res: Response<NewPatientEntry>): Patient => {
+  const newPatient: Patient = patientsService.addPatient(req.body);
+  res.json(newPatient)
+  return newPatient;
+});
 
 export default router;
