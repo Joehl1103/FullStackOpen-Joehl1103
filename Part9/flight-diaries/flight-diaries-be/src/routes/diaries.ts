@@ -11,8 +11,7 @@ const router = express.Router();
 
 router.get('/', (_req, res: Response<NonSensitiveDiaryEntry[]>
 ) => {
-  console.log('here')
-  res.send(diaryService.getNonSensitiveEntries());
+  res.send(diaryService.getEntries());
 });
 
 router.get('/:id', (req, res) => {
