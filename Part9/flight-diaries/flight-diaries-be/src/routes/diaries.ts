@@ -4,15 +4,14 @@ import { NonSensitiveDiaryEntry, NewDiaryEntry } from '../data/types';
 import diaryService from '../services/diaryService';
 import { NewEntrySchema } from '../utils/utils';
 import * as z from 'zod';
-import { newDiaryParser, errorMiddleware } from '../utils/middleware';
+import { newDiaryParser } from '../utils/middleware';
 
 const router = express.Router();
 
-router.use(newDiaryParser);
-router.use(errorMiddleware);
 
 router.get('/', (_req, res: Response<NonSensitiveDiaryEntry[]>
 ) => {
+  console.log('here')
   res.send(diaryService.getNonSensitiveEntries());
 });
 
@@ -26,7 +25,7 @@ router.get('/:id', (req, res) => {
   };
 });
 
-router.post('/', (req: Request<unknown, unknown, NewDiaryEntry>, res: Response<NewDiaryEntry | { error: unknown }>) => {
+router.post('/', newDiaryParser, (req: Request<unknown, unknown, NewDiaryEntry>, res: Response<NewDiaryEntry | { error: unknown }>) => {
   try {
     const parsedEntry: NewDiaryEntry = NewEntrySchema.parse(req.body);
     const addedEntry = diaryService.addDiary(parsedEntry);

@@ -14,7 +14,7 @@ const getNonSensitiveEntries = (): NonSensitiveDiaryEntry[] => {
 
 const addDiary = (entry: NewDiaryEntry): DiaryEntry => {
   const newDiaryEntry: DiaryEntry = {
-    id: Math.max(...diaries.map(d => d.id)) + 1,
+    id: Math.max(...diaries.map((d: DiaryEntry) => d.id)) + 1,
     ...entry
   };
   diaries.push(newDiaryEntry);
@@ -22,7 +22,7 @@ const addDiary = (entry: NewDiaryEntry): DiaryEntry => {
 };
 
 const findbyId = (id: number): DiaryEntry | undefined => {
-  return diaries.find(d => d.id === id);
+  return diaries.find((d: DiaryEntry) => d.id === id);
 };
 
 export default {
