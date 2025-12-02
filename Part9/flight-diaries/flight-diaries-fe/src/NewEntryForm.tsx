@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import * as diaryTypes from '../../flight-diaries-be/src/data/types';
 import * as service from './services.ts';
+import axios from 'axios';
+import type { MessageType } from './types.ts';
 
-
-function NewEntryForm() {
+function NewEntryForm({ setNotificationElements }: { setNotificationElements(message: string, type: MessageType): void }) {
   const [date, setDate] = useState<string>('')
   const [weather, setWeather] = useState<string | diaryTypes.Weather>('');
   const [visibility, setVisibility] = useState<string | diaryTypes.Visibility>('');
@@ -22,19 +23,24 @@ function NewEntryForm() {
     }
     service.postDiaries(newEntry)
       .then((res: diaryTypes.NewDiaryEntry): void => {
-        window.alert(`You just added a new entry!`);
+        setNotificationElements('A new entry was added.', 'Regular');
         setDate('');
         setWeather('');
         setVisibility('');
         setComment('');
       })
       .catch((err: unknown) => {
-        if (err instanceof Error) {
-          console.log(`Error: ${err.message}`);
+        if (axios.isAxiosError(err)) {
+          setNotificationElements(`Axios error: ${err.message}`, 'Error');
         }
-        console.log('Something went wrong')
+        setNotificationElements('Error: something went wrong.', 'Error');
       })
   };
+
+  const radioStyle: React.CSSProperties = {
+    display: 'flex',
+    flexDirection: 'row'
+  }
 
   return (
     <div>
@@ -48,30 +54,42 @@ function NewEntryForm() {
             type="date" />
         </div>
         <div>
-          <label>Weather: </label>
-          <select
-            value={weather}
-            onChange={({ target }) => setWeather(target.value)}>
-            <option></option>
-            {weatherArray.map(w => {
+          <fieldset style={radioStyle}>
+            <legend>Weather: </legend>
+            {weatherArray.map((w: diaryTypes.Weather) => {
               return (
-                <option key={w}>{w}</option>
+                <label key={w}>
+                  <input
+                    type="radio"
+                    name="weather"
+                    value={w}
+                    checked={weather === w}
+                    onChange={(event) => setWeather(event.target.value)}
+                  />
+                  {w}
+                </label>
               )
             })}
-          </select>
+          </fieldset>
         </div>
-        <div>
-          <label>Visibility: </label>
-          <select
-            value={visibility}
-            onChange={({ target }) => setVisibility(target.value)}>
-            <option></option>
-            {visibilityArray.map(v => {
+        <div >
+          <fieldset style={radioStyle}>
+            <legend>Visibility:</legend>
+            {visibilityArray.map((v: diaryTypes.Visibility) => {
               return (
-                <option key={v}>{v}</option>
+                <label key={v}>
+                  <input
+                    type="radio"
+                    name="visibility"
+                    value={v}
+                    checked={visibility === v}
+                    onChange={(event) => setVisibility(event.target.value)}
+                  />
+                  {v}
+                </label>
               )
             })}
-          </select>
+          </fieldset>
         </div>
         <div>
           <label>Comments:</label><br />
