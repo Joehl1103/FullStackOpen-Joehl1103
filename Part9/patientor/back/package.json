@@ -7,15 +7,18 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npx ts-node-test",
     "tsc": "tsc",
     "dev": "ts-node-dev index.ts",
     "lint": "eslint .",
     "start": "node build/index.js"
   },
   "dependencies": {
+    "@types/supertest": "^6.0.3",
     "cors": "^2.8.5",
     "express": "^5.1.0",
+    "supertest": "^7.1.4",
+    "tsx": "^4.21.0",
     "uuid": "^13.0.0",
     "zod": "^4.1.12"
   },
@@ -26,6 +29,7 @@
     "@types/express": "^5.0.5",
     "eslint": "^9.39.1",
     "ts-node-dev": "^2.0.0",
+    "ts-node-test": "^0.4.4",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.47.0"
   }

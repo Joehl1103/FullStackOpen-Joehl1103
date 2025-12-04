@@ -3,9 +3,15 @@ import data from './../data/patients';
 import { v1 as uuid } from 'uuid';
 
 function getPatientsWithoutSsns(): PatientWithoutSsn[] {
-  return data.map(patient => {
+  return data.map((patient: Patient) => {
     const { ssn, ...rest } = patient;
     return rest
+  });
+};
+
+function getPatientById(id: string) {
+  return data.filter((patient: Patient) => {
+    return patient.id === id
   });
 };
 
@@ -19,5 +25,6 @@ function addPatient(newPatientEntry: NewPatientEntry): Patient {
 
 export default {
   getPatientsWithoutSsns,
+  getPatientById,
   addPatient
 }
