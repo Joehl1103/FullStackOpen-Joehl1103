@@ -3,6 +3,7 @@ import patientsService from '../services/patientsService';
 import { NewPatientEntry, Patient } from '../data/types';
 import { errorMiddleware, parseNewPatientData } from '../utils/middleware';
 const router = express.Router();
+import * as z from 'zod';
 
 router.get('/', (_req: Request, res: Response): void => {
   res.send(patientsService.getPatientsWithoutSsns());
@@ -14,17 +15,28 @@ router.get('/', (_req: Request, res: Response): void => {
 interface IParam {
   id: string;
 }
+
 router.get('/:id', (req: Request, res: Response) => {
-  const params: unknown = req.params
-  if (!params || Object.keys(params).length === 0) {
-    throw new Error('No parameters');
-  }
-  const { id } = params as unknown as IParam
-  if (!id) {
-    throw new Error('No id parameter.')
-  }
-  const patient = patientsService.getPatientById(id)
-  res.json(patient)
+  try {
+    const params: unknown = req.params;
+    if (!params || Object.keys(params).length === 0) {
+      throw new Error('No parameters');
+    }
+    const { id } = params as unknown as IParam;
+    if (!id) {
+      throw new Error('No id parameter.');
+    }
+    const patient: Patient = patientsService.getPatientById(id);
+    res.json(patient)
+  } catch (e) {
+    if (e instanceof z.ZodError) {
+      res.status(500).json(e.issues);
+    } else if (e instanceof Error) {
+      res.status(500).json(e.message);
+    } else {
+      res.status(500).json('Something went wrong');
+    };
+  };
 });
 router.use(parseNewPatientData);
 router.use(errorMiddleware);
