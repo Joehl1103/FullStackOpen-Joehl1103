@@ -47,7 +47,7 @@ router.post('/', parseNewPatientData, (req: Request<unknown, unknown, NewPatient
 
 router.post('/:id/entries', (_req, res) => {
   console.log('wrong')
-  res.status(201).send('wrong');
+  res.status(201).json({ 'wrong'});
 });
 
 router.use(errorMiddleware);
