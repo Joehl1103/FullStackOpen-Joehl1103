@@ -48,5 +48,9 @@ router.post('/', (req: Request<unknown, unknown, NewPatientEntry>, res: Response
 });
 
 
+router.post('/:id/entries', (req, res) => {
+  res.status(201).send('wrong');
+});
+
 
 export default router;
