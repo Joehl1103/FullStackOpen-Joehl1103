@@ -38,19 +38,18 @@ router.get('/:id', (req: Request, res: Response) => {
     };
   };
 });
-router.use(parseNewPatientData);
-router.use(errorMiddleware);
 
-router.post('/', (req: Request<unknown, unknown, NewPatientEntry>, res: Response<NewPatientEntry>): Patient => {
+router.post('/', parseNewPatientData, (req: Request<unknown, unknown, NewPatientEntry>, res: Response<NewPatientEntry>): Patient => {
   const newPatient: Patient = patientsService.addPatient(req.body);
   res.json(newPatient)
   return newPatient;
 });
 
-
-router.post('/:id/entries', (req, res) => {
+router.post('/:id/entries', (_req, res) => {
+  console.log('wrong')
   res.status(201).send('wrong');
 });
 
+router.use(errorMiddleware);
 
 export default router;

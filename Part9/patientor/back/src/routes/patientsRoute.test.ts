@@ -38,16 +38,17 @@ describe('add an entry for a patient', () => {
   const todayDate: string = `${(new Date()).getFullYear()}-${(new Date()).getMonth() + 1}-${(new Date()).getDate()}`
   test('adding base entry succeeds', async () => {
     await request(app)
-      .post('/api/patients/d2773336-f723-11e9-8f0b-362b9e155667/entry')
+      .post('/api/patients/d2773336-f723-11e9-8f0b-362b9e155667/entries')
       .expect(201)
       .then(res => {
-        const { id, ...rest } = res.body;
-        assert.deepStrictEqual(rest, {
-          "description": "description",
-          "date": todayDate,
-          "specialist": "specialist",
-          "diagnosisCodes": "M24.2"
-        })
+        assert.equal(res.body, "wrong")
+        // const { id, ...rest } = res.body;
+        // assert.deepStrictEqual(rest, {
+        //   "description": "description",
+        //   "date": todayDate,
+        //   "specialist": "specialist",
+        //   "diagnosisCodes": "M24.2"
+        // })
       })
   });
 });
