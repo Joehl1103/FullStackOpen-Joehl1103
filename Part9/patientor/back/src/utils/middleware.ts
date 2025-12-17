@@ -1,16 +1,49 @@
 import { Request, Response, NextFunction } from "express";
-import { NewPatientEntry } from "../data/types";
 import { patientDataSchema } from "./patientValidation";
+import {
+  newBaseEntrySchema,
+  healthCheckEntrySchema,
+  occupationalEntrySchema,
+  hospitalEntrySchema
+} from "./entryValidation";
+import { EntryType, EntryWithoutId } from "../data/types";
 import * as z from 'zod';
+import { exhaustiveTypeGuard } from "./utilityFunctions";
 
-export function parseNewPatientData(req: Request, _res: Response, next: NextFunction): NewPatientEntry | void {
+export function parseNewPatientData(req: Request, _res: Response, next: NextFunction) {
   try {
     patientDataSchema.parse(req.body);
-    next();
+    return next();
   } catch (e: unknown) {
     next(e)
   }
   next(new Error('Something went wrong'));
+};
+
+export function parseNewEntryData(req: Request, _res: Response, next: NextFunction) {
+  try {
+    newBaseEntrySchema.parse(req.body);
+    if (!req.body.type) {
+      return next(new Error('Type is missing.'))
+    }
+    const entry: EntryWithoutId = req.body;
+    switch (entry.type) {
+      case EntryType.HEALTHCHECK:
+        healthCheckEntrySchema.parse(entry);
+        break;
+      case EntryType.HOSPITAL:
+        hospitalEntrySchema.parse(entry);
+        break;
+      case EntryType.OCCUPATIONAL:
+        occupationalEntrySchema.parse(entry);
+        break;
+      default:
+        exhaustiveTypeGuard(entry);
+    }
+    next();
+  } catch (e: unknown) {
+    next(e)
+  }
 };
 
 export function errorMiddleware(err: unknown, _req: Request, res: Response, _next: NextFunction): Response {
@@ -21,4 +54,4 @@ export function errorMiddleware(err: unknown, _req: Request, res: Response, _nex
   } else {
     return res.status(400).send('Something went wrong.');
   }
-}
+};

@@ -9,7 +9,7 @@ export enum Gender {
   Female = "female"
 };
 
-// type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
+type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
 
 export enum EntryType {
   HEALTHCHECK = "HealthCheck",
@@ -33,7 +33,7 @@ export enum HealthCheckRating {
 };
 
 export interface HealthCheckEntry extends BaseEntry {
-  type: "HealthCheck";
+  type: typeof EntryType.HEALTHCHECK;
   healthCheckRating: HealthCheckRating;
 };
 
@@ -43,7 +43,7 @@ type SickLeave = {
 };
 
 export interface OccupationalHealthcareEntry extends BaseEntry {
-  type: "OccupationalHealthcare";
+  type: typeof EntryType.OCCUPATIONAL;
   employerName: string;
   sickLeave?: SickLeave
 
@@ -55,7 +55,7 @@ type Discharge = {
 };
 
 export interface HospitalEntry extends BaseEntry {
-  type: "Hospital";
+  type: typeof EntryType.HOSPITAL;
   discharge: Discharge;
 }
 
@@ -63,6 +63,8 @@ export type Entry =
   | HospitalEntry
   | OccupationalHealthcareEntry
   | HealthCheckEntry;
+
+export type EntryWithoutId = UnionOmit<Entry, "id">
 
 export type Patient = {
   id: string;
@@ -79,4 +81,3 @@ export type NonSensitivePatient = Omit<Patient, 'ssn' | 'entries'>;
 export type PatientWithoutSsn = Omit<Patient, "ssn">;
 
 export type NewPatientEntry = Omit<Patient, "id">
-
