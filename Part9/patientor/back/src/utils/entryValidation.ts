@@ -1,5 +1,5 @@
 import * as z from 'zod';
-import { EntryType, HealthCheckRating } from '../data/types';
+import { EntryType, HealthCheckRating, Diagnosis } from '../data/types';
 
 export const entrySchema = z.object({
   type: z.enum(EntryType),
@@ -9,7 +9,9 @@ export const newBaseEntrySchema = z.object({
   description: z.string(),
   date: z.string().date(),
   specialist: z.string(),
-  diagnosisCodes: z.optional(z.array(z.string())),
+  diagnosisCodes: z.custom<Array<Diagnosis['code']>>((val): val is Array<Diagnosis['code']> =>
+    Array.isArray(val) && val.every(item => typeof item === 'string')
+  ),
   type: z.string()
 });
 

@@ -1,7 +1,7 @@
 import express, { Response, Request } from 'express';
 import patientsService from '../services/patientsService';
 import { NewPatientEntry, Patient, EntryWithoutId } from '../data/types';
-import { errorMiddleware, parseNewPatientData } from '../utils/middleware';
+import { errorMiddleware, parseNewPatientData, parseNewEntryData } from '../utils/middleware';
 const router = express.Router();
 import * as z from 'zod';
 
@@ -45,7 +45,7 @@ router.post('/', parseNewPatientData, (req: Request<unknown, unknown, NewPatient
   return newPatient;
 });
 
-router.post('/:id/entries', (req: Request<unknown, unknown, EntryWithoutId>, res: Response<EntryWithoutId>) => {
+router.post('/:id/entries', parseNewEntryData, (req: Request<unknown, unknown, EntryWithoutId>, res: Response<EntryWithoutId>) => {
   const entry: EntryWithoutId = req.body;
   console.log('entry')
   res.status(201).json(entry)

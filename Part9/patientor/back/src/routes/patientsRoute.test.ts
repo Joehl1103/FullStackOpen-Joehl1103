@@ -2,6 +2,7 @@ import { describe, test } from 'node:test';
 import assert from 'node:assert';
 import request from 'supertest';
 import app from './../../app';
+import { healthCheckEntrySchema } from '../utils/entryValidation';
 
 test('get patient by id', async () => {
   await request(app)
@@ -36,16 +37,17 @@ test('get patient by id', async () => {
 
 describe('add an entry for a patient', () => {
   const todayDate: string = `${(new Date()).getFullYear()}-${(new Date()).getMonth() + 1}-${(new Date()).getDate()}`
-  const newEntryObject = {
+  const baseEntryObject = {
     "description": "description",
     "date": todayDate,
     "specialist": "specialist",
     "diagnosisCodes": "M24.2"
   }
+  const url = '/api/patients/d2773336-f723-11e9-8f0b-362b9e155667/entries';
   test('adding base entry succeeds', async () => {
     await request(app)
-      .post('/api/patients/d2773336-f723-11e9-8f0b-362b9e155667/entries')
-      .send(newEntryObject)
+      .post(url)
+      .send(baseEntryObject)
       .expect(201)
       .then(res => {
         const { id, ...rest } = res.body;
@@ -58,4 +60,15 @@ describe('add an entry for a patient', () => {
       }
       )
   });
+
+  test('Healthcheck entry succeeds', async () => {
+
+    await request(app)
+      .post(url)
+      .send({
+        ...baseEntryObject,
+        healthCheckRating: 0
+      })
+      .expect(201)
+  })
 });
