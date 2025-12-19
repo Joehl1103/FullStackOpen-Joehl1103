@@ -22,16 +22,11 @@ export function parseNewPatientData(req: Request, _res: Response, next: NextFunc
 export function parseNewEntryData(req: Request, _res: Response, next: NextFunction) {
   try {
     if (!req.body.type) {
-      console.log('no body')
       throw new Error('Type is missing.')
     }
-    console.log('here')
     const entry: EntryWithoutId = req.body;
-    console.log('entry.type', entry.type)
-    console.log('EntryType.HEALTHCHECK', EntryType.HEALTHCHECK)
     switch (entry.type) {
       case EntryType.HEALTHCHECK:
-        console.log('healthcheck')
         healthCheckEntrySchema.parse(entry);
         break;
       case EntryType.HOSPITAL:
@@ -41,7 +36,6 @@ export function parseNewEntryData(req: Request, _res: Response, next: NextFuncti
         occupationalEntrySchema.parse(entry);
         break;
       default:
-        console.log('default')
         exhaustiveTypeGuard(entry);
     }
     next();

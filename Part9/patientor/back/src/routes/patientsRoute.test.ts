@@ -53,7 +53,7 @@ describe('add an entry for a patient', () => {
     assert.equal(JSON.parse(response.text).error, "Type is missing.");
   });
 
-  test.only('Healthcheck entry succeeds', async () => {
+  test('Healthcheck entry succeeds', async () => {
     const res = await request(app)
       .post(url)
       .send({
@@ -62,6 +62,65 @@ describe('add an entry for a patient', () => {
         healthCheckRating: 0
       })
       .expect(201)
-    console.log('res', res)
-  })
-});
+    assert.deepStrictEqual(JSON.parse(res.text), {
+      description: "description",
+      date: todayDate,
+      specialist: "specialist",
+      diagnosisCodes: ["M24.2"],
+      type: "Healthcheck",
+      healthCheckRating: 0
+    })
+  });
+
+  test('Occupational entry succeeds', async () => {
+    const res = await request(app)
+      .post(url)
+      .send({
+        ...baseEntryObject,
+        type: "OccupationalHealthcare",
+        employerName: 'employer',
+        sickLeave: {
+          startDate: "2025-12-01",
+          endDate: "2025-12-01"
+        }
+      })
+      .expect(201)
+    assert.deepStrictEqual(JSON.parse(res.text), {
+      description: "description",
+      date: todayDate,
+      specialist: "specialist",
+      diagnosisCodes: ["M24.2"],
+      type: "OccupationalHealthcare",
+      employerName: 'employer',
+      sickLeave: {
+        startDate: "2025-12-01",
+        endDate: "2025-12-01"
+      }
+    })
+  });
+
+  test('Hospital entry succeeds', async () => {
+    const res = await request(app)
+      .post(url)
+      .send({
+        ...baseEntryObject,
+        type: "Hospital",
+        discharge: {
+          date: "2025-12-01",
+          criteria: "criteria"
+        }
+      })
+      .expect(201)
+    assert.deepStrictEqual(JSON.parse(res.text), {
+      description: "description",
+      date: todayDate,
+      specialist: "specialist",
+      diagnosisCodes: ["M24.2"],
+      type: "Hospital",
+      discharge: {
+        date: "2025-12-01",
+        criteria: "criteria"
+      }
+    })
+  });
+})
