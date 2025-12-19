@@ -41,34 +41,27 @@ describe('add an entry for a patient', () => {
     "description": "description",
     "date": todayDate,
     "specialist": "specialist",
-    "diagnosisCodes": "M24.2"
+    "diagnosisCodes": ["M24.2"]
   }
   const url = '/api/patients/d2773336-f723-11e9-8f0b-362b9e155667/entries';
-  test('adding base entry succeeds', async () => {
-    await request(app)
+  test('adding without type throws error ', async () => {
+    const response = await request(app)
       .post(url)
       .send(baseEntryObject)
-      .expect(201)
-      .then(res => {
-        const { id, ...rest } = res.body;
-        assert.deepStrictEqual(rest, {
-          "description": "description",
-          "date": todayDate,
-          "specialist": "specialist",
-          "diagnosisCodes": "M24.2"
-        })
-      }
-      )
+      .expect(400)
+    assert.equal(response.status, 400);
+    assert.equal(JSON.parse(response.text).error, "Type is missing.");
   });
 
-  test('Healthcheck entry succeeds', async () => {
-
-    await request(app)
+  test.only('Healthcheck entry succeeds', async () => {
+    const res = await request(app)
       .post(url)
       .send({
         ...baseEntryObject,
+        type: "Healthcheck",
         healthCheckRating: 0
       })
       .expect(201)
+    console.log('res', res)
   })
 });

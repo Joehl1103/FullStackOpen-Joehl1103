@@ -12,7 +12,7 @@ export enum Gender {
 type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
 
 export enum EntryType {
-  HEALTHCHECK = "HealthCheck",
+  HEALTHCHECK = "Healthcheck",
   OCCUPATIONAL = "OccupationalHealthcare",
   HOSPITAL = "Hospital"
 };
