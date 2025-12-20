@@ -22,13 +22,23 @@ function EntryForm({ setEntryFormVisible }: { setEntryFormVisible: React.Dispatc
   }
   return (
     <div>
-      <div style={{ display: "flex", flexDirection: 'row' }}>
-        <Typography>Add Entry</Typography>
-        <p>close form</p>
-        <Checkbox
-          size="small"
-          onChange={() => setEntryFormVisible(false)}
-        />
+      <div style={{
+        display: "flex",
+        flexDirection: 'row',
+        gap: 5
+      }}>
+        <Typography variant='body1'>Add Entry</Typography>
+        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+          <Typography
+            variant='body2'
+            sx={{ marginLeft: 1, marginTop: 0.4 }}
+          >close form</Typography>
+          <Checkbox
+            size="small"
+            onChange={() => setEntryFormVisible(false)}
+            sx={{ paddingTop: 0 }}
+          />
+        </Box>
       </div>
       <Box
         component="form"
