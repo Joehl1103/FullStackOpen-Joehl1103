@@ -37,7 +37,7 @@ export interface HealthCheckEntry extends BaseEntry {
   healthCheckRating: HealthCheckRating;
 };
 
-type SickLeave = {
+export type SickLeave = {
   startDate: string;
   endDate: string;
 };

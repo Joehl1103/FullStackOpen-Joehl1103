@@ -7,6 +7,7 @@ import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
 import EngineeringIcon from '@mui/icons-material/Engineering';
 import DeviceThermostatIcon from '@mui/icons-material/DeviceThermostat';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { Box, List, ListItem, Typography } from "@mui/material";
 import diagnosesService from "../../../services/diagnoses";
 import { exhaustiveTypeGuard } from "../../../utilities";
 
@@ -20,18 +21,16 @@ function DiagnosticCodes({ diagnoses }: { diagnoses: Diagnosis[] }) {
       <ItemDivWithIcon
         icon={ChevronRightIcon}
         text={"Diagnostic codes:"} />
-      <div style={{ marginLeft: 15 }} >
+      <Box sx={{ marginLeft: 1.4 }} >
         <ul style={{ marginTop: 5, marginBottom: 5 }}>
           {diagnoses.map((d, i) => (
-            <li key={i}>{`${d.code}: ${d.name}.`}</li>
+            <li key={i}><Typography variant="body2">{`${d.code}: ${d.name}.`}</Typography></li>
           ))}
         </ul>
-      </div>
+      </Box>
     </div >
   )
-}
-
-
+};
 
 function ItemDivWithIcon(
   { icon: Icon,
@@ -51,7 +50,7 @@ function ItemDivWithIcon(
   return (
     <div style={{ display: "flex", flexDirection: "row", columnGap: 5 }}>
       <Icon fontSize="small" />
-      <p style={{ marginTop: 4, marginBottom: 5 }}>{text}</p>
+      <Typography variant="body2" sx={{ marginTop: 0.5, marginBottom: 0 }}>{text}</Typography>
       {healthIconObject ? <healthIconObject.icon sx={{ color: healthIconObject.iconColor }} /> : null}
     </div>
   )
@@ -109,23 +108,21 @@ function EntryDisplay({ entry }: { entry: Entry }) {
       <div>
         <ItemDivWithIcon icon={ChevronRightIcon} text={"Sick Leave:"} />
         <ul style={{ marginLeft: 13, marginTop: 0 }}>
-          <li>Start: {sickLeave.startDate}</li>
-          <li>End: {sickLeave.endDate}</li>
+          <li><Typography variant="body2"> Start: {sickLeave.startDate}</Typography></li>
+          <li><Typography variant="body2">End: {sickLeave.endDate}</Typography></li>
         </ul>
       </div>
     )
   }
-
   function setHealthIconColor(rating: HealthCheckRating) {
-    const Icon = <FavoriteIcon sx={{ color: 'red' }} />
     switch (rating) {
-      case 0:
+      case HealthCheckRating["CriticalRisk"]:
         return 'red';
-      case 1:
+      case HealthCheckRating["HighRisk"]:
         return 'orange';
-      case 2:
+      case HealthCheckRating["LowRisk"]:
         return 'yellow';
-      case 3:
+      case HealthCheckRating["Healthy"]:
         return 'green';
       default:
         exhaustiveTypeGuard(rating);

@@ -1,7 +1,7 @@
-import { Box, InputLabel, TextField, Typography } from "@mui/material";
+import { Box, InputLabel, TextField, Typography, Checkbox } from "@mui/material";
 import { useState } from 'react';
 
-function EntryForm() {
+function EntryForm({ setEntryFormVisible }: { setEntryFormVisible: React.Dispatch<React.SetStateAction<boolean>> }) {
   const [baseEntryformData, setBaseEntryFormData] = useState({
     description: "",
     date: "",
@@ -22,7 +22,14 @@ function EntryForm() {
   }
   return (
     <div>
-      <Typography>Add Entry</Typography>
+      <div style={{ display: "flex", flexDirection: 'row' }}>
+        <Typography>Add Entry</Typography>
+        <p>close form</p>
+        <Checkbox
+          size="small"
+          onChange={() => setEntryFormVisible(false)}
+        />
+      </div>
       <Box
         component="form"
         onSubmit={handleSubmit}

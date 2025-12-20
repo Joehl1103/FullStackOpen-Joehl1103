@@ -3,7 +3,7 @@ import { Patient, Entry } from "../../types.ts";
 import { useParams } from "react-router-dom";
 import * as z from 'zod';
 import services from '../../services/patients';
-import { Typography, TableContainer, Table, TableBody, TableRow, TableCell } from '@mui/material';
+import { Typography, TableContainer, Table, TableBody, TableRow, TableCell, Checkbox } from '@mui/material';
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
 import { IconProps } from '@mui/material';
@@ -28,9 +28,32 @@ function RowAndCell({ left, right }: { left: string, right: string }) {
   )
 }
 
+function EntryFormDisplay({ entryFormVisible, handleEntryFormCheck }: { entryFormVisible: boolean, handleEntryFormCheck(event: React.SyntheticEvent): void }) {
+  return (
+    <div style={
+      {
+        display: 'flex',
+        flexDirection: 'row',
+        marginLeft: 0,
+        paddingLeft: 0
+      }}>
+      <Checkbox
+        checked={entryFormVisible}
+        onChange={handleEntryFormCheck}
+        size="small"
+        sx={{
+          marginLeft: 0,
+          paddingLeft: 0
+        }}
+      />
+      <Typography variant="body1">add entry</Typography>
+    </div>
+  )
+};
 function PatientPage() {
   const [patient, setPatient] = useState<Patient>();
   const [entries, setEntries] = useState<Entry[]>();
+  const [entryFormVisible, setEntryFormVisible] = useState<boolean>(false)
   const params: IParams = paramsSchema.parse(useParams());
   useEffect(() => {
     services.getById(params.id)
@@ -43,6 +66,11 @@ function PatientPage() {
 
   if (!patient || Object.length === 0) {
     return <div>No patient to display...</div>
+  }
+
+  function handleEntryFormCheck(event: React.SyntheticEvent) {
+    event.preventDefault();
+    setEntryFormVisible(true)
   }
   const iconSize: IconProps['fontSize'] = 'large';
   return (
@@ -62,8 +90,15 @@ function PatientPage() {
         </TableContainer>
       </div>
       <div>
-        <Typography variant='h5' sx={{ marginBottom: 5 }}>Entries</Typography>
-        <EntryForm />
+        <Typography variant='h5' sx={{ marginBottom: 2 }}>Entries</Typography>
+        {entryFormVisible
+          ? <EntryForm
+            setEntryFormVisible={setEntryFormVisible}
+          />
+          : <EntryFormDisplay
+            entryFormVisible={entryFormVisible}
+            handleEntryFormCheck={handleEntryFormCheck}
+          />}
         {entries && entries.length > 0
           ? entries.map(e => {
             return (
@@ -72,7 +107,7 @@ function PatientPage() {
               </div>
             )
           })
-          : <div>No entries to display...</div>}
+          : <Typography variant="body1">No entries to display...</Typography>}
       </div>
     </div >
   )
