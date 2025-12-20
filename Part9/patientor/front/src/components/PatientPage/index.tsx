@@ -3,9 +3,10 @@ import { Patient, Entry } from "../../types.ts";
 import { useParams } from "react-router-dom";
 import * as z from 'zod';
 import services from '../../services/patients';
-import { Typography, TableContainer, Table, TableBody, TableRow, TableCell, Checkbox } from '@mui/material';
+import { Typography, TableContainer, Table, TableBody, TableRow, TableCell, IconButton } from '@mui/material';
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
+import AddIcon from '@mui/icons-material/Add';
 import { IconProps } from '@mui/material';
 import EntryDisplay from './Entries/EntryDisplay.tsx';
 import EntryForm from './Entries/EntryForm.tsx';
@@ -35,18 +36,22 @@ function EntryFormDisplay({ entryFormVisible, handleEntryFormCheck }: { entryFor
         display: 'flex',
         flexDirection: 'row',
         marginLeft: 0,
-        paddingLeft: 0
+        paddingLeft: 0,
       }}>
-      <Checkbox
-        checked={entryFormVisible}
-        onChange={handleEntryFormCheck}
-        size="small"
+      <IconButton
+        onClick={handleEntryFormCheck}
+        size='small'
         sx={{
-          marginLeft: 0,
-          paddingLeft: 0
+          cursor: 'pointer',
+          '&:hover': { color: 'primary.main' }
         }}
-      />
-      <Typography variant="body1">add entry</Typography>
+      >
+        <AddIcon />
+      </IconButton>
+      <Typography
+        variant="body2"
+        sx={{ marginTop: 1.6 }}
+      >add entry</Typography>
     </div>
   )
 };
@@ -90,7 +95,7 @@ function PatientPage() {
         </TableContainer>
       </div>
       <div>
-        <Typography variant='h5' sx={{ marginBottom: 2 }}>Entries</Typography>
+        <Typography variant='h5' sx={{ marginBottom: 1.5 }}>Entries</Typography>
         {entryFormVisible
           ? <EntryForm
             setEntryFormVisible={setEntryFormVisible}
