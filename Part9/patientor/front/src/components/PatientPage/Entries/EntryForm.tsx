@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { EntryType, HealthCheckRating } from "../../../types";
 
 function EntryForm({ setEntryFormVisible }: { setEntryFormVisible: React.Dispatch<React.SetStateAction<boolean>> }) {
-  const [baseEntryformData, setBaseEntryFormData] = useState({
+  const [baseEntryFormData, setBaseEntryFormData] = useState({
     description: "",
     date: "",
     specialist: "",
@@ -11,17 +11,21 @@ function EntryForm({ setEntryFormVisible }: { setEntryFormVisible: React.Dispatc
   })
   const [entryType, setEntryType] = useState<EntryType>(EntryType.HEALTHCHECK)
   const [healthCheckRating, setHealthCheckRating] = useState<HealthCheckRating | null>(null)
-  const baseEntryKeys: string[] = Object.keys(baseEntryformData) as (keyof typeof baseEntryformData)[];
-  function handleSubmit() {
+  const baseEntryKeys: string[] = Object.keys(baseEntryFormData) as (keyof typeof baseEntryFormData)[];
+  console.log('baseEntryKeys', baseEntryKeys)
 
-  }
+  function handleSubmit(event: React.SyntheticEvent) {
+    event.preventDefault();
+  };
 
   function handleBaseEntryFormChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
-    setBaseEntryFormData((prevState) => ({
-      ...prevState,
-      [name]: value
-    }))
+    setBaseEntryFormData((prevState) => {
+      return {
+        ...prevState,
+        [name]: value
+      }
+    })
   }
 
   function handleEntryTypeChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -73,8 +77,14 @@ function EntryForm({ setEntryFormVisible }: { setEntryFormVisible: React.Dispatc
               </Select>
             </FormControl>
           </Box>
-        )
+        );
       case EntryType.OCCUPATIONAL:
+        return (
+          <Box>
+            <InputLabel>Employer name:</InputLabel>
+            <TextField size="small" />
+          </Box>
+        );
       case EntryType.HOSPITAL:
     }
   };
@@ -123,7 +133,8 @@ function EntryForm({ setEntryFormVisible }: { setEntryFormVisible: React.Dispatc
             <div key={k}>
               <InputLabel>{k}</InputLabel>
               <TextField
-                value={baseEntryformData[k as keyof typeof baseEntryformData]}
+                name={k}
+                value={baseEntryFormData[k as keyof typeof baseEntryFormData]}
                 onChange={handleBaseEntryFormChange}
                 size="small"
               />
