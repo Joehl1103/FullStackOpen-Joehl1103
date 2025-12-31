@@ -1,6 +1,9 @@
 import { Box, InputLabel, TextField, Typography, Checkbox, FormControl, FormLabel, RadioGroup, Radio, FormControlLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { useState } from 'react';
 import { EntryType, HealthCheckRating } from "../../../types";
+import { exhaustiveTypeGuard } from "../../../utilities";
+
+type HealthCheckRatingKeys = keyof typeof HealthCheckRating;
 
 function EntryForm({ setEntryFormVisible }: { setEntryFormVisible: React.Dispatch<React.SetStateAction<boolean>> }) {
   const [baseEntryFormData, setBaseEntryFormData] = useState({
@@ -10,13 +13,10 @@ function EntryForm({ setEntryFormVisible }: { setEntryFormVisible: React.Dispatc
     diagnosisCodes: ""
   })
   const [entryType, setEntryType] = useState<EntryType>(EntryType.HEALTHCHECK)
-  const [healthCheckRating, setHealthCheckRating] = useState<HealthCheckRating | null>(null)
+  const [healthCheckRatingKey, setHealthCheckRatingKey] = useState<HealthCheckRatingKeys>('Healthy')
   const baseEntryKeys: string[] = Object.keys(baseEntryFormData) as (keyof typeof baseEntryFormData)[];
-  console.log('baseEntryKeys', baseEntryKeys)
 
-  function handleSubmit(event: React.SyntheticEvent) {
-    event.preventDefault();
-  };
+
 
   function handleBaseEntryFormChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -45,21 +45,23 @@ function EntryForm({ setEntryFormVisible }: { setEntryFormVisible: React.Dispatc
     }
   };
 
+  function isHealthCheckRatingKey(value: any): value is HealthCheckRatingKeys {
+    return value in HealthCheckRating && isNaN(Number(value));
+  }
+
   function handleHealthCheckChange(event: SelectChangeEvent<string | null>) {
-    try {
-      if (!event.target.value) {
-        throw new Error('value for Healthcheckrating is null or undefined.');
-      }
-      const num = Number(event.target.value);
-      if (num > 3 || num < 0) {
-        throw new Error(`entry for healthcheckrating is incorrect: ${num}`);
-      }
-      setHealthCheckRating(num);
-    } catch (e) {
-      if (e instanceof Error) {
-        throw new Error(e.message);
-      }
+    console.log('event.target.value', event.target.value)
+    if (!event.target.value) {
+      throw new Error('Healthcheck rating is null.');
     }
+    if (isHealthCheckRatingKey(event.target.value)) {
+      setHealthCheckRatingKey(event.target.value);
+    }
+  };
+
+  function handleSubmit(event: React.SyntheticEvent) {
+    event.preventDefault();
+    console.log('submitting');
   };
 
   function displayConditionalEntryTypes(entryType: EntryType) {
@@ -72,8 +74,16 @@ function EntryForm({ setEntryFormVisible }: { setEntryFormVisible: React.Dispatc
               <Select
                 sx={{ width: 200 }}
                 label="Healthcheck rating"
+                value={healthCheckRatingKey}
                 onChange={handleHealthCheckChange}>
-                {[0, 1, 2, 3].map(n => <div key={n}><MenuItem dense={true} value={n}>{n}</MenuItem></div>)}
+                {Object.keys(HealthCheckRating)
+                  .filter(key => isNaN(Number(key)))
+                  .map((n: string) => {
+                    console.log('n', n)
+                    return (
+                      <MenuItem key={n} dense={true} value={n}>{n}</MenuItem>
+                    )
+                  })}
               </Select>
             </FormControl>
           </Box>
@@ -147,4 +157,5 @@ function EntryForm({ setEntryFormVisible }: { setEntryFormVisible: React.Dispatc
     </div >
   )
 }
+
 export default EntryForm;
