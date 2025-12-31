@@ -1,7 +1,7 @@
 import { Box, InputLabel, TextField, Typography, Checkbox, FormControl, FormLabel, RadioGroup, Radio, FormControlLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { useState } from 'react';
-import { EntryType, HealthCheckRating } from "../../../types";
-import { exhaustiveTypeGuard } from "../../../utilities";
+import { EntryType, HealthCheckRating } from "../../../../types";
+import EntryTypeSelect from "./EntryTypeSelect";
 
 type HealthCheckRatingKeys = keyof typeof HealthCheckRating;
 
@@ -28,29 +28,11 @@ function EntryForm({ setEntryFormVisible }: { setEntryFormVisible: React.Dispatc
     })
   }
 
-  function handleEntryTypeChange(event: React.ChangeEvent<HTMLInputElement>) {
-    event.preventDefault();
-    switch (event.target.value) {
-      case "Healthcheck":
-        setEntryType(EntryType.HEALTHCHECK);
-        break;
-      case "Occupational Healthcare":
-        setEntryType(EntryType.OCCUPATIONAL);
-        break;
-      case "Hospital":
-        setEntryType(EntryType.HOSPITAL);
-        break;
-      default:
-        throw new Error(`${event.target.value} is not an entry type.`);
-    }
-  };
-
   function isHealthCheckRatingKey(value: any): value is HealthCheckRatingKeys {
     return value in HealthCheckRating && isNaN(Number(value));
   }
 
   function handleHealthCheckChange(event: SelectChangeEvent<string | null>) {
-    console.log('event.target.value', event.target.value)
     if (!event.target.value) {
       throw new Error('Healthcheck rating is null.');
     }
@@ -119,21 +101,7 @@ function EntryForm({ setEntryFormVisible }: { setEntryFormVisible: React.Dispatc
           />
         </Box>
       </div>
-      <FormControl >
-        <FormLabel sx={{ fontSize: 15 }}>Entry type</FormLabel>
-        <RadioGroup
-          defaultValue="Healthcheck"
-          sx={{ display: "flex", flexDirection: 'row' }}
-          onChange={handleEntryTypeChange}>
-          {["Healthcheck", "Occupational Healthcare", "Hospital"].map(v => {
-            return (
-              <div key={v}>
-                <FormControlLabel value={v} control={<Radio size="small" />} label={v} />
-              </div>
-            )
-          })}
-        </RadioGroup>
-      </FormControl>
+      <EntryTypeSelect setEntryType={setEntryType} />
       <Box
         component="form"
         onSubmit={handleSubmit}

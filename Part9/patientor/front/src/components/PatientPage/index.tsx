@@ -9,7 +9,7 @@ import FemaleIcon from '@mui/icons-material/Female';
 import AddIcon from '@mui/icons-material/Add';
 import { IconProps } from '@mui/material';
 import EntryDisplay from './Entries/EntryDisplay.tsx';
-import EntryForm from './Entries/EntryForm.tsx';
+import EntryForm from './Entries/EntryForm/index.tsx';
 
 interface IParams {
   id: string;
