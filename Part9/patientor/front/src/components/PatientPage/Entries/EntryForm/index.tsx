@@ -2,6 +2,7 @@ import { Box, InputLabel, TextField, Typography, Checkbox, FormControl, FormLabe
 import { useState } from 'react';
 import { EntryType, HealthCheckRating } from "../../../../types";
 import EntryTypeSelect from "./EntryTypeSelect";
+import Header from './Header.tsx';
 
 type HealthCheckRatingKeys = keyof typeof HealthCheckRating;
 
@@ -11,12 +12,10 @@ function EntryForm({ setEntryFormVisible }: { setEntryFormVisible: React.Dispatc
     date: "",
     specialist: "",
     diagnosisCodes: ""
-  })
-  const [entryType, setEntryType] = useState<EntryType>(EntryType.HEALTHCHECK)
-  const [healthCheckRatingKey, setHealthCheckRatingKey] = useState<HealthCheckRatingKeys>('Healthy')
+  });
+  const [entryType, setEntryType] = useState<EntryType>(EntryType.HEALTHCHECK);
+  const [healthCheckRatingKey, setHealthCheckRatingKey] = useState<HealthCheckRatingKeys>('Healthy');
   const baseEntryKeys: string[] = Object.keys(baseEntryFormData) as (keyof typeof baseEntryFormData)[];
-
-
 
   function handleBaseEntryFormChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -26,11 +25,11 @@ function EntryForm({ setEntryFormVisible }: { setEntryFormVisible: React.Dispatc
         [name]: value
       }
     })
-  }
+  };
 
   function isHealthCheckRatingKey(value: any): value is HealthCheckRatingKeys {
     return value in HealthCheckRating && isNaN(Number(value));
-  }
+  };
 
   function handleHealthCheckChange(event: SelectChangeEvent<string | null>) {
     if (!event.target.value) {
@@ -83,24 +82,7 @@ function EntryForm({ setEntryFormVisible }: { setEntryFormVisible: React.Dispatc
 
   return (
     <div>
-      <div style={{
-        display: "flex",
-        flexDirection: 'row',
-        gap: 5
-      }}>
-        <Typography variant='body1'>Add Entry</Typography>
-        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-          <Typography
-            variant='body2'
-            sx={{ marginLeft: 1, marginTop: 0.6 }}
-          >close form</Typography>
-          <Checkbox
-            size="small"
-            onChange={() => setEntryFormVisible(false)}
-            sx={{ paddingTop: 0 }}
-          />
-        </Box>
-      </div>
+      <Header setEntryFormVisible={setEntryFormVisible} />
       <EntryTypeSelect setEntryType={setEntryType} />
       <Box
         component="form"
@@ -124,6 +106,6 @@ function EntryForm({ setEntryFormVisible }: { setEntryFormVisible: React.Dispatc
       </Box>
     </div >
   )
-}
+};
 
 export default EntryForm;
