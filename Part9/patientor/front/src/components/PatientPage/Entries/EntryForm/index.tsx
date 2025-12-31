@@ -1,31 +1,23 @@
 import { Box, InputLabel, TextField, Typography, Checkbox, FormControl, FormLabel, RadioGroup, Radio, FormControlLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { useState } from 'react';
-import { EntryType, HealthCheckRating } from "../../../../types";
+import { EntryType, HealthCheckRating, BaseEntryFormTypes } from "../../../../types";
 import EntryTypeSelect from "./EntryTypeSelect";
 import Header from './Header.tsx';
+import BaseEntryForm from "./BaseEntryForm.tsx";
 
 type HealthCheckRatingKeys = keyof typeof HealthCheckRating;
 
 function EntryForm({ setEntryFormVisible }: { setEntryFormVisible: React.Dispatch<React.SetStateAction<boolean>> }) {
-  const [baseEntryFormData, setBaseEntryFormData] = useState({
+
+  const [baseEntryFormData, setBaseEntryFormData] = useState<BaseEntryFormTypes>({
     description: "",
     date: "",
     specialist: "",
     diagnosisCodes: ""
   });
+
   const [entryType, setEntryType] = useState<EntryType>(EntryType.HEALTHCHECK);
   const [healthCheckRatingKey, setHealthCheckRatingKey] = useState<HealthCheckRatingKeys>('Healthy');
-  const baseEntryKeys: string[] = Object.keys(baseEntryFormData) as (keyof typeof baseEntryFormData)[];
-
-  function handleBaseEntryFormChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const { name, value } = event.target;
-    setBaseEntryFormData((prevState) => {
-      return {
-        ...prevState,
-        [name]: value
-      }
-    })
-  };
 
   function isHealthCheckRatingKey(value: any): value is HealthCheckRatingKeys {
     return value in HealthCheckRating && isNaN(Number(value));
@@ -60,7 +52,6 @@ function EntryForm({ setEntryFormVisible }: { setEntryFormVisible: React.Dispatc
                 {Object.keys(HealthCheckRating)
                   .filter(key => isNaN(Number(key)))
                   .map((n: string) => {
-                    console.log('n', n)
                     return (
                       <MenuItem key={n} dense={true} value={n}>{n}</MenuItem>
                     )
@@ -88,20 +79,10 @@ function EntryForm({ setEntryFormVisible }: { setEntryFormVisible: React.Dispatc
         component="form"
         onSubmit={handleSubmit}
       >
-        {baseEntryKeys.map((k: string) => {
-          return (
-            <div key={k}>
-              <InputLabel>{k}</InputLabel>
-              <TextField
-                name={k}
-                value={baseEntryFormData[k as keyof typeof baseEntryFormData]}
-                onChange={handleBaseEntryFormChange}
-                size="small"
-              />
-              <br />
-            </div>
-          )
-        })}
+        <BaseEntryForm
+          baseEntryFormData={baseEntryFormData}
+          setBaseEntryFormData={setBaseEntryFormData}
+        />
         {displayConditionalEntryTypes(entryType)}
       </Box>
     </div >
