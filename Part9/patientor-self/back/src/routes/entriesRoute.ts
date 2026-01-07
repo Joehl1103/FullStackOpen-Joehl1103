@@ -1,8 +1,9 @@
 import express, { Response, Request } from 'express';
 const router = express.Router();
 
-router.post('/:id', (req: Request, res: Response) => {
-  console.log('pinging post entry by id');
+router.post('/:id', (_req: Request, res: Response) => {
+  console.log('pringing post entry by id.')
+  res.status(200).send('pringing post entry by id.')
 });
 
 export default router;

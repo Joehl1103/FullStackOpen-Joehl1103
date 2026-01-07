@@ -15,6 +15,7 @@ function isOccupationalHealthcareEntry(object: unknown): object is OccupationalH
 
 
 function isHealthCheckEntry(object: unknown): object is HealthCheckEntry {
+  console.log('object', object)
   return typeof object === 'object' && object !== null && (object as any).type === "Healthcheck";
 };
 

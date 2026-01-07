@@ -14,7 +14,6 @@ type HealthCheckRatingKeys = keyof typeof HealthCheckRating;
 function EntryForm({ setEntryFormVisible, patientId }: { setEntryFormVisible: React.Dispatch<React.SetStateAction<boolean>>, patientId: string }) {
 
   const [baseEntryFormData, setBaseEntryFormData] = useState<BaseEntryFormTypes>({
-    type: "",
     description: "",
     date: "",
     specialist: "",
@@ -55,11 +54,11 @@ function EntryForm({ setEntryFormVisible, patientId }: { setEntryFormVisible: Re
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
     let entryOfUnknownType: unknown = {};
-    const type = baseEntryFormData.type;
-    switch (type) {
+    switch (entryType) {
       case EntryType.HEALTHCHECK:
         entryOfUnknownType = {
           ...baseEntryFormData,
+          type: entryType,
           healthCheckRating: getHealthCheckRating(healthCheckRatingKey)
         }
         break;
@@ -67,17 +66,19 @@ function EntryForm({ setEntryFormVisible, patientId }: { setEntryFormVisible: Re
         break;
       case EntryType.OCCUPATIONAL:
         break;
-      case "":
-        return;
       default:
-        exhaustiveTypeGuard(type);
+        exhaustiveTypeGuard(entryType);
     }
     try {
       const validatedEntry = entryTypeValidator(entryOfUnknownType);
+      if (!patientId) {
+        throw new Error('no patient id in handleSubmit.');
+      }
       entryService.addEntry(validatedEntry, patientId);
     } catch (e: unknown) {
       if (e instanceof z.ZodError) {
-        throw new Error(`${e.issues}`);
+        console.log(entryType)
+        throw new Error(e.issues[0].message);
       }
     }
   };
