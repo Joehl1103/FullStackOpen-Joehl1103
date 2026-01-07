@@ -8,7 +8,7 @@ interface Props {
 
 function BaseEntryForm({ baseEntryFormData, setBaseEntryFormData }: Props) {
 
-  const baseEntryKeys: string[] = Object.keys(baseEntryFormData) as (keyof typeof baseEntryFormData)[];
+  const baseEntryKeys: string[] = Object.keys(baseEntryFormData).filter(k => k !== 'type') as (keyof typeof baseEntryFormData)[];
   function handleBaseEntryFormChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
     setBaseEntryFormData((prevState) => {

@@ -29,7 +29,12 @@ function RowAndCell({ left, right }: { left: string, right: string }) {
   )
 }
 
-function EntryFormDisplay({ entryFormVisible, handleEntryFormCheck }: { entryFormVisible: boolean, handleEntryFormCheck(event: React.SyntheticEvent): void }) {
+function EntryFormDisplay(
+  { entryFormVisible, handleEntryFormCheck }: {
+    entryFormVisible: boolean,
+    handleEntryFormCheck(event: React.SyntheticEvent
+    ): void
+  }) {
   return (
     <div style={
       {
@@ -99,6 +104,7 @@ function PatientPage() {
         {entryFormVisible
           ? <EntryForm
             setEntryFormVisible={setEntryFormVisible}
+            patientId={params.id}
           />
           : <EntryFormDisplay
             entryFormVisible={entryFormVisible}

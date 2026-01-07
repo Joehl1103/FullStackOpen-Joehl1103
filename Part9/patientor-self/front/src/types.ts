@@ -83,8 +83,9 @@ export type NonSensitivePatient = Omit<Patient, 'ssn' | 'entries'>;
 export type PatientWithoutSsn = Omit<Patient, "ssn">;
 
 export interface BaseEntryFormTypes {
+  type: EntryType | "",
   description: string,
   date: string,
   specialist: string,
-  diagnosisCodes: String
+  diagnosisCodes: string
 }
