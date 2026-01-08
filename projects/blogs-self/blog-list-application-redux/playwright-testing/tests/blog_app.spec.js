@@ -8,14 +8,14 @@ describe('blog app', () => {
     const newUser = {
       username: 'jaloomis',
       name: 'Henry Kissinger',
-      password: 'REDACTED_TEST_PASSWORD'
+      password: process.env.TEST_USER_PASSWORD || 'TestPassword123!'
     }
     await request.post('http://localhost:3001/api/users', { data: newUser })
 
     const anotherUser = {
       username: 'anotherUser',
       name: 'another username',
-      password: 'REDACTED_TEST_PASSWORD'
+      password: process.env.TEST_USER_PASSWORD_2 || 'TestPassword456!'
     }
 
     await request.post('http://localhost:3001/api/users', { data: anotherUser })
@@ -37,7 +37,7 @@ describe('blog app', () => {
 
   describe('login', () => {
     test('successful login', async ({ page }) => {
-      await loginWith(page, 'jaloomis', 'REDACTED_TEST_PASSWORD')
+      await loginWith(page, 'jaloomis', process.env.TEST_USER_PASSWORD || 'TestPassword123!')
       await page.getByText(`logged in as jaloomis`).waitFor()
       await expect(page.getByText('Logged in as jaloomis')).toBeVisible()
 
@@ -54,7 +54,7 @@ describe('blog app', () => {
 
     describe('when logged in', () => {
       beforeEach(async ({ page }) => {
-        await loginWith(page, 'jaloomis', 'REDACTED_TEST_PASSWORD')
+        await loginWith(page, 'jaloomis', process.env.TEST_USER_PASSWORD || 'TestPassword123!')
         await page.getByText(`logged in as jaloomis`).waitFor()
 
       })
@@ -89,7 +89,7 @@ describe('blog app', () => {
         await page.getByRole('button', { name: 'logout' }).click()
         await expect(page.getByRole('button', { name: 'show login form' })).toBeVisible()
 
-        await loginWith(page, 'anotherUser', 'REDACTED_TEST_PASSWORD')
+        await loginWith(page, 'anotherUser', process.env.TEST_USER_PASSWORD_2 || 'TestPassword456!')
         await expect(page.getByText('Logged in as anotherUser')).toBeVisible()
 
         await page.getByRole('button', { name: 'view details' }).click()

@@ -21,7 +21,7 @@ describe("testing login", () => {
     console.log("user", user);
     const loginInfo = {
       username: user.username,
-      password: "REDACTED_TEST_PASSWORD",
+      password: process.env.TEST_USER_PASSWORD || "TestPassword123!",
     };
 
     const response = await api.post("/api/login").send(loginInfo).expect(200);
@@ -47,7 +47,7 @@ describe("testing login", () => {
   test.only("fails if no user", async () => {
     const loginInfo = {
       username: "no user",
-      password: "REDACTED_TEST_PASSWORD",
+      password: process.env.TEST_USER_PASSWORD || "TestPassword123!",
     };
 
     const response = await api.post("/api/login").send(loginInfo).expect(404);

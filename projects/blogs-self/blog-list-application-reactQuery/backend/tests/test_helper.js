@@ -17,7 +17,7 @@ const userId = async () => {
 
 const rootUserInfo = {
   username: "rootey",
-  password: "REDACTED_TEST_PASSWORD",
+  password: process.env.TEST_USER_PASSWORD || "testpassword123",
 };
 
 const deleteAndCreateRootUser = async () => {
@@ -111,15 +111,6 @@ const generateToken = async () => {
   return token;
 };
 
-// const createAndSaveNewUser = async () => {
-//     const passwordHash = await bcrypt.hash('REDACTED_TEST_PASSWORD',10)
-//         const user = new User({
-//             username: 'jaloomis',
-//             name: 'Joe Loomis',
-//             password: passwordHash
-//         })
-//     await user.save()
-// }
 
 module.exports = {
   getInitialBlogs,

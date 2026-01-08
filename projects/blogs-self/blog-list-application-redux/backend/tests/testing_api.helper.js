@@ -6,7 +6,7 @@ const api = supertest(app.app);
 const genericUser = {
   username: "username",
   name: "name",
-  password: "REDACTED_TEST_PASSWORD",
+  password: process.env.TEST_USER_PASSWORD || "TestPassword123!",
 };
 
 const checkAndCreateUser = async (genericUser) => {
