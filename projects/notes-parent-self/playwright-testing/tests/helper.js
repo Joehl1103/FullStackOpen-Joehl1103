@@ -1,7 +1,7 @@
 const loginWith = async (page,username,password) => {
     await page.getByRole('button', { name: 'Show login form' }).click()
-    await page.getByTestId('username').fill('jamormis')
-    await page.getByTestId('password').fill('REDACTED_TEST_PASSWORD')
+    await page.getByTestId('username').fill(username)
+    await page.getByTestId('password').fill(password)
     await page.getByRole('button', { name: 'login' }).click()
 }
 

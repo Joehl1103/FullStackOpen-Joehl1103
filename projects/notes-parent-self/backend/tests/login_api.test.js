@@ -14,7 +14,7 @@ describe('testing login', () => {
 
     beforeEach(async () => {
         await User.deleteMany({})
-        const passwordHash = await bcrypt.hash('REDACTED_TEST_PASSWORD',10)
+        const passwordHash = await bcrypt.hash(process.env.TEST_USER_PASSWORD || 'TestPassword123!',10)
         const user = new User({
             username: 'jaloomis',
             name: 'Joe Loomis',
@@ -27,7 +27,7 @@ describe('testing login', () => {
         const user = await User.findOne({ username: 'jaloomis' })
         const loginInfo = {
             username: user.username,
-            password: 'REDACTED_TEST_PASSWORD'
+            password: process.env.TEST_USER_PASSWORD || 'TestPassword123!'
         }
 
         const response = await api
@@ -57,7 +57,7 @@ describe('testing login', () => {
     test('fails if no user', async () => {
         const loginInfo = {
             username: 'no user',
-            password: 'REDACTED_TEST_PASSWORD'
+            password: process.env.TEST_USER_PASSWORD || 'TestPassword123!'
         }
 
         const response = await api

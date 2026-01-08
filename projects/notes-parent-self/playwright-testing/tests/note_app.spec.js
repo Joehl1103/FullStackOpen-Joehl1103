@@ -15,7 +15,7 @@ describe('Note app', () => {
         data: {
           username: "jamormis",
           name: "henry portmeister",
-          password: "REDACTED_TEST_PASSWORD"
+          password: "process.env.TEST_USER_PASSWORD || "TestPassword123!""
         },
         headers: {
           'Content-Type': 'application/json'
@@ -37,7 +37,7 @@ describe('Note app', () => {
   })
 
   test('user can log in', async ({ page }) => {
-    await loginWith(page, 'jamormis','REDACTED_TEST_PASSWORD')
+    await loginWith(page, 'jamormis','process.env.TEST_USER_PASSWORD || "TestPassword123!"')
     await expect(page.getByText('henry portmeister logged-in')).toBeVisible()
   })
 
@@ -58,7 +58,7 @@ describe('Note app', () => {
   describe('when logged in', () => {
     // before each test, log in as jamormis
     beforeEach(async ({ page }) => {
-      await loginWith(page, 'jamormis','REDACTED_TEST_PASSWORD')
+      await loginWith(page, 'jamormis','process.env.TEST_USER_PASSWORD || "TestPassword123!"')
     })
 
     test('a new note can be created', async ({ page }) => {

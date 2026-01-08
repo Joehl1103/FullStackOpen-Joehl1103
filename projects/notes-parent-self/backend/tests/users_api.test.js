@@ -30,7 +30,7 @@ describe('when there is initially one user in the database', () => {
         const newUser = {
             username: 'jaloomis',
             name: 'Joe Loomis',
-            password: 'REDACTED_TEST_PASSWORD'
+            password: process.env.TEST_USER_PASSWORD || 'TestPassword123!'
         }
 
         const response = await api
@@ -57,7 +57,7 @@ describe('when there is initially one user in the database', () => {
         const newUser = {
             username: 'jal',
             name: 'Joe Loomis',
-            password: 'REDACTED_TEST_PASSWORD'
+            password: process.env.TEST_USER_PASSWORD || 'TestPassword123!'
         }
 
         const response = await api
@@ -80,7 +80,7 @@ describe('when there is initially one user in the database', () => {
         const newUser = {
             username: 'jaloomis',
             name: 'Joe Loomis',
-            password: 'REDACTED_TEST_PASSWORD'
+            password: 'invalidpassword'
         }
 
         const response = await api
@@ -100,7 +100,7 @@ describe('when there is initially one user in the database', () => {
         const newUser = {
             username: 'rootey',
             name: 'superuser',
-            password: 'REDACTED_TEST_PASSWORD'
+            password: process.env.TEST_USER_PASSWORD || 'TestPassword123!'
         }
 
         const result = await api
