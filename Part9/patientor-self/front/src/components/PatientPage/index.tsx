@@ -17,7 +17,7 @@ interface IParams {
 
 const paramsSchema = z.object({
   id: z.string()
-})
+});
 
 function RowAndCell({ left, right }: { left: string, right: string }) {
 
@@ -26,11 +26,11 @@ function RowAndCell({ left, right }: { left: string, right: string }) {
       <TableCell align='left' style={{ fontWeight: 'bold', width: 100 }} >{left}</TableCell>
       <TableCell align='left'>{right}</TableCell>
     </TableRow>
-  )
+  );
 }
 
 function EntryFormDisplay(
-  { entryFormVisible, handleEntryFormCheck }: {
+  { entryFormVisible: _entryFormVisible, handleEntryFormCheck }: {
     entryFormVisible: boolean,
     handleEntryFormCheck(event: React.SyntheticEvent
     ): void
@@ -58,12 +58,12 @@ function EntryFormDisplay(
         sx={{ marginTop: 1.6 }}
       >add entry</Typography>
     </div>
-  )
-};
+  );
+}
 function PatientPage() {
   const [patient, setPatient] = useState<Patient>();
-  const [entries, setEntries] = useState<Entry[]>();
-  const [entryFormVisible, setEntryFormVisible] = useState<boolean>(false)
+  const [entries, setEntries] = useState<Entry[]>([]);
+  const [entryFormVisible, setEntryFormVisible] = useState<boolean>(false);
   const params: IParams = paramsSchema.parse(useParams());
   useEffect(() => {
     services.getById(params.id)
@@ -72,15 +72,15 @@ function PatientPage() {
         const entries: Entry[] = patient.entries;
         setEntries(entries);
       });
-  }, []);
+  }, [params.id]);
 
   if (!patient || Object.length === 0) {
-    return <div>No patient to display...</div>
+    return <div>No patient to display...</div>;
   }
 
   function handleEntryFormCheck(event: React.SyntheticEvent) {
     event.preventDefault();
-    setEntryFormVisible(true)
+    setEntryFormVisible(true);
   }
   const iconSize: IconProps['fontSize'] = 'large';
   return (
@@ -92,9 +92,9 @@ function PatientPage() {
         <TableContainer style={{ marginTop: 40, marginBottom: 20, width: 300 }}>
           <Table size='small' >
             <TableBody>
-              <RowAndCell left={'Date of Birth:'} right={patient.dateOfBirth} />
-              <RowAndCell left={'Occupation:'} right={patient.occupation} />
-              <RowAndCell left={'SSN:'} right={patient.ssn} />
+              <RowAndCell key="dob" left={'Date of Birth:'} right={patient.dateOfBirth} />
+              <RowAndCell key="occupation" left={'Occupation:'} right={patient.occupation} />
+              <RowAndCell key="ssn" left={'SSN:'} right={patient.ssn} />
             </TableBody>
           </Table>
         </TableContainer>
@@ -105,6 +105,7 @@ function PatientPage() {
           ? <EntryForm
             setEntryFormVisible={setEntryFormVisible}
             patientId={params.id}
+            setEntries={setEntries}
           />
           : <EntryFormDisplay
             entryFormVisible={entryFormVisible}
@@ -116,13 +117,12 @@ function PatientPage() {
               <div key={e.id}>
                 <EntryDisplay entry={e} />
               </div>
-            )
+            );
           })
           : <Typography variant="body1">No entries to display...</Typography>}
       </div>
     </div >
-  )
-};
+  );
+}
 
 export default PatientPage;
-

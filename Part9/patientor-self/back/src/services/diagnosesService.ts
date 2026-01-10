@@ -7,4 +7,4 @@ function getDiagnoses(): Diagnosis[] {
 
 export default {
   getDiagnoses
-}
+};

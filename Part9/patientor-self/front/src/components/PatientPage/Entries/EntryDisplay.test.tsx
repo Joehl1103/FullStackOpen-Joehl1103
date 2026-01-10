@@ -5,7 +5,7 @@ import { Diagnosis } from '../../../types';
 
 test('returns diagnoses from codes', async () => {
   const codes: string[] = ['M24.2', 'M51.2'];
-  const diagnoses: Diagnosis[] = await fetchDiagnoses(codes)
+  const diagnoses: Diagnosis[] = await fetchDiagnoses(codes);
   assert.deepStrictEqual(diagnoses, [
     {
       "code": "M24.2",
@@ -16,5 +16,5 @@ test('returns diagnoses from codes', async () => {
       "code": "M51.2",
       "name": "Other specified intervertebral disc displacement",
       "latin": "Alia dislocatio disci intervertebralis specificata"
-    }])
+    }]);
 });

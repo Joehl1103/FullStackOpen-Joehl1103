@@ -14,17 +14,18 @@ export function parseNewPatientData(req: Request, _res: Response, next: NextFunc
     patientDataSchema.parse(req.body);
     return next();
   } catch (e: unknown) {
-    next(e)
+    next(e);
   }
   next(new Error('Something went wrong'));
 };
 
 export function parseNewEntryData(req: Request, _res: Response, next: NextFunction) {
   try {
-    if (!req.body.type) {
-      throw new Error('Type is missing.')
+    const body = req.body as EntryWithoutId;
+    if (!body.type) {
+      throw new Error('Type is missing.');
     }
-    const entry: EntryWithoutId = req.body;
+    const entry: EntryWithoutId = body;
     switch (entry.type) {
       case EntryType.HEALTHCHECK:
         healthCheckEntrySchema.parse(entry);
@@ -40,7 +41,7 @@ export function parseNewEntryData(req: Request, _res: Response, next: NextFuncti
     }
     next();
   } catch (e: unknown) {
-    next(e)
+    next(e);
   }
 };
 

@@ -2,8 +2,7 @@ import express from "express";
 import { calculateBmi } from "./bmiCalculator/bmiCalculator.ts";
 import { comp as calculateExercises } from './exerciseCalculator/helpers.ts'
 import { errorHandler } from "./errorHandler.ts";
-import { validateNumber, validateAndReturnNumberArray } from './exerciseCalculator/helpers.ts'
-import type { Result } from './exerciseCalculator/helpers.ts'
+import { validateNumber } from './exerciseCalculator/helpers.ts'
 import { validateArgumentLength, validateArray } from "./app.helpers.ts";
 
 export const app = express();

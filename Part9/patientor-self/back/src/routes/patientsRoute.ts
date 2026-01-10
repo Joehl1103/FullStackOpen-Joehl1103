@@ -27,7 +27,7 @@ router.get('/:id', (req: Request, res: Response) => {
       throw new Error('No id parameter.');
     }
     const patient: Patient = patientsService.getPatientById(id);
-    res.json(patient)
+    res.json(patient);
   } catch (e) {
     if (e instanceof z.ZodError) {
       res.status(500).json(e.issues);
@@ -41,13 +41,13 @@ router.get('/:id', (req: Request, res: Response) => {
 
 router.post('/', parseNewPatientData, (req: Request<unknown, unknown, NewPatientEntry>, res: Response<NewPatientEntry>): Patient => {
   const newPatient: Patient = patientsService.addPatient(req.body);
-  res.json(newPatient)
+  res.json(newPatient);
   return newPatient;
 });
 
 router.post('/:id/entries', parseNewEntryData, (req: Request<unknown, unknown, EntryWithoutId>, res: Response<EntryWithoutId>) => {
   const entry: EntryWithoutId = req.body;
-  res.status(201).json(entry)
+  res.status(201).json(entry);
 });
 
 router.use(errorMiddleware);

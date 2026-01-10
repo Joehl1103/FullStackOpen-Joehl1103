@@ -1,6 +1,6 @@
 import type { Response } from 'express';
 
-export function validateArgumentLength(body: any, response: Response): void {
+export function validateArgumentLength(body: any, _response: Response): void {
   const keyLength: number = Object.keys(body).length
   // validate body
   if (keyLength === 0 || !body) {

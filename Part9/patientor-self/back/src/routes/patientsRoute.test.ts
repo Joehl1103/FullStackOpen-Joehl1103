@@ -2,9 +2,8 @@ import { describe, test } from 'node:test';
 import assert from 'node:assert';
 import request from 'supertest';
 import app from './../../app';
-import { healthCheckEntrySchema } from '../utils/entryValidation';
 
-test('get patient by id', async () => {
+void test('get patient by id', async () => {
   await request(app)
     .get('/api/patients/d2773336-f723-11e9-8f0b-362b9e155667')
     .expect(200)
@@ -31,29 +30,29 @@ test('get patient by id', async () => {
             },
           }
         ],
-      })
-    })
-})
+      });
+    });
+});
 
-describe('add an entry for a patient', () => {
-  const todayDate: string = `${(new Date()).getFullYear()}-${(new Date()).getMonth() + 1}-${(new Date()).getDate()}`
+void describe('add an entry for a patient', () => {
+  const todayDate: string = `${(new Date()).getFullYear()}-${(new Date()).getMonth() + 1}-${(new Date()).getDate()}`;
   const baseEntryObject = {
     "description": "description",
     "date": todayDate,
     "specialist": "specialist",
     "diagnosisCodes": ["M24.2"]
-  }
+  };
   const url = '/api/patients/d2773336-f723-11e9-8f0b-362b9e155667/entries';
-  test('adding without type throws error ', async () => {
+  void test('adding without type throws error ', async () => {
     const response = await request(app)
       .post(url)
       .send(baseEntryObject)
-      .expect(400)
+      .expect(400);
     assert.equal(response.status, 400);
-    assert.equal(JSON.parse(response.text).error, "Type is missing.");
+    assert.equal((JSON.parse(response.text) as { error: string }).error, "Type is missing.");
   });
 
-  test('Healthcheck entry succeeds', async () => {
+  void test('Healthcheck entry succeeds', async () => {
     const res = await request(app)
       .post(url)
       .send({
@@ -61,7 +60,7 @@ describe('add an entry for a patient', () => {
         type: "Healthcheck",
         healthCheckRating: 0
       })
-      .expect(201)
+      .expect(201);
     assert.deepStrictEqual(JSON.parse(res.text), {
       description: "description",
       date: todayDate,
@@ -69,10 +68,10 @@ describe('add an entry for a patient', () => {
       diagnosisCodes: ["M24.2"],
       type: "Healthcheck",
       healthCheckRating: 0
-    })
+    });
   });
 
-  test('Occupational entry succeeds', async () => {
+  void test('Occupational entry succeeds', async () => {
     const res = await request(app)
       .post(url)
       .send({
@@ -84,7 +83,7 @@ describe('add an entry for a patient', () => {
           endDate: "2025-12-01"
         }
       })
-      .expect(201)
+      .expect(201);
     assert.deepStrictEqual(JSON.parse(res.text), {
       description: "description",
       date: todayDate,
@@ -96,10 +95,10 @@ describe('add an entry for a patient', () => {
         startDate: "2025-12-01",
         endDate: "2025-12-01"
       }
-    })
+    });
   });
 
-  test('Hospital entry succeeds', async () => {
+  void test('Hospital entry succeeds', async () => {
     const res = await request(app)
       .post(url)
       .send({
@@ -110,7 +109,7 @@ describe('add an entry for a patient', () => {
           criteria: "criteria"
         }
       })
-      .expect(201)
+      .expect(201);
     assert.deepStrictEqual(JSON.parse(res.text), {
       description: "description",
       date: todayDate,
@@ -121,6 +120,6 @@ describe('add an entry for a patient', () => {
         date: "2025-12-01",
         criteria: "criteria"
       }
-    })
+    });
   });
-})
+});

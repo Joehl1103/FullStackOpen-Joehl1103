@@ -1,126 +1,103 @@
-import { Box, InputLabel, TextField, Button, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { useState } from 'react';
-import { EntryType, HealthCheckRating, BaseEntryFormTypes } from "../../../../types";
+import {
+  Entry,
+  EntryType,
+  BaseEntryFormTypes,
+  NotificationType,
+  ConditionalData
+} from "../../../../types";
 import EntryTypeSelect from "./EntryTypeSelect";
-import Header from './Header.tsx';
-import BaseEntryForm from "./BaseEntryForm.tsx";
+import Header from './Header';
+import BaseEntryForm from "./BaseEntryForm";
+import Notification from './Notification';
 import entryService from '../../../../services/entries.ts';
-import { exhaustiveTypeGuard } from "../../../../utilities.ts";
 import { entryTypeValidator } from "../../../../utilities.ts";
 import * as z from 'zod';
+import ConditionalEntryTypes from "./ConditionalEntryTypes/index.tsx";
+import { getHealthCheckRating } from "./utils.tsx";
 
-type HealthCheckRatingKeys = keyof typeof HealthCheckRating;
-
-function EntryForm({ setEntryFormVisible, patientId }: { setEntryFormVisible: React.Dispatch<React.SetStateAction<boolean>>, patientId: string }) {
-
+function EntryForm(
+  { setEntryFormVisible,
+    patientId, setEntries
+  }:
+    {
+      setEntryFormVisible: React.Dispatch<React.SetStateAction<boolean>>,
+      patientId: string,
+      setEntries: React.Dispatch<React.SetStateAction<Entry[]>>
+    }) {
   const [baseEntryFormData, setBaseEntryFormData] = useState<BaseEntryFormTypes>({
     description: "",
-    date: "",
     specialist: "",
-    diagnosisCodes: ""
+    date: null,
+    diagnosisCodes: [],
+    type: EntryType.HEALTHCHECK
   });
-
-  const [entryType, setEntryType] = useState<EntryType>(EntryType.HEALTHCHECK);
-  const [healthCheckRatingKey, setHealthCheckRatingKey] = useState<HealthCheckRatingKeys>('Healthy');
-
-  function isHealthCheckRatingKey(value: any): value is HealthCheckRatingKeys {
-    return value in HealthCheckRating && isNaN(Number(value));
-  };
-
-  function handleHealthCheckChange(event: SelectChangeEvent<string | null>) {
-    if (!event.target.value) {
-      throw new Error('Healthcheck rating is null.');
+  const [conditionalData, setConditionalData] = useState<ConditionalData>({
+    healthCheckRatingKey: "Healthy",
+    sickLeave: {
+      startDate: null,
+      endDate: null,
+    },
+    employerName: "",
+    discharge: {
+      date: null,
+      criteria: ""
     }
-    if (isHealthCheckRatingKey(event.target.value)) {
-      setHealthCheckRatingKey(event.target.value);
-    }
-  };
+  });
+  const [notificationVisible, setNotificationVisible] = useState<boolean>(false);
+  const [notificationType, setNotificationType] = useState<NotificationType | undefined>();
+  const [notificationMessage, setNotificationMessage] = useState<string | undefined>();
 
-  function getHealthCheckRating(healthCheckRatingKey: HealthCheckRatingKeys): HealthCheckRating {
-    switch (healthCheckRatingKey) {
-      case "Healthy":
-        return 0;
-      case "LowRisk":
-        return 1;
-      case "HighRisk":
-        return 2;
-      case "CriticalRisk":
-        return 3;
-      default:
-        exhaustiveTypeGuard(healthCheckRatingKey)
-    }
-  };
+  function setNotificationAndTimeout(message: string, notificationType: NotificationType) {
+    setNotificationMessage(message);
+    setNotificationType(notificationType);
+    setNotificationVisible(true);
+    setTimeout(() => {
+      setNotificationVisible(false);
+    }, 3000);
+  }
 
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
     let entryOfUnknownType: unknown = {};
-    switch (entryType) {
-      case EntryType.HEALTHCHECK:
-        entryOfUnknownType = {
-          ...baseEntryFormData,
-          type: entryType,
-          healthCheckRating: getHealthCheckRating(healthCheckRatingKey)
-        }
-        break;
-      case EntryType.HOSPITAL:
-        break;
-      case EntryType.OCCUPATIONAL:
-        break;
-      default:
-        exhaustiveTypeGuard(entryType);
+    if (baseEntryFormData.type === EntryType.HEALTHCHECK) {
+      entryOfUnknownType = { ...baseEntryFormData, ...conditionalData, healthCheckRating: getHealthCheckRating(conditionalData.healthCheckRatingKey) };
+    } else {
+      entryOfUnknownType = { ...baseEntryFormData, ...conditionalData };
     }
     try {
       const validatedEntry = entryTypeValidator(entryOfUnknownType);
       if (!patientId) {
         throw new Error('no patient id in handleSubmit.');
       }
-      entryService.addEntry(validatedEntry, patientId);
+      entryService.addEntry({ entry: validatedEntry, id: patientId })
+        .then((res: unknown) => {
+          if (!Array.isArray(res)) {
+            throw new Error('Res is not an array.');
+          }
+          const validatedEntries = res.map(i => entryTypeValidator(i));
+          setEntries(validatedEntries);
+          setNotificationAndTimeout("Successfully added new entry.", "Good");
+        });
     } catch (e: unknown) {
       if (e instanceof z.ZodError) {
-        console.log(entryType)
+        setNotificationAndTimeout(`${e.issues[0].message}`, "Bad");
         throw new Error(e.issues[0].message);
       }
     }
-  };
-
-  function displayConditionalEntryTypes(entryType: EntryType) {
-    switch (entryType) {
-      case EntryType.HEALTHCHECK:
-        return (
-          <Box sx={{ marginTop: 2 }}>
-            <InputLabel>Healthcheck rating:</InputLabel>
-            <Select
-              sx={{ width: 200 }}
-              label="Healthcheck rating"
-              value={healthCheckRatingKey}
-              onChange={handleHealthCheckChange}>
-              {Object.keys(HealthCheckRating)
-                .filter(key => isNaN(Number(key)))
-                .map((n: string) => {
-                  return (
-                    <MenuItem key={n} dense={true} value={n}>{n}</MenuItem>
-                  )
-                })}
-            </Select>
-            <br />
-            <Button type="submit" variant="contained">Submit</Button>
-          </Box >
-        );
-      case EntryType.OCCUPATIONAL:
-        return (
-          <Box>
-            <InputLabel>Employer name:</InputLabel>
-            <TextField size="small" />
-          </Box>
-        );
-      case EntryType.HOSPITAL:
-    }
-  };
+  }
 
   return (
     <div>
+      {(notificationVisible && notificationMessage && notificationType) &&
+        <Notification
+          message={notificationMessage}
+          type={notificationType} />}
       <Header setEntryFormVisible={setEntryFormVisible} />
-      <EntryTypeSelect setEntryType={setEntryType} />
+      <EntryTypeSelect
+        baseEntryFormData={baseEntryFormData}
+        setBaseEntryFormData={setBaseEntryFormData} />
       <Box
         component="form"
         onSubmit={handleSubmit}
@@ -129,10 +106,15 @@ function EntryForm({ setEntryFormVisible, patientId }: { setEntryFormVisible: Re
           baseEntryFormData={baseEntryFormData}
           setBaseEntryFormData={setBaseEntryFormData}
         />
-        {displayConditionalEntryTypes(entryType)}
+        <ConditionalEntryTypes
+          entryType={baseEntryFormData.type}
+          conditionalData={conditionalData}
+          setConditionalData={setConditionalData}
+        />
+        <Button type="submit" variant="contained">Submit</Button>
       </Box>
     </div >
-  )
-};
+  );
+}
 
 export default EntryForm;

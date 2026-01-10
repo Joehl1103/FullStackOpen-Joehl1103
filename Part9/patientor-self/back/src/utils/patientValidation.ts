@@ -13,4 +13,4 @@ export const patientDataSchema = z.object({
   gender: z.enum(Gender),
   occupation: z.string(),
   entries: z.array(entrySchema)
-})
+});

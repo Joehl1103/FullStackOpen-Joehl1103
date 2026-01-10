@@ -12,7 +12,6 @@ test('bmi calc', () => {
     return calculateBmi(height, weight);
   };
   arr.forEach(([weight, response]) => {
-    console.log('weight', weight);
     expect(calcBmi(5.9, weight)).toBe(response);
   });
 });

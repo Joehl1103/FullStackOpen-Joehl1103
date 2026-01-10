@@ -7,7 +7,7 @@ export type Diagnosis = {
 export enum Gender {
   Male = "male",
   Female = "female"
-};
+}
 
 type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
 
@@ -15,7 +15,7 @@ export enum EntryType {
   HEALTHCHECK = "Healthcheck",
   OCCUPATIONAL = "OccupationalHealthcare",
   HOSPITAL = "Hospital"
-};
+}
 
 export interface BaseEntry {
   id: string;
@@ -23,19 +23,22 @@ export interface BaseEntry {
   date: string;
   specialist: string;
   diagnosisCodes?: Array<Diagnosis['code']>;
-};
+}
 
 export enum HealthCheckRating {
   "Healthy" = 0,
   "LowRisk" = 1,
   "HighRisk" = 2,
   "CriticalRisk" = 3,
-};
+}
+
+
+export type HealthCheckRatingKeys = keyof typeof HealthCheckRating;
 
 export interface HealthCheckEntry extends BaseEntry {
   type: typeof EntryType.HEALTHCHECK;
   healthCheckRating: HealthCheckRating;
-};
+}
 
 export type SickLeave = {
   startDate: string;
@@ -47,7 +50,7 @@ export interface OccupationalHealthcareEntry extends BaseEntry {
   employerName: string;
   sickLeave?: SickLeave
 
-};
+}
 
 type Discharge = {
   date: string;
@@ -64,7 +67,7 @@ export type Entry =
   | OccupationalHealthcareEntry
   | HealthCheckEntry;
 
-export type EntryWithoutId = UnionOmit<Entry, "id">
+export type EntryWithoutId = UnionOmit<Entry, "id">;
 
 export type Patient = {
   id: string;
@@ -84,7 +87,27 @@ export type PatientWithoutSsn = Omit<Patient, "ssn">;
 
 export interface BaseEntryFormTypes {
   description: string,
-  date: string,
   specialist: string,
-  diagnosisCodes: string
+  date: string | null,
+  diagnosisCodes: Array<Diagnosis['code']>,
+  type: EntryType
 }
+
+interface SickLeaveInputData {
+  startDate: string | null,
+  endDate: string | null
+}
+interface DischargeInputData {
+  date: string | null,
+  criteria: string
+}
+
+export interface ConditionalData {
+  healthCheckRatingKey: HealthCheckRatingKeys,
+  employerName: string,
+  sickLeave: SickLeaveInputData,
+  discharge: DischargeInputData
+}
+
+
+export type NotificationType = "Good" | "Bad";

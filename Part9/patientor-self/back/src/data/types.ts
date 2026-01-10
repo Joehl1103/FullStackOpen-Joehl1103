@@ -64,7 +64,7 @@ export type Entry =
   | OccupationalHealthcareEntry
   | HealthCheckEntry;
 
-export type EntryWithoutId = UnionOmit<Entry, "id">
+export type EntryWithoutId = UnionOmit<Entry, "id">;
 
 export type Patient = {
   id: string;
@@ -80,4 +80,4 @@ export type NonSensitivePatient = Omit<Patient, 'ssn' | 'entries'>;
 
 export type PatientWithoutSsn = Omit<Patient, "ssn">;
 
-export type NewPatientEntry = Omit<Patient, "id">
+export type NewPatientEntry = Omit<Patient, "id">;

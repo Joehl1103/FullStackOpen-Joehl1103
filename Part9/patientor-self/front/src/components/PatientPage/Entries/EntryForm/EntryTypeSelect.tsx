@@ -1,23 +1,28 @@
-import { EntryType } from "../../../../types";
+import { BaseEntryFormTypes, EntryType } from "../../../../types";
 import { FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material';
 
-function EntryTypeSelect({ setEntryType }: { setEntryType: React.Dispatch<React.SetStateAction<EntryType>> }) {
+interface Props {
+  baseEntryFormData: BaseEntryFormTypes,
+  setBaseEntryFormData: React.Dispatch<React.SetStateAction<BaseEntryFormTypes>>
+}
+
+function EntryTypeSelect({ baseEntryFormData, setBaseEntryFormData }: Props) {
   function handleEntryTypeChange(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault();
     switch (event.target.value) {
       case "Healthcheck":
-        setEntryType(EntryType.HEALTHCHECK);
+        setBaseEntryFormData((_prev) => ({ ...baseEntryFormData, type: EntryType.HEALTHCHECK }));
         break;
       case "Occupational Healthcare":
-        setEntryType(EntryType.OCCUPATIONAL);
+        setBaseEntryFormData((_prev) => ({ ...baseEntryFormData, type: EntryType.OCCUPATIONAL }));
         break;
       case "Hospital":
-        setEntryType(EntryType.HOSPITAL);
+        setBaseEntryFormData((_prev) => ({ ...baseEntryFormData, type: EntryType.HOSPITAL }));
         break;
       default:
         throw new Error(`${event.target.value} is not an entry type.`);
     }
-  };
+  }
   return (
     <FormControl >
       <FormLabel sx={{ fontSize: 15 }}>Entry type</FormLabel>
@@ -30,11 +35,11 @@ function EntryTypeSelect({ setEntryType }: { setEntryType: React.Dispatch<React.
             <div key={v}>
               <FormControlLabel value={v} control={<Radio size="small" />} label={v} />
             </div>
-          )
+          );
         })}
       </RadioGroup>
     </FormControl>
-  )
+  );
 }
 
 export default EntryTypeSelect;

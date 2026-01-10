@@ -20,7 +20,7 @@ function Header({ setEntryFormVisible }: { setEntryFormVisible: React.Dispatch<R
       </Box>
     </Box>
   );
-};
+}
 
 export default Header;
 

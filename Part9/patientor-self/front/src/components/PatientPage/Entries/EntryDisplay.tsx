@@ -7,13 +7,16 @@ import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
 import EngineeringIcon from '@mui/icons-material/Engineering';
 import DeviceThermostatIcon from '@mui/icons-material/DeviceThermostat';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { Box, List, ListItem, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import diagnosesService from "../../../services/diagnoses";
 import { exhaustiveTypeGuard } from "../../../utilities";
 
+// eslint-disable-next-line react-refresh/only-export-components
 export async function fetchDiagnoses(codes: string[]) {
-  return await Promise.all(codes.map(async (c) => await diagnosesService.getDiagnosisByCode(c)));
-};
+  return await Promise.all(
+    codes.map(async (c) => await diagnosesService.getDiagnosisByCode(c))
+  );
+}
 
 function DiagnosticCodes({ diagnoses }: { diagnoses: Diagnosis[] }) {
   return (
@@ -23,19 +26,19 @@ function DiagnosticCodes({ diagnoses }: { diagnoses: Diagnosis[] }) {
         text={"Diagnostic codes:"} />
       <Box sx={{ marginLeft: 1.4 }} >
         <ul style={{ marginTop: 5, marginBottom: 5 }}>
-          {diagnoses.map((d, i) => (
-            <li key={i}><Typography variant="body2">{`${d.code}: ${d.name}.`}</Typography></li>
+          {diagnoses.map((d) => (
+            <li key={d.code}><Typography variant="body2">{`${d.code}: ${d.name}.`}</Typography></li>
           ))}
         </ul>
       </Box>
     </div >
-  )
-};
+  );
+}
 
 function ItemDivWithIcon(
   { icon: Icon,
     text,
-    typeIcon: TypeIcon,
+    typeIcon: _TypeIcon,
     healthIconObject }:
     {
       icon: ComponentType<SvgIconProps>,
@@ -53,8 +56,8 @@ function ItemDivWithIcon(
       <Typography variant="body2" sx={{ marginTop: 0.5, marginBottom: 0 }}>{text}</Typography>
       {healthIconObject ? <healthIconObject.icon sx={{ color: healthIconObject.iconColor }} /> : null}
     </div>
-  )
-};
+  );
+}
 
 function setTypeIcon(type: EntryType) {
   switch (type) {
@@ -71,7 +74,7 @@ function setTypeIcon(type: EntryType) {
 
 function BaseEntryDisplay({ entry }: { entry: Entry }) {
   const { type, date, description, specialist } = entry;
-  const Icon = setTypeIcon(type)
+  const Icon = setTypeIcon(type);
   return (
     <div>
       <div >
@@ -91,17 +94,19 @@ function BaseEntryDisplay({ entry }: { entry: Entry }) {
         />
       </div>
     </div >
-  )
-};
+  );
+}
 function EntryDisplay({ entry }: { entry: Entry }) {
-  const [diagnoses, setDiagnoses] = useState<Diagnosis[] | []>([])
-  const diagnosticCodes: string[] | null = entry.diagnosisCodes ? entry.diagnosisCodes : null
+  const [diagnoses, setDiagnoses] = useState<Diagnosis[] | []>([]);
+  const diagnosticCodes: string[] | null = entry.diagnosisCodes ? entry.diagnosisCodes : null;
   useEffect(() => {
-    diagnosticCodes && fetchDiagnoses(diagnosticCodes)
-      .then((diagnoses: Diagnosis[]) => {
-        setDiagnoses(diagnoses);
-      })
-  }, [])
+    if (diagnosticCodes) {
+      fetchDiagnoses(diagnosticCodes)
+        .then((diagnoses: Diagnosis[]) => {
+          setDiagnoses(diagnoses);
+        });
+    }
+  }, [diagnosticCodes]);
 
   function renderSickLeave(sickLeave: SickLeave) {
     return (
@@ -112,7 +117,7 @@ function EntryDisplay({ entry }: { entry: Entry }) {
           <li><Typography variant="body2">End: {sickLeave.endDate}</Typography></li>
         </ul>
       </div>
-    )
+    );
   }
   function setHealthIconColor(rating: HealthCheckRating) {
     switch (rating) {
@@ -126,8 +131,8 @@ function EntryDisplay({ entry }: { entry: Entry }) {
         return 'green';
       default:
         exhaustiveTypeGuard(rating);
-    };
-  };
+    }
+  }
 
   function renderTypes(entry: Entry) {
     switch (entry.type) {
@@ -140,12 +145,12 @@ function EntryDisplay({ entry }: { entry: Entry }) {
             />
             <p style={{ padding: 0, paddingLeft: 5, margin: 0 }}><i></i></p>
           </div>
-        )
+        );
       case EntryType.HEALTHCHECK:
         const healthIconObject = {
           icon: FavoriteIcon,
           iconColor: setHealthIconColor(entry.healthCheckRating)
-        }
+        };
         return (
           <div>
             <ItemDivWithIcon
@@ -154,7 +159,7 @@ function EntryDisplay({ entry }: { entry: Entry }) {
               healthIconObject={healthIconObject}
             />
           </div>
-        )
+        );
       case EntryType.OCCUPATIONAL:
         return (
           <div>
@@ -165,9 +170,9 @@ function EntryDisplay({ entry }: { entry: Entry }) {
             />
             {entry.sickLeave ? renderSickLeave(entry.sickLeave) : null}
           </div >
-        )
+        );
       default:
-        exhaustiveTypeGuard(entry)
+        exhaustiveTypeGuard(entry);
     }
   }
 
@@ -182,7 +187,7 @@ function EntryDisplay({ entry }: { entry: Entry }) {
       </div>
       <Divider />
     </div >
-  )
-};
+  );
+}
 
 export default EntryDisplay;
