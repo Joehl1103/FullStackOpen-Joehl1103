@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
+import 'dotenv/config'
 
-const password = process.argv[2]
-const url = `mongodb+srv://jkhloomis:${password}@cluster0.z1gftkf.mongodb.net/anotherDatabase?retryWrites=true&w=majority&appName=Cluster0`
+const url = process.env.MONGODB_URI
 
 mongoose.connect(url)
 console.log("connection established")
